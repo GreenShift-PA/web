@@ -12,7 +12,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - db-data:/data/db
-  node-app:
+  node-api:
     container_name: api_node
     build: ./services/api
     ports:
