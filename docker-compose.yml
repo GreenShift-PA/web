@@ -25,9 +25,9 @@ services:
       - ./services/api/.env
   angular-service:
     container_name: angular
-    build: ./services/greenshift-front
+    build: ./services/frontend
     volumes:
-      - ./services/greenshift-front:/app
+      - ./services/frontend:/app
     ports: 
         - '4200:4200'
   mysql:
