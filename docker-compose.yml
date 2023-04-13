@@ -12,24 +12,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - db-data:/data/db
-  node-api:
-    container_name: api_node
-    build: ./services/api
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./services/api:/app
-    environment:
-      - PORT=3000
-    env_file:
-      - ./services/api/.env
-  angular-service:
-    container_name: angular
-    build: ./services/frontend
-    volumes:
-      - ./services/frontend:/app
-    ports: 
-        - '4200:4200'
   mysql:
     image: mysql:8.0
     container_name: mysql_db
@@ -54,6 +36,26 @@ services:
       PMA_HOST: mysql
       PMA_USER: user
       PMA_PASSWORD: root
+  node-api:
+    container_name: api_node
+    build: ./services/api
+    depends_on:
+      - mysql
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/api:/app
+    environment:
+      - PORT=3000
+    env_file:
+      - ./services/api/.env
+  angular-service:
+    container_name: angular
+    build: ./services/frontend
+    volumes:
+      - ./services/frontend:/app
+    ports: 
+        - '4200:4200'
 
 volumes:
   db-data:
