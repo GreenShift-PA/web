@@ -1,10 +1,10 @@
-FROM node:latest as build
+FROM node:latest
 
 WORKDIR /app
 
 COPY package.json .
 
-RUN npm i 
+RUN npm i && npm install -g @angular/cli
 
 COPY . ./
 
@@ -12,4 +12,4 @@ ENV POST 4200
 
 EXPOSE $PORT
 
-CMD ["npm", "start"]
+CMD ["ng", "serve"]
