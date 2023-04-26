@@ -3,6 +3,7 @@ dotenv.config()
 
 import * as express from 'express'
 import { UserController } from "./controller/user.controller"
+import { TreeController } from "./controller/tree.controller";
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -19,9 +20,13 @@ app.get("/", (req, res) => {
 })
 
 const userController = new UserController(pool)
+const treeController = new TreeController(pool)
 
 // Route : /user/...
 app.use(userController.path, userController.buildRouter())
+
+//Route = /tree/...
+app.use(treeController.path, treeController.buildRouter())
 
 
 app.listen(process.env.PORT, () => {
