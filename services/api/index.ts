@@ -25,5 +25,5 @@ app.use(userController.path, userController.buildRouter())
 
 
 app.listen(process.env.PORT, () => {
-    console.log("Server up");
+    console.log(`Server up => ${process.env.PORT}`);
 })

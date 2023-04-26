@@ -14,21 +14,28 @@ export class UserController {
 
     getAll = async (req:Request, res: Response)=> {
         const [users] = await this.pool.query('SELECT * FROM User')
+        if(users.length === 0){ 
+            res.status(404).end()
+            return 
+        }
         res.status(200).json(users)
     }
 
-    searchUser = async (req: Request, res: Response) => {
+    searchUser = async (req: Request<{ id: number}>, res: Response) => {
         const [user] =  await this.pool.query("SELECT * FROM User WHERE ID = ? ", [req.params.id])
-        res.status(302).json(user)
+        if(user.length === 0){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(user)
     }
 
-    deleteUser = async (req:Request, res: Response) => {
+    deleteUser = async (req:Request<{ id: number}>, res: Response) => {
         const [user] =  await this.pool.query("DELETE FROM User WHERE ID = ? ", [req.params.id])
-        // TODO: Need testes
-        if (user){
+        if (user.affectedRows < 0){
             res.status(202).send("ok")
         }
-        res.status(400).end()
+        res.status(404).end()
         return 
     }
 
