@@ -1,5 +1,6 @@
 import { Router, Response, Request } from "express"
 import * as express from 'express'
+import { UserService } from "../services/user.service"
 
 
 export class MessageController {
@@ -60,7 +61,7 @@ export class MessageController {
                 ORDER BY Message.date DESC
                 LIMIT 15 OFFSET 0
             ) subquery
-            ORDER BY subquery.date ASC;`)
+            ORDER BY subquery.date DESC;`)
         if(conv.length === 0){ 
             res.status(404).end()
             return 
@@ -79,7 +80,22 @@ export class MessageController {
             res.status(400).end()
             return
         }
-        // TODO: Verifier si l'utilisateur existe
+        if (!await UserService.isUser(req.body.from, this.pool) ||  !await UserService.isUser(req.body.to, this.pool)){
+            // If users existe
+            res.status(400).end()
+            return
+        }
+
+        await this.pool.query(`
+        INSERT INTO Message (
+            from_user_id, 
+            to_user_id, 
+            content 
+        ) VALUES (
+            ?, ?, ?)
+        `, [req.body.from, req.body.to, req.body.content])
+        res.status(200).end("ok")
+
     }
 
 
@@ -87,7 +103,7 @@ export class MessageController {
         const router = express.Router()
         router.get('/:id/', this.getAllConversations.bind(this))
         router.get('/:idFrom/:idTo', this.getConversation.bind(this))
-        router.post('/:idFrom/:idTo', this.sendMessage.bind(this))
+        router.post('/', express.json(), this.sendMessage.bind(this))
         return router
     }
 }
