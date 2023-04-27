@@ -35,10 +35,44 @@ export class MessageController {
         res.status(200).json(conv)
     }
 
+    getConversation = async (req:Request<{ idFrom: number, idTo: number}>, res:Response) => {
+        // Returns the conversation between 2 users  
+        const params = {
+            user_id_1: req.params.idFrom, 
+            user_id_2: req.params.idTo
+        }
+        // TODO: Changed parameter assignment to avoid injection 
+        const [conv] =  await this.pool.query(
+            `SELECT *
+            FROM (
+                SELECT 
+                    Message.content,
+                    u1.ID as sender_id,
+                    CONCAT_WS(' ', u1.name, u1.firstname) as sender_fullname,
+                    u2.ID as receiver_id,
+                    CONCAT_WS(' ', u2.name, u2.firstname) as receiver_fullname,
+                    Message.date
+                FROM Message 
+                INNER JOIN User as u1 ON Message.from_user_id = u1.id
+                INNER JOIN User as u2 ON Message.to_user_id = u2.id
+                WHERE (Message.from_user_id = ${req.params.idFrom} AND Message.to_user_id = ${req.params.idTo}) 
+                OR (Message.from_user_id = ${req.params.idTo} AND Message.to_user_id = ${req.params.idFrom})
+                ORDER BY Message.date DESC
+                LIMIT 15 OFFSET 0
+            ) subquery
+            ORDER BY subquery.date ASC;`)
+        if(conv.length === 0){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(conv)
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/:id/', this.getAllConversations.bind(this))
+        router.get('/:idFrom/:idTo', this.getConversation.bind(this))
         return router
     }
 }
