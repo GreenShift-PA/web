@@ -1,5 +1,6 @@
 import { Router, Response, Request } from "express"
 import * as express from 'express'
+import { UserService } from "../services/user.service"
 
 
 export class UserController {
@@ -22,8 +23,8 @@ export class UserController {
     }
 
     searchUser = async (req: Request<{ id: number}>, res: Response) => {
-        const [user] =  await this.pool.query("SELECT * FROM User WHERE ID = ? ", [req.params.id])
-        if(user.length === 0){ 
+        const user = await UserService.getUser(req.params.id, this.pool)
+        if(!user){ 
             res.status(404).end()
             return 
         }
