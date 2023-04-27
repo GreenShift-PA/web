@@ -68,11 +68,26 @@ export class MessageController {
         res.status(200).json(conv)
     }
 
+    sendMessage = async (req:Request, res:Response) => {
+        if (!req.body || !req.body.from || !req.body.to || !req.body.content){
+            // If there is not all the parameters
+            res.status(400).end()
+            return 
+        }
+        if(typeof req.body.from !== 'number' || typeof req.body.to !== 'number' || typeof req.body.content !== 'string' ){
+            // If the types are not the correct one
+            res.status(400).end()
+            return
+        }
+        // TODO: Verifier si l'utilisateur existe
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/:id/', this.getAllConversations.bind(this))
         router.get('/:idFrom/:idTo', this.getConversation.bind(this))
+        router.post('/:idFrom/:idTo', this.sendMessage.bind(this))
         return router
     }
 }
