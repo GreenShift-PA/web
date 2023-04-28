@@ -30,3 +30,9 @@ VALUES
     ('4', '2', "Good and you ?"),
     ('2', '1', "This is a test message"),
     ('1', '2', "This is a test answer");
+
+
+INSERT INTO `Tree` 
+    (, `user_id`, `size`) 
+VALUES 
+    ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')
