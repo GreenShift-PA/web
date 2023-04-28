@@ -2,7 +2,7 @@ export class TreeService{
 
     static getAll = async (pool:any): Promise<Array<string> | boolean> => {
         const [trees] = await pool.query('SELECT * FROM Tree')
-        if(trees.length === 0){ 
+        if(trees.length <= 0){ 
             return false
         }
         return trees
@@ -10,19 +10,22 @@ export class TreeService{
 
     static getTreeById = async (tree_id: number, pool: any): Promise<Array<string> | boolean> => {
         const [tree] =  await pool.query("SELECT * FROM Tree WHERE ID = ? ", [tree_id])
-        if(tree.length === 0){ 
+        if(tree.length <= 0){ 
             return false
         }
         return tree
     }
 
     static createTree = async (user_id: number, pool:any): Promise<boolean> => {
-        await pool.query(`
+        const tree = await pool.query(`
         INSERT INTO Tree 
             (user_id, size) 
         VALUES (?, '0')
         `, [user_id])
-        return true
+        if (tree.affectedRows > 0){
+            return true
+        }
+        return false
     }
 
     static killTree = async (tree_id: number, pool:any ): Promise<boolean> => {
