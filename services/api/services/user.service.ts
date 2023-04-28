@@ -1,3 +1,4 @@
+import { TreeService } from "./tree.service"
 
 export class UserService {
 
@@ -45,9 +46,12 @@ export class UserService {
             ?, ?, ?, ?, ?)
         `, [user_name, user_firstname, user_email, user_phone, user_country])
 
-        if (user.affectedRows < 0){
+        const tree_answer = await TreeService.createTree(user.insertId, pool)
+        
+        if (user.affectedRows > 0 && tree_answer){
             return true
         }
+        
         return false
     }
 }

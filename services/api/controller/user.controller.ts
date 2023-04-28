@@ -57,9 +57,11 @@ export class UserController {
             return
         }
         const answer = await UserService.createUser(req.body.name, req.body.firstname, req.body.email, req.body.phone, req.body.country, this.pool)
+
         if (answer){
             res.status(202).send("ok")
         }
+        
         res.status(404).end()
         return 
     }
