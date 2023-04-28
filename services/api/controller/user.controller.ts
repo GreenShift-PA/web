@@ -14,8 +14,8 @@ export class UserController {
     }
 
     getAll = async (req:Request, res: Response)=> {
-        const [users] = await this.pool.query('SELECT * FROM User')
-        if(users.length === 0){ 
+        const users = await UserService.getAllUsers(this.pool)
+        if(!users){ 
             res.status(404).end()
             return 
         }
@@ -32,8 +32,13 @@ export class UserController {
     }
 
     deleteUser = async (req:Request<{ id: number}>, res: Response) => {
-        const [user] =  await this.pool.query("DELETE FROM User WHERE ID = ? ", [req.params.id])
-        if (user.affectedRows < 0){
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        const answer = await UserService.deleteUserById(req.params.id, this.pool)
+        if (answer){
             res.status(202).send("ok")
         }
         res.status(404).end()
@@ -51,17 +56,12 @@ export class UserController {
             res.status(400).end()
             return
         }
-        const [user] =  await this.pool.query(`
-        INSERT INTO User (
-            name, 
-            firstname, 
-            email, 
-            phone, 
-            country
-        ) VALUES (
-            ?, ?, ?, ?, ?)
-        `, [req.body.name, req.body.firstname, req.body.email, req.body.phone, req.body.country])
-        res.status(200).end("ok")
+        const answer = await UserService.createUser(req.body.name, req.body.firstname, req.body.email, req.body.phone, req.body.country, this.pool)
+        if (answer){
+            res.status(202).send("ok")
+        }
+        res.status(404).end()
+        return 
     }
 
     buildRouter = (): Router => {
