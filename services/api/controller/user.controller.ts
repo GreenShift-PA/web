@@ -40,6 +40,11 @@ export class UserController {
 
         // Suppression of the user's tree 
         const [user_tree] = await UserService.getUserTreeInfo(req.params.id, this.pool)
+        
+        if (!user_tree){
+            res.status(404).end()
+            return 
+        }
         const dead_tree = await TreeService.killTree(parseInt(user_tree.ID, 10), this.pool)
         
         // If the tree has been killed
