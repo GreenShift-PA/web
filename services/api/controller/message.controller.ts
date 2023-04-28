@@ -1,6 +1,7 @@
 import { Router, Response, Request } from "express"
 import * as express from 'express'
 import { UserService } from "../services/user.service"
+import { MessageService } from "../services/message.service"
 
 
 export class MessageController {
@@ -13,23 +14,14 @@ export class MessageController {
     }
 
     getAllConversations = async (req: Request<{ id: number}>, res: Response) => {
-        // Return all user conversations 
-        const [conv] =  await this.pool.query(
-            `SELECT DISTINCT 
-                CONCAT_WS('_', GREATEST(Message.from_user_id, Message.to_user_id), LEAST(Message.from_user_id, Message.to_user_id)) as conversation_id ,
-                MAX(Message.date) AS last_message_date, 
-                MAX(u1.ID) as sender_id,
-                CONCAT_WS(' ', MAX(u1.name), MIN(u1.firstname)) as sender_fullname,
-                MAX(u2.ID) as receiver_id,
-                CONCAT_WS(' ', MIN(u2.name), MAX(u2.firstname)) as receiver_fullname
-            FROM Message
-            INNER JOIN User as u1 ON Message.from_user_id = u1.ID
-            INNER JOIN User as u2 ON Message.to_user_id = u2.ID
-            WHERE u1.ID = ?
-            GROUP BY conversation_id
-            ORDER BY last_message_date DESC;`
-        ,[req.params.id])
-        if(conv.length === 0){ 
+        // Checks if the user exists 
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+        // Returns a list of all the user's contacts 
+        const conv = await MessageService.getAllConversations(req.params.id, this.pool)
+        if(!conv){ 
             res.status(404).end()
             return 
         }
@@ -37,32 +29,13 @@ export class MessageController {
     }
 
     getConversation = async (req:Request<{ idFrom: number, idTo: number}>, res:Response) => {
-        // Returns the conversation between 2 users  
-        const params = {
-            user_id_1: req.params.idFrom, 
-            user_id_2: req.params.idTo
+        if (!await UserService.isUser(req.params.idFrom, this.pool) || !await UserService.isUser(req.params.idTo, this.pool)){
+            res.status(406).end()
+            return 
         }
-        // TODO: Changed parameter assignment to avoid injection 
-        const [conv] =  await this.pool.query(
-            `SELECT *
-            FROM (
-                SELECT 
-                    Message.content,
-                    u1.ID as sender_id,
-                    CONCAT_WS(' ', u1.name, u1.firstname) as sender_fullname,
-                    u2.ID as receiver_id,
-                    CONCAT_WS(' ', u2.name, u2.firstname) as receiver_fullname,
-                    Message.date
-                FROM Message 
-                INNER JOIN User as u1 ON Message.from_user_id = u1.id
-                INNER JOIN User as u2 ON Message.to_user_id = u2.id
-                WHERE (Message.from_user_id = ${req.params.idFrom} AND Message.to_user_id = ${req.params.idTo}) 
-                OR (Message.from_user_id = ${req.params.idTo} AND Message.to_user_id = ${req.params.idFrom})
-                ORDER BY Message.date DESC
-                LIMIT 15 OFFSET 0
-            ) subquery
-            ORDER BY subquery.date DESC;`)
-        if(conv.length === 0){ 
+        // Returns the conversation between 2 users  
+        const conv = await MessageService.getConversation(req.params.idFrom,req.params.idTo, this.pool)
+        if(!conv){ 
             res.status(404).end()
             return 
         }
