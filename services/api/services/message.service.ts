@@ -1,6 +1,6 @@
 export class MessageService {
 
-    static getAllConversations = async (user_id: number, pool: any) => {
+    static getAllConversations = async (user_id: number, pool: any):Promise<Array<string> | Boolean> => {
         const [conv] =  await pool.query(
             `SELECT DISTINCT 
                 CONCAT_WS('_', GREATEST(Message.from_user_id, Message.to_user_id), LEAST(Message.from_user_id, Message.to_user_id)) as conversation_id ,
@@ -22,7 +22,7 @@ export class MessageService {
         return conv
     }
 
-    static getConversation = async (user_id_From:number, user_id_To:number, pool: any) => {
+    static getConversation = async (user_id_From:number, user_id_To:number, pool: any):Promise<Array<string> | Boolean> => {
         const params = {
             user_id_1: user_id_From, 
             user_id_2: user_id_To
@@ -51,5 +51,17 @@ export class MessageService {
                 return false
             }
             return conv
+    }
+
+    static sendMessage = async (id_from: number, id_to: number, text_content:string, pool:any):Promise<boolean> => {
+        await pool.query(`
+        INSERT INTO Message (
+            from_user_id, 
+            to_user_id, 
+            content 
+        ) VALUES (
+            ?, ?, ?)
+        `, [id_from, id_to, text_content])
+        return true
     }
 }

@@ -29,10 +29,17 @@ export class MessageController {
     }
 
     getConversation = async (req:Request<{ idFrom: number, idTo: number}>, res:Response) => {
+        if (req.params.idFrom === req.params.idTo){
+            res.status(406).end()
+            return 
+        }
+
         if (!await UserService.isUser(req.params.idFrom, this.pool) || !await UserService.isUser(req.params.idTo, this.pool)){
             res.status(406).end()
             return 
         }
+        
+
         // Returns the conversation between 2 users  
         const conv = await MessageService.getConversation(req.params.idFrom,req.params.idTo, this.pool)
         if(!conv){ 
@@ -42,7 +49,7 @@ export class MessageController {
         res.status(200).json(conv)
     }
 
-    sendMessage = async (req:Request, res:Response) => {
+    sendMessage = async (req:Request, res:Response)=> {
         if (!req.body || !req.body.from || !req.body.to || !req.body.content){
             // If there is not all the parameters
             res.status(400).end()
@@ -59,15 +66,23 @@ export class MessageController {
             return
         }
 
-        await this.pool.query(`
-        INSERT INTO Message (
-            from_user_id, 
-            to_user_id, 
-            content 
-        ) VALUES (
-            ?, ?, ?)
-        `, [req.body.from, req.body.to, req.body.content])
-        res.status(200).end("ok")
+        if (req.body.from === req.body.to){
+            res.status(406).end()
+            return 
+        }
+
+        if (!await UserService.isUser(req.body.from, this.pool) || !await UserService.isUser(req.body.to, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        const answer = await MessageService.sendMessage(req.body.from, req.body.to, req.body.content, this.pool)
+        if(!answer){
+            res.status(500).end()
+            return 
+        }
+        res.status(200).send("ok")
+        return 
 
     }
 
