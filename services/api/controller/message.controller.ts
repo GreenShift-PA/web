@@ -16,18 +16,18 @@ export class MessageController {
         // Return all user conversations 
         const [conv] =  await this.pool.query(
             `SELECT DISTINCT 
-                CONCAT_WS('_', LEAST(Message.from_user_id, Message.to_user_id), GREATEST(Message.from_user_id, Message.to_user_id)) as conversation_id ,
+                CONCAT_WS('_', GREATEST(Message.from_user_id, Message.to_user_id), LEAST(Message.from_user_id, Message.to_user_id)) as conversation_id ,
                 MAX(Message.date) AS last_message_date, 
-                MAX(u1.name) as sender_name,
-                MIN(u1.firstname) as sender_firstname,
-                MIN(u2.name) as receiver_name,
-                MAX(u2.firstname) as receiver_firstname
+                MAX(u1.ID) as sender_id,
+                CONCAT_WS(' ', MAX(u1.name), MIN(u1.firstname)) as sender_fullname,
+                MAX(u2.ID) as receiver_id,
+                CONCAT_WS(' ', MIN(u2.name), MAX(u2.firstname)) as receiver_fullname
             FROM Message
             INNER JOIN User as u1 ON Message.from_user_id = u1.ID
             INNER JOIN User as u2 ON Message.to_user_id = u2.ID
             WHERE u1.ID = ?
             GROUP BY conversation_id
-            ORDER BY last_message_date DESC`
+            ORDER BY last_message_date DESC;`
         ,[req.params.id])
         if(conv.length === 0){ 
             res.status(404).end()
