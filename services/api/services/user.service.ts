@@ -1,3 +1,4 @@
+import { TreeService } from "./tree.service"
 
 export class UserService {
 
@@ -20,9 +21,9 @@ export class UserService {
 
     static getAllUsers = async (pool:any): Promise<Array<string> | boolean> => {
         const [users] =  await pool.query("SELECT * FROM User")
-            if(users.length === 0){ 
-                return false
-            }
+        if(users.length <= 0){ 
+            return false
+        }
 
         return users
     }
@@ -45,9 +46,24 @@ export class UserService {
             ?, ?, ?, ?, ?)
         `, [user_name, user_firstname, user_email, user_phone, user_country])
 
-        if (user.affectedRows < 0){
+        const tree_answer = await TreeService.createTree(user.insertId, pool)
+        
+        if (user.affectedRows > 0 && tree_answer){
             return true
         }
+        
         return false
     }
+
+    static getUserTreeInfo = async (user_id: number, pool: any) => {
+        // Returns the user's tree information
+        const [tree] = await pool.query(`
+        SELECT Tree.ID, Tree.user_id, Tree.size, Tree.alive FROM Tree
+        INNER JOIN User ON Tree.user_id = User.ID
+        WHERE User.ID = ?;
+        `, [user_id])
+
+
+        return tree
+    }   
 }

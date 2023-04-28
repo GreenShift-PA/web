@@ -1,6 +1,7 @@
 import { Router, Response, Request } from "express"
 import * as express from 'express'
 import { UserService } from "../services/user.service"
+import { TreeService } from "../services/tree.service"
 
 
 export class UserController {
@@ -37,10 +38,20 @@ export class UserController {
             return 
         }
 
-        const answer = await UserService.deleteUserById(req.params.id, this.pool)
-        if (answer){
-            res.status(202).send("ok")
+        // Suppression of the user's tree 
+        const [user_tree] = await UserService.getUserTreeInfo(req.params.id, this.pool)
+        const dead_tree = await TreeService.killTree(parseInt(user_tree.ID, 10), this.pool)
+        
+        // If the tree has been killed
+        if (dead_tree){
+            // Suppression of the user 
+            const answer = await UserService.deleteUserById(req.params.id, this.pool)
+            
+            if (answer){
+                res.status(202).send("ok")
+            }
         }
+
         res.status(404).end()
         return 
     }
@@ -57,9 +68,11 @@ export class UserController {
             return
         }
         const answer = await UserService.createUser(req.body.name, req.body.firstname, req.body.email, req.body.phone, req.body.country, this.pool)
+
         if (answer){
             res.status(202).send("ok")
         }
+        
         res.status(404).end()
         return 
     }
