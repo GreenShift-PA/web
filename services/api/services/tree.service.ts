@@ -24,4 +24,13 @@ export class TreeService{
         `, [user_id])
         return true
     }
+
+    static killTree = async (tree_id: number, pool:any ): Promise<boolean> => {
+        const [tree] = await pool.query(`DELETE FROM Tree WHERE Tree.ID = ? `, [tree_id])        
+
+        if (tree.affectedRows > 0){
+            return true
+        }
+        return false
+    }
 }
