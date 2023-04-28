@@ -26,6 +26,7 @@ CREATE TABLE `green-shift`.`Tree` (`ID` INT NOT NULL AUTO_INCREMENT ,
     `size` INT NOT NULL ,
     PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB;
+ALTER TABLE `Tree` ADD `alive` BOOLEAN NULL DEFAULT TRUE AFTER `size`;
 ALTER TABLE `Tree` ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `User`(`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- Creation of the Post database
