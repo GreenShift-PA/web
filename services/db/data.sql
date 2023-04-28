@@ -31,7 +31,7 @@ VALUES
     ('2', '1', "This is a test message"),
     ('1', '2', "This is a test answer");
 
-
+-- Creation of trees linked to users
 INSERT INTO `Tree` 
     (, `user_id`, `size`) 
 VALUES 
