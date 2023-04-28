@@ -1,5 +1,6 @@
 import { Router, Response, Request } from "express"
 import * as express from 'express'
+import { TreeService } from "../services/tree.service"
 
 
 export class TreeController {
@@ -12,8 +13,8 @@ export class TreeController {
     }
 
     getAll = async (req:Request, res: Response)=> {
-        const [trees] = await this.pool.query('SELECT * FROM Tree')
-        if(trees.length === 0){ 
+        const trees = await TreeService.getAll(this.pool)
+        if(!trees){ 
             res.status(404).end()
             return 
         }
@@ -21,8 +22,8 @@ export class TreeController {
     }
 
     searchTree = async (req:Request<{ id: number}>, res:Response) => {
-        const [tree] =  await this.pool.query("SELECT * FROM Tree WHERE ID = ? ", [req.params.id])
-        if(tree.length === 0){ 
+        const tree = await TreeService.getTreeById(req.params.id, this.pool)
+        if(!tree){ 
             res.status(404).end()
             return 
         }
