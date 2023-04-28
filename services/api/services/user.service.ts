@@ -5,7 +5,7 @@ export class UserService {
 
     static getUser = async (user_id: number, pool: any):Promise<Array<string> | Boolean> => {
         const [user] =  await pool.query("SELECT * FROM User WHERE ID = ? ", [user_id])
-            if(user.length === 0){ 
+            if(user.length <= 0){ 
                 return false
             }
         return user
@@ -13,7 +13,7 @@ export class UserService {
 
     static isUser = async (user_id: number, pool: any):Promise<boolean> => {
         const [user] =  await pool.query("SELECT * FROM User WHERE ID = ? ", [user_id])
-            if(user.length === 0){ 
+            if(user.length <= 0){ 
                 return false
             }
         return true
@@ -29,9 +29,12 @@ export class UserService {
     }
 
     static deleteUserById = async (user_id: number, pool: any): Promise<boolean> => {
-        await pool.query("DELETE FROM User WHERE ID = ? ", [user_id])
+        const [user] = await pool.query("DELETE FROM User WHERE ID = ? ", [user_id])
         
-        return true
+        if (user.affectedRows > 0){
+            return true
+        }
+        return false
     }
 
     static createUser = async (user_name: string, user_firstname: string, user_email: string, user_phone: string, user_country: string, pool:any):Promise<boolean> => {
@@ -63,6 +66,9 @@ export class UserService {
         WHERE User.ID = ?;
         `, [user_id])
 
+        if(tree.length <= 0){ 
+            return false
+        }
 
         return tree
     }   
