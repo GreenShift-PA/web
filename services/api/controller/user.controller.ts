@@ -82,10 +82,26 @@ export class UserController {
         return 
     }
 
+    getUserTree = async (req:Request<{id: number}>,  res: Response) => {
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+        const user_tree = await UserService.getUserTreeInfo(req.params.id, this.pool)
+
+        if (!user_tree){
+            res.status(400).end()
+            return 
+        }
+        res.status(200).json(user_tree)
+        
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/`, this.getAll.bind(this))
         router.get(`/:id`, this.searchUser.bind(this))
+        router.get(`/:id/tree`, this.getUserTree.bind(this))
         router.delete(`/:id`, this.deleteUser.bind(this))
         router.post(`/`,express.json(), this.createUser.bind(this))
         return router
