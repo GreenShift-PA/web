@@ -16,4 +16,12 @@ export class TreeService{
         return tree
     }
 
+    static createTree = async (user_id: number, pool:any): Promise<boolean> => {
+        await pool.query(`
+        INSERT INTO Tree 
+            (user_id, size) 
+        VALUES (?, '0')
+        `, [user_id])
+        return true
+    }
 }
