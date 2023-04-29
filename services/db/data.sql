@@ -37,6 +37,7 @@ INSERT INTO `Tree`
 VALUES 
     ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4');
 
+-- Creation of Port
 INSERT INTO `Post` 
     (`ID`, `user_id`, `tree_id`, `title`, `description`, `likes`, `is_valid`, `date`) 
 VALUES 
