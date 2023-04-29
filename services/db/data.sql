@@ -33,6 +33,6 @@ VALUES
 
 -- Creation of trees linked to users
 INSERT INTO `Tree` 
-    (, `user_id`, `size`) 
+    (`user_id`, `size`) 
 VALUES 
     ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')
