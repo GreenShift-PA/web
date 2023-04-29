@@ -22,9 +22,19 @@ export class PostController{
         res.status(200).json(post)
     }
 
+    newPost = async (req:Request, res:Response) => {
+        res.status(418).send('Pas encore fait, va prendre un café')
+    }
+
+    deletePost = async (req:Request<{id: number}>, res:Response) => {
+        res.status(418).send('Pas encore fait, va prendre un café')
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/:id`, this.getPost.bind(this))
+        router.post('/', express.json(), this.newPost.bind(this))
+        router.delete('/:id', this.deletePost.bind(this))
         return router
     }
 
