@@ -33,6 +33,12 @@ VALUES
 
 -- Creation of trees linked to users
 INSERT INTO `Tree` 
-    (, `user_id`, `size`) 
+    (`user_id`, `size`) 
 VALUES 
-    ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')
+    ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4');
+
+INSERT INTO `Post` 
+    (`ID`, `user_id`, `tree_id`, `title`, `description`, `likes`, `is_valid`, `date`) 
+VALUES 
+    (NULL, '2', '2', 'Mon première Post sur GreenShift', 'Bienvenue a tous ', '0', '0', CURRENT_TIMESTAMP), 
+    (NULL, '3', '3', 'Nouveau ', 'Bonjour, ca va ?', '0', '0', CURRENT_TIMESTAMP);

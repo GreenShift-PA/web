@@ -5,6 +5,7 @@ import * as express from 'express'
 import { UserController } from "./controller/user.controller"
 import { TreeController } from "./controller/tree.controller";
 import { MessageController } from "./controller/message.controller";
+import { PostController } from "./controller/post.controller";
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 const userController = new UserController(pool)
 const treeController = new TreeController(pool)
 const messageController = new MessageController(pool)
+const postController = new PostController(pool)
 
 // Route : /user/...
 app.use(userController.path, userController.buildRouter())
@@ -32,6 +34,9 @@ app.use(treeController.path, treeController.buildRouter())
 
 // Route = /message/...
 app.use(messageController.path, messageController.buildRouter())
+
+// Route = /post/...
+app.use(postController.path, postController.buildRouter())
 
 
 app.listen(process.env.PORT, () => {

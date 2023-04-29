@@ -2,6 +2,7 @@ import { Router, Response, Request } from "express"
 import * as express from 'express'
 import { UserService } from "../services/user.service"
 import { TreeService } from "../services/tree.service"
+import { PostService } from "../services/post.service"
 
 
 export class UserController {
@@ -94,7 +95,19 @@ export class UserController {
             return 
         }
         res.status(200).json(user_tree)
-        
+    }
+
+    getUserPosts = async (req:Request<{ id: number}>, res:Response)=> {
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+        const posts = await UserService.getAllPosts(req.params.id, this.pool)
+        if(!posts){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(posts)
     }
 
     buildRouter = (): Router => {
@@ -102,6 +115,7 @@ export class UserController {
         router.get(`/`, this.getAll.bind(this))
         router.get(`/:id`, this.searchUser.bind(this))
         router.get(`/:id/tree`, this.getUserTree.bind(this))
+        router.get('/:id/posts', this.getUserPosts.bind(this))
         router.delete(`/:id`, this.deleteUser.bind(this))
         router.post(`/`,express.json(), this.createUser.bind(this))
         return router
