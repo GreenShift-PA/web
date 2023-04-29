@@ -15,4 +15,16 @@ export class PostService {
         return posts
     }
 
+    static getPost = async (post_id: number, pool:any): Promise<Array<string> | Boolean> => {
+        const [post] = await pool.query(
+            `SELECT * FROM Post
+            WHERE Post.ID = ?
+            ORDER BY date DESC
+            `, [post_id])
+        if(post.length === 0){ 
+            return false
+        }
+        return post
+    }
+
 }
