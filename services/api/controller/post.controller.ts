@@ -23,7 +23,31 @@ export class PostController{
     }
 
     newPost = async (req:Request, res:Response) => {
-        res.status(418).send('Pas encore fait, va prendre un café')
+
+        if (!req.body || !req.body.user_id || !req.body.title || !req.body.description){
+            // If there is not all the parameters
+            res.status(400).end()
+            return 
+        }
+
+        if(typeof req.body.user_id !== 'number' || typeof req.body.title !== 'string' || typeof req.body.description !== 'string'){
+            // If the types are not the correct one
+            res.status(400).end()
+            return
+        }
+
+        if (!await UserService.isUser(req.body.user_id, this.pool)){
+            // If user do not existe
+            res.status(400).end()
+            return
+        }
+
+        const answer = await PostService.newPost(req.body.user_id, req.body.title, req.body.description, this.pool)
+        if (answer){
+            res.status(201).send("ok")
+        }
+        res.status(500).end() 
+        return 
     }
 
     deletePost = async (req:Request<{id: number}>, res:Response) => {

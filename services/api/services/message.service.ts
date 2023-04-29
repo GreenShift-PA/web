@@ -54,6 +54,7 @@ export class MessageService {
     }
 
     static sendMessage = async (id_from: number, id_to: number, text_content:string, pool:any):Promise<boolean> => {
+        // TODO: Check if one line has change and send true else false
         await pool.query(`
         INSERT INTO Message (
             from_user_id, 

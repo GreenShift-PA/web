@@ -102,7 +102,7 @@ export class UserController {
             res.status(406).end()
             return 
         }
-        const posts = await PostService.getAllPosts(req.params.id, this.pool)
+        const posts = await UserService.getAllPosts(req.params.id, this.pool)
         if(!posts){ 
             res.status(404).end()
             return 

@@ -61,17 +61,12 @@ export class MessageController {
             return
         }
         if (!await UserService.isUser(req.body.from, this.pool) ||  !await UserService.isUser(req.body.to, this.pool)){
-            // If users existe
+            // If users do not existe
             res.status(400).end()
             return
         }
 
         if (req.body.from === req.body.to){
-            res.status(406).end()
-            return 
-        }
-
-        if (!await UserService.isUser(req.body.from, this.pool) || !await UserService.isUser(req.body.to, this.pool)){
             res.status(406).end()
             return 
         }
