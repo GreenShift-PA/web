@@ -30,4 +30,27 @@ export class PostService {
         }
         return false
     }
+
+    static postExist = async (post_id: number, pool:any): Promise<Boolean> => {
+
+        const [post] = await pool.query(
+            `SELECT * FROM Post
+            WHERE Post.ID = ?
+            ORDER BY date DESC
+            `, [post_id])
+        if(post.length === 0){ 
+            return false
+        }
+        return true
+    }
+
+    static deletePost = async (post_id: number, pool:any): Promise<Boolean> => {
+
+        const [answer] = await pool.query(`DELETE FROM Post WHERE Post.ID = ? `, [post_id])
+
+        if (answer.affectedRows > 0){
+            return true
+        }
+        return false
+    }
 }

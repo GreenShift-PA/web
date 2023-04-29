@@ -51,7 +51,21 @@ export class PostController{
     }
 
     deletePost = async (req:Request<{id: number}>, res:Response) => {
-        res.status(418).send('Pas encore fait, va prendre un café')
+        // TODO: Check if the user how delete is the same how created the post 
+
+        // Check if the post exist
+        if (!await PostService.postExist(req.params.id, this.pool)){
+            res.status(400).end()
+            return 
+        }
+
+        const answer = await PostService.deletePost(req.params.id, this.pool)
+        if (answer){
+            res.status(201).send("ok")
+        }
+        res.status(500).end() 
+        return 
+
     }
 
     buildRouter = (): Router => {
