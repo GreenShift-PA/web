@@ -61,7 +61,7 @@ export class UserService {
     static getUserTreeInfo = async (user_id: number, pool: any) => {
         // Returns the user's tree information
         const [tree] = await pool.query(`
-        SELECT Tree.ID, Tree.user_id, Tree.size, Tree.alive FROM Tree
+        SELECT Tree.ID, Tree.user_id, Tree.size FROM Tree
         INNER JOIN User ON Tree.user_id = User.ID
         WHERE User.ID = ?;
         `, [user_id])
