@@ -74,7 +74,7 @@ export class PostController{
             res.status(406).end()
             return 
         }
-        const comments = await PostService.getAllComment(req.params.id, this.pool)
+        const comments = await PostService.getAllComments(req.params.id, this.pool)
         if(!comments){ 
             res.status(404).end()
             return 
