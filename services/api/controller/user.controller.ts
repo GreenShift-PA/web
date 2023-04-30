@@ -110,12 +110,17 @@ export class UserController {
         res.status(200).json(posts)
     }
 
+    getAllComments = async (req:Request<{ id: number}>, res:Response)=> {
+        res.status(418).send('Its not ready, go make a café')
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/`, this.getAll.bind(this))
         router.get(`/:id`, this.searchUser.bind(this))
         router.get(`/:id/tree`, this.getUserTree.bind(this))
         router.get('/:id/posts', this.getUserPosts.bind(this))
+        router.get(`/:id/comments`, this.getAllComments.bind(this))
         router.delete(`/:id`, this.deleteUser.bind(this))
         router.post(`/`,express.json(), this.createUser.bind(this))
         return router

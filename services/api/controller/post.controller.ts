@@ -68,9 +68,14 @@ export class PostController{
 
     }
 
+    getAllComments = async (req:Request<{id: number}>, res:Response) => {
+        res.status(418).send('Its not ready, go make a café')
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/:id`, this.getPost.bind(this))
+        router.get(`/:id/comments`, this.getAllComments.bind(this))
         router.post('/', express.json(), this.newPost.bind(this))
         router.delete('/:id', this.deletePost.bind(this))
         return router
