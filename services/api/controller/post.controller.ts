@@ -2,6 +2,7 @@ import { Router, Response, Request } from "express"
 import * as express from 'express'
 import { UserService } from "../services/user.service"
 import { PostService } from "../services/post.service"
+import { CommentService } from "../services/comment.service"
 
 export class PostController{
 
@@ -69,7 +70,16 @@ export class PostController{
     }
 
     getAllComments = async (req:Request<{id: number}>, res:Response) => {
-        res.status(418).send('Its not ready, go make a café')
+        if (!await PostService.postExist(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+        const comments = await PostService.getAllComment(req.params.id, this.pool)
+        if(!comments){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(comments)
     }
 
     buildRouter = (): Router => {
