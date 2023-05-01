@@ -124,6 +124,18 @@ export class UserController {
 
     }
 
+    validatePost = async (req:Request<{user_id: number, post_id:number}>, res:Response) => {
+
+        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+        // TODO: Check if the user and the post exist
+        // TODO: Check that the user who validates is not the same one who created the post 
+    }
+
+    getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
+        
+        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/`, this.getAll.bind(this))
@@ -131,8 +143,10 @@ export class UserController {
         router.get(`/:id/tree`, this.getUserTree.bind(this))
         router.get('/:id/posts', this.getUserPosts.bind(this))
         router.get(`/:id/comments`, this.getAllComments.bind(this))
+        router.get('/:id/validated', this.getNbrValidated.bind(this))
         router.delete(`/:id`, this.deleteUser.bind(this))
         router.post(`/`,express.json(), this.createUser.bind(this))
+        router.post('/:user_id/valid/:post_id', this.validatePost.bind(this))
         return router
     }
 }

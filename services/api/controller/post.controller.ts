@@ -82,10 +82,16 @@ export class PostController{
         res.status(200).json(comments)
     }
 
+    getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
+        
+        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/:id`, this.getPost.bind(this))
         router.get(`/:id/comments`, this.getAllComments.bind(this))
+        router.get('/:id/validated', this.getNbrValidated.bind(this))
         router.post('/', express.json(), this.newPost.bind(this))
         router.delete('/:id', this.deletePost.bind(this))
         return router
