@@ -15,5 +15,9 @@ export class UserService {
 
   register(email: string, password: string): void {
     this.users.push({ email, password });
+    // this.users.forEach(element => {
+    //   console.log(element.email);
+    //   console.log(element.password);
+    // });
   }
 }

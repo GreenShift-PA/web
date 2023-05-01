@@ -13,6 +13,5 @@ export class SignupComponent {
 
   signup(): void {
     this.userService.register(this.email, this.password);
-    // Redirect to home page or login page
   }
 }

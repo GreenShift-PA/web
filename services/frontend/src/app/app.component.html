@@ -1,16 +1,15 @@
-<!doctype html>
+<!-- <!doctype html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/dist/output.css" rel="stylesheet">
-</head>
+</head> -->
 <body>
-  <h1 class="text-3xl font-bold text-orange-500	hover:underline">
-    Hello world!
-  </h1>
-  <app-login></app-login>
-  <br>
-  <app-signup></app-signup>
-</body>
-</html>
+  <div class="bg-white w-screen relative overflow-hidden h-screen">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  </div>
+
+<!-- </body>
+</html> -->
