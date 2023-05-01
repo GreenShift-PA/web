@@ -100,4 +100,34 @@ export class UserService {
         }
         return comments
     }
+
+    static isYourPost = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+
+        const [posts] = await pool.query(`
+        SELECT Post.ID, Post.user_id, Post.title FROM Post 
+        INNER JOIN User ON Post.user_id = User.ID
+        WHERE Post.user_id = ? AND Post.ID = ?`, [user_id, post_id])
+        console.log(posts);
+        
+
+        for (let post of posts){
+            if (post.user_id == user_id){
+                return true
+            }
+        }
+
+        return false
+    }
+
+    static validatePost = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+
+        const newValid = await pool.query(`
+            INSERT INTO ValidatedBy (ID, user_id, post_id) VALUES (NULL, ?, ?)
+        `, [user_id, post_id])
+
+        if (newValid.affectedRows > 0){
+            return true
+        }
+        return false
+    }
 }
