@@ -87,4 +87,17 @@ export class UserService {
         }
         return posts
     }
+
+    static getAllComments = async (user_id: number , pool: any): Promise<Array<string> | Boolean> => {
+        const [comments] = await pool.query(`
+            SELECT Comment.ID, Comment.post_id, Comment.user_id, Comment.Description, Comment.likes FROM Comment
+            INNER JOIN User ON User.ID = Comment.post_id
+            WHERE Comment.user_id = ?
+        `, [user_id])
+
+        if(comments.length === 0){ 
+            return false
+        }
+        return comments
+    }
 }

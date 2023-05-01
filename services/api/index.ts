@@ -6,6 +6,7 @@ import { UserController } from "./controller/user.controller"
 import { TreeController } from "./controller/tree.controller";
 import { MessageController } from "./controller/message.controller";
 import { PostController } from "./controller/post.controller";
+import { CommentController } from "./controller/comment.controller";
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -25,6 +26,7 @@ const userController = new UserController(pool)
 const treeController = new TreeController(pool)
 const messageController = new MessageController(pool)
 const postController = new PostController(pool)
+const commentController = new CommentController(pool)
 
 // Route : /user/...
 app.use(userController.path, userController.buildRouter())
@@ -37,6 +39,9 @@ app.use(messageController.path, messageController.buildRouter())
 
 // Route = /post/...
 app.use(postController.path, postController.buildRouter())
+
+// Route = /comment/...
+app.use(commentController.path, commentController.buildRouter())
 
 
 app.listen(process.env.PORT, () => {
