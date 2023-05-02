@@ -20,17 +20,13 @@
 
 
 .gradient__bg {
-    background:-moz-radial-gradient(circle at 3% 25%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 25%);
+    background:-moz-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
-    /* safari 5.1+,chrome 10+ */
-    background:-webkit-radial-gradient(circle at 3% 25%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 25%);
+    background:-webkit-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
-    /* opera 11.10+ */
-    background:-o-radial-gradient(circle at 3% 25%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 25%);
+    background:-o-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
-    /* ie 10+ */
-    background:-ms-radial-gradient(circle at 3% 25%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 25%);
+    background:-ms-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
-    /* global 92%+ browsers support */
-    background:radial-gradient(circle at 3% 25%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 25%);
+    background:radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   }
