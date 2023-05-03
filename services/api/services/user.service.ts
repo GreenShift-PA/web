@@ -124,6 +124,9 @@ export class UserService {
         const [newValid] = await pool.query(`
             INSERT INTO ValidatedBy (ID, user_id, post_id) VALUES (NULL, ?, ?)
         `, [user_id, post_id])
+        if(1){
+            await pool.query(`UPDATE Post SET is_valid = is_valid + 1 where ID = ?`, [post_id])
+        }
 
         if (newValid.affectedRows > 0){
             return true

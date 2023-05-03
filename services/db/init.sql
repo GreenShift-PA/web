@@ -35,7 +35,7 @@ CREATE TABLE `green-shift`.`Post` (`ID` INT NOT NULL AUTO_INCREMENT ,
     `title` VARCHAR(255) NOT NULL ,
     `description` TEXT NOT NULL ,
     `likes` INT NOT NULL ,
-    `is_valid` BOOLEAN NOT NULL ,
+    `is_valid` INT NOT NULL ,
     PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB;
 ALTER TABLE `Post` ADD `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `is_valid`;
