@@ -143,7 +143,7 @@ export class UserController {
             return 
         }
 
-        // TODO: Check that the user has not already validated the post 
+        // Check that the user has not already validated the post 
         if (!await UserService.isItValidated(req.params.user_id, req.params.post_id, this.pool)){
             const answer = UserService.validatePost(req.params.user_id, req.params.post_id, this.pool)
             if(!answer){ 
@@ -163,7 +163,18 @@ export class UserController {
 
     getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
         
-        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        const listValidated = await UserService.getAllValidation(req.params.id, this.pool)
+
+        if(!listValidated){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(listValidated)
     }
 
     buildRouter = (): Router => {

@@ -143,4 +143,14 @@ export class UserService {
 
         return true
     }
+
+    static getAllValidation = async (user_id: number, pool: any): Promise<Array<string> | boolean > => {
+        const [valid] = await pool.query(`SELECT * FROM ValidatedBy WHERE user_id = ?`, [user_id])
+
+        if (valid.length <= 0){
+            return false 
+        }
+
+        return valid 
+    }
 }
