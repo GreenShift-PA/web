@@ -15,6 +15,10 @@ a {
     text-decoration: none;
   }
 
+  .content-wrap{
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
 
 .App{
     position: relative;
@@ -40,4 +44,3 @@ a {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  
