@@ -83,8 +83,10 @@ export class PostController{
     }
 
     getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
+
+        const answer = await PostService.getNbrValidation(req.params.id, this.pool)
         
-        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+        res.status(200).send(`${answer}`)
     }
 
     buildRouter = (): Router => {

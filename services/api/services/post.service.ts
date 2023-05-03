@@ -8,7 +8,7 @@ export class PostService {
             WHERE Post.ID = ?
             ORDER BY date DESC
             `, [post_id])
-        if(post.length === 0){ 
+        if(post.length <= 0){ 
             return false
         }
         return post
@@ -38,7 +38,7 @@ export class PostService {
             WHERE Post.ID = ?
             ORDER BY date DESC
             `, [post_id])
-        if(post.length === 0){ 
+        if(post.length <= 0){ 
             return false
         }
         return true
@@ -61,10 +61,16 @@ export class PostService {
         INNER JOIN Post ON Post.ID = Comment.post_id
         WHERE Comment.post_id = ?`, [post_id])
 
-        if(comments.length === 0){ 
+        if(comments.length <= 0){ 
             return false
         }
         return comments
 
+    }
+
+    static getNbrValidation = async (post_id: number, pool:any): Promise<number> => {
+        const [nbrValidation] = await pool.query(`SELECT Post.is_valid from Post WHERE Post.ID = ?`, [post_id])
+
+        return nbrValidation[0].is_valid
     }
 }
