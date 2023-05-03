@@ -124,6 +124,59 @@ export class UserController {
 
     }
 
+    validatePost = async (req:Request<{user_id: number, post_id:number}>, res:Response) => {
+
+        // Check if the user and the post exist
+        if (!await UserService.isUser(req.params.user_id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        if (!await PostService.postExist(req.params.post_id, this.pool)){
+            res.status(400).end()
+            return 
+        }
+
+        // Check that the user who validates is not the same one who created the post 
+        if  (await UserService.isYourPost(req.params.user_id, req.params.post_id, this.pool)){
+            res.status(500).end()
+            return 
+        }
+
+        // Check that the user has not already validated the post 
+        if (!await UserService.isItValidated(req.params.user_id, req.params.post_id, this.pool)){
+            const answer = UserService.validatePost(req.params.user_id, req.params.post_id, this.pool)
+            if(!answer){ 
+                res.status(404).end()
+                return 
+            }
+            res.status(200).send("ok")
+        }
+        res.status(409).end()
+
+    }
+
+    likePost = async (req:Request<{user_id: number, post_id: number}>, res:Response) => {
+        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+ 
+    }
+
+    getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
+        
+        if (!await UserService.isUser(req.params.id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        const listValidated = await UserService.getAllValidation(req.params.id, this.pool)
+
+        if(!listValidated){ 
+            res.status(404).end()
+            return 
+        }
+        res.status(200).json(listValidated)
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/`, this.getAll.bind(this))
@@ -131,8 +184,11 @@ export class UserController {
         router.get(`/:id/tree`, this.getUserTree.bind(this))
         router.get('/:id/posts', this.getUserPosts.bind(this))
         router.get(`/:id/comments`, this.getAllComments.bind(this))
+        router.get('/:id/validated', this.getNbrValidated.bind(this))
         router.delete(`/:id`, this.deleteUser.bind(this))
         router.post(`/`,express.json(), this.createUser.bind(this))
+        router.post('/:user_id/valid/:post_id', this.validatePost.bind(this))
+        router.post('/:user_id/like/:post_id', this.likePost.bind(this))
         return router
     }
 }

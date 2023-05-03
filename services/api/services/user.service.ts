@@ -100,4 +100,57 @@ export class UserService {
         }
         return comments
     }
+
+    static isYourPost = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+
+        const [posts] = await pool.query(`
+        SELECT Post.ID, Post.user_id, Post.title FROM Post 
+        INNER JOIN User ON Post.user_id = User.ID
+        WHERE Post.user_id = ? AND Post.ID = ?`, [user_id, post_id])
+        console.log(posts);
+        
+
+        for (let post of posts){
+            if (post.user_id == user_id){
+                return true
+            }
+        }
+
+        return false
+    }
+
+    static validatePost = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+
+        const [newValid] = await pool.query(`
+            INSERT INTO ValidatedBy (ID, user_id, post_id) VALUES (NULL, ?, ?)
+        `, [user_id, post_id])
+        if(1){
+            await pool.query(`UPDATE Post SET is_valid = is_valid + 1 where ID = ?`, [post_id])
+        }
+
+        if (newValid.affectedRows > 0){
+            return true
+        }
+        return false
+    }
+
+    static isItValidated = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+        const [isValid] = await pool.query(`SELECT * FROM ValidatedBy WHERE user_id = ? and post_id = ?`, [user_id, post_id])
+
+        if (isValid.length <= 0){
+            return false 
+        }
+
+        return true
+    }
+
+    static getAllValidation = async (user_id: number, pool: any): Promise<Array<string> | boolean > => {
+        const [valid] = await pool.query(`SELECT * FROM ValidatedBy WHERE user_id = ?`, [user_id])
+
+        if (valid.length <= 0){
+            return false 
+        }
+
+        return valid 
+    }
 }
