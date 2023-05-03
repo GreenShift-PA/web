@@ -157,7 +157,28 @@ export class UserController {
     }
 
     likePost = async (req:Request<{user_id: number, post_id: number}>, res:Response) => {
-        res.status(410).send("It's not done yet, you can go have a coffee while waiting")
+        
+        // Check if the user and the post exist
+        if (!await UserService.isUser(req.params.user_id, this.pool)){
+            res.status(406).end()
+            return 
+        }
+
+        if (!await PostService.postExist(req.params.post_id, this.pool)){
+            res.status(400).end()
+            return 
+        }
+
+        // Check that the user has not already validated the post 
+        if (!await UserService.isItLikeed(req.params.user_id, req.params.post_id, this.pool)){
+            const answer = UserService.likePost(req.params.user_id, req.params.post_id, this.pool)
+            if(!answer){ 
+                res.status(404).end()
+                return 
+            }
+            res.status(200).send("ok")
+        }
+        res.status(409).end()
  
     }
 
