@@ -121,7 +121,7 @@ export class UserService {
 
     static validatePost = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
 
-        const newValid = await pool.query(`
+        const [newValid] = await pool.query(`
             INSERT INTO ValidatedBy (ID, user_id, post_id) VALUES (NULL, ?, ?)
         `, [user_id, post_id])
 
@@ -129,5 +129,15 @@ export class UserService {
             return true
         }
         return false
+    }
+
+    static isItValidated = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+        const [isValid] = await pool.query(`SELECT * FROM ValidatedBy WHERE user_id = ? and post_id = ?`, [user_id, post_id])
+
+        if (isValid.length <= 0){
+            return false 
+        }
+
+        return true
     }
 }
