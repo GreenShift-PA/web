@@ -8,8 +8,8 @@ RUN npm i && npm install -g @angular/cli
 
 COPY . ./
 
-ENV POST 4200
+ENV PORT 4200
 
 EXPOSE $PORT
 
-CMD ["ng", "serve"]
+CMD ["ng", "serve", "--host", "0.0.0.0"]
