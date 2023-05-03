@@ -33,8 +33,7 @@
 }
 
 .navbar-links_container p,
-.navbar-sign p,
-.navbar-menu_container p {
+.navbar-sign p{
     color: #fff;
     font-family: var(--font-family);
     font-weight: 500;
@@ -46,8 +45,7 @@
     cursor: pointer;
 }
 
-.navbar-sign button,
-.navbar-menu_container button {
+.navbar-sign button {
     padding: 0.5rem 1rem;
     color: #fff;
     background: #FF4820;
@@ -59,34 +57,5 @@
     outline: none;
     cursor: pointer;
     border-radius: 5px;
-}
-
-.navbar-menu {
-    margin-left: 1rem;
-
-    display: none;
-    position: relative;
-}
-
-.navbar-menu svg {
-    cursor: pointer;
-}
-
-.navbar-menu_container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    flex-direction: column;
-    
-    text-align: end;
-    background: var(--color-footer);
-    padding: 2rem;
-    position: absolute;
-    right: 0;
-    top: 40px;
-    margin-top: 1rem;
-    min-width: 210px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0,0, 0,0.2);
 }
 
