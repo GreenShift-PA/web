@@ -153,4 +153,30 @@ export class UserService {
 
         return valid 
     }
+
+    static likePost = async (user_id: number, post_id: number, pool: any): Promise<Boolean> => {
+        const [newLike] = await pool.query(`
+            INSERT INTO LikedBy (ID, user_id, post_id) VALUES (NULL, ?, ?)
+        `, [user_id, post_id])
+        if(1){
+            await pool.query(`UPDATE Post SET likes = likes + 1 where ID = ?`, [post_id])
+        }
+
+        if (newLike.affectedRows > 0){
+            return true
+        }
+        return false
+    }
+
+    static isItLikeed = async (user_id: number, post_id: number, pool:any): Promise<boolean> => {
+        const [isValid] = await pool.query(`SELECT * FROM LikedBy WHERE user_id = ? and post_id = ?`, [user_id, post_id])
+
+        if (isValid.length <= 0){
+            return false 
+        }
+
+        return true
+    }
+
+
 }
