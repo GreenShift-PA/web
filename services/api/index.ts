@@ -7,6 +7,7 @@ import { TreeController } from "./controller/tree.controller";
 import { MessageController } from "./controller/message.controller";
 import { PostController } from "./controller/post.controller";
 import { CommentController } from "./controller/comment.controller";
+import swaggerDocs from "./outils/swagger";
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -46,4 +47,6 @@ app.use(commentController.path, commentController.buildRouter())
 
 app.listen(process.env.PORT, () => {
     console.log(`Server up => ${process.env.PORT}`);
+
+    swaggerDocs(app)
 })
