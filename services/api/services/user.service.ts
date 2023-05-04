@@ -3,10 +3,10 @@ import { TreeService } from "./tree.service"
 export class UserService {
 
 
-    static getUser = async (user_id: number, pool: any):Promise<Array<string> | Boolean> => {
+    static getUser = async (user_id: number, pool: any):Promise<Array<string>> => {
         const [user] =  await pool.query("SELECT * FROM User WHERE ID = ? ", [user_id])
             if(user.length <= 0){ 
-                return false
+                return []
             }
         return user
     }
@@ -19,10 +19,10 @@ export class UserService {
         return true
     }
 
-    static getAllUsers = async (pool:any): Promise<Array<string> | boolean> => {
+    static getAllUsers = async (pool:any): Promise<Array<string>> => {
         const [users] =  await pool.query("SELECT * FROM User")
         if(users.length <= 0){ 
-            return false
+            return []
         }
 
         return users
@@ -74,7 +74,7 @@ export class UserService {
     }   
 
     // Get all post from a user ( by user id )
-    static getAllPosts = async (user_id: number , pool: any): Promise<Array<string> | Boolean> => {
+    static getAllPosts = async (user_id: number , pool: any): Promise<Array<string>> => {
         const [posts] = await pool.query(
             `SELECT Post.ID, Post.user_id, Post.tree_id, Post.title, Post.description, Post.likes, Post.is_valid, Post.date FROM Post 
             INNER JOIN User ON User.ID = Post.user_id
@@ -83,12 +83,12 @@ export class UserService {
             `, [user_id])
 
         if(posts.length === 0){ 
-            return false
+            return []
         }
         return posts
     }
 
-    static getAllComments = async (user_id: number , pool: any): Promise<Array<string> | Boolean> => {
+    static getAllComments = async (user_id: number , pool: any): Promise<Array<string>> => {
         const [comments] = await pool.query(`
             SELECT Comment.ID, Comment.post_id, Comment.user_id, Comment.Description, Comment.likes FROM Comment
             INNER JOIN User ON User.ID = Comment.post_id
@@ -96,7 +96,7 @@ export class UserService {
         `, [user_id])
 
         if(comments.length === 0){ 
-            return false
+            return []
         }
         return comments
     }
@@ -144,11 +144,11 @@ export class UserService {
         return true
     }
 
-    static getAllValidation = async (user_id: number, pool: any): Promise<Array<string> | boolean > => {
+    static getAllValidation = async (user_id: number, pool: any): Promise<Array<string>> => {
         const [valid] = await pool.query(`SELECT * FROM ValidatedBy WHERE user_id = ?`, [user_id])
 
         if (valid.length <= 0){
-            return false 
+            return [] 
         }
 
         return valid 

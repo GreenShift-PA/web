@@ -30,7 +30,6 @@ const app = express()
  *       200:
  *         description: App is up and running
  */
-
 app.get("/", (req, res) => {
     res.status(200).send("Server Up")
 })
