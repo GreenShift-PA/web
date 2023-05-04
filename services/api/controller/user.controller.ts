@@ -15,6 +15,17 @@ export class UserController {
         this.pool = pool
     }
 
+    /**
+     * @openapi
+     * /user:
+     *  get:
+     *     tags:
+     *     - User
+     *     description: Responds with a list of all users
+     *     responses:
+     *       200:
+     *         description: List of users
+     */
     getAll = async (req:Request, res: Response)=> {
         const users = await UserService.getAllUsers(this.pool)
         if(!users){ 

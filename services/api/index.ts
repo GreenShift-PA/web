@@ -19,6 +19,18 @@ export const pool = mysql.createPool({
 
 const app = express()
 
+/**
+ * @openapi
+ * /:
+ *  get:
+ *     tags:
+ *     - Healthcheck
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       200:
+ *         description: App is up and running
+ */
+
 app.get("/", (req, res) => {
     res.status(200).send("Server Up")
 })

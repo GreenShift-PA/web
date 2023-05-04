@@ -26,7 +26,7 @@ const options: swaggerJsDoc.Options = {
             },
         ],
     },
-    apis:['../controller/user.controller.ts'] // The path where the roads will be created 
+    apis:["./controller/*.ts", "./index.ts"] // The path where the routes will be created 
 }
 
 const swaggerSpec = swaggerJsDoc(options)
