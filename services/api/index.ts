@@ -7,6 +7,7 @@ import { TreeController } from "./controller/tree.controller";
 import { MessageController } from "./controller/message.controller";
 import { PostController } from "./controller/post.controller";
 import { CommentController } from "./controller/comment.controller";
+import swaggerDocs from "./outils/swagger";
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -18,6 +19,17 @@ export const pool = mysql.createPool({
 
 const app = express()
 
+/**
+ * @openapi
+ * /:
+ *  get:
+ *     tags:
+ *     - Healthcheck
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       200:
+ *         description: App is up and running
+ */
 app.get("/", (req, res) => {
     res.status(200).send("Server Up")
 })
@@ -46,4 +58,6 @@ app.use(commentController.path, commentController.buildRouter())
 
 app.listen(process.env.PORT, () => {
     console.log(`Server up => ${process.env.PORT}`);
+
+    swaggerDocs(app)
 })

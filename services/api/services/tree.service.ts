@@ -8,10 +8,10 @@ export class TreeService{
         return trees
     }
 
-    static getTreeById = async (tree_id: number, pool: any): Promise<Array<string> | boolean> => {
+    static getTreeById = async (tree_id: number, pool: any): Promise<Array<string>> => {
         const [tree] =  await pool.query("SELECT * FROM Tree WHERE ID = ? ", [tree_id])
         if(tree.length <= 0){ 
-            return false
+            return []
         }
         return tree
     }

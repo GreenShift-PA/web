@@ -2,14 +2,14 @@ import { UserService } from "./user.service"
 
 export class PostService {
 
-    static getPost = async (post_id: number, pool:any): Promise<Array<string> | Boolean> => {
+    static getPost = async (post_id: number, pool:any): Promise<Array<string>> => {
         const [post] = await pool.query(
             `SELECT * FROM Post
             WHERE Post.ID = ?
             ORDER BY date DESC
             `, [post_id])
         if(post.length <= 0){ 
-            return false
+            return []
         }
         return post
     }

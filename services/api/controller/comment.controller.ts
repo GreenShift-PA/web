@@ -12,10 +12,47 @@ export class CommentController {
         this.pool = pool
     }
 
-    // TODO: Get all user's comment ( make it into UserController )
 
-    // TODO: Get all Post's comment ( male it into PostController )
-
+    /**
+     * @openapi
+     * /comment/{id}:
+     *   get:
+     *     tags:
+     *       - Comment
+     *     summary: Get information about a comment
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         description: Comment ID
+     *         schema:
+     *           type: integer
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 ID:
+     *                   type: integer
+     *                   example: 1
+     *                 post_id:
+     *                   type: integer
+     *                   example: 2
+     *                 user_id:
+     *                   type: integer
+     *                   example: 3
+     *                 description:
+     *                   type: string
+     *                   example: "Great post!"
+     *                 likes:
+     *                   type: integer
+     *                   example: 5
+     *       404:
+     *         description: Not Found
+     */
     getComment = async (req:Request<{id: number}>, res:Response) => {
 
         const comment = await CommentService.getComment(req.params.id, this.pool)
@@ -26,6 +63,28 @@ export class CommentController {
         res.status(200).json(comment)
     }
 
+    /**
+     * @openapi
+     * /comment/{id}:
+     *   delete:
+     *     tags:
+     *       - Comment
+     *     summary: Delete a comment
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         description: Comment ID
+     *         schema:
+     *           type: integer
+     *     responses:
+     *       200:
+     *         description: OK
+     *       400:
+     *         description: Bad request
+     *       500:
+     *         description: Internal Server Error
+     */
     deleteComment = async (req:Request<{id: number}>, res:Response) => {
         // TODO: Check if the user how delete is the same how created the comment or the on how make the original post
 
@@ -36,7 +95,8 @@ export class CommentController {
         const answer = await CommentService.deleteComment(req.params.id, this.pool)
 
         if (answer){
-            res.status(201).send("ok")
+            res.status(200).end()
+            return 
         }
         res.status(500).end() 
         return 
