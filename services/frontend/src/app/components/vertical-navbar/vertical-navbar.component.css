@@ -1,0 +1,9 @@
+
+/* 
+*{
+    border: 1px solid red;
+} */
+
+i{
+    color: var(--color-icon);
+}
