@@ -16,11 +16,13 @@
   --color-blog: #042c54;
   --color-text: #81AFDD;
   --color-subtext: #FF8A71;
+  --color-background: #11342E;
+  --color-icon: #ECE5CB;
 }
 
 
 .gradient__bg {
-    background:-moz-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+    /* background:-moz-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
     background:-webkit-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
@@ -28,5 +30,7 @@
   
     background:-ms-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
   
-    background:radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+    background:radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%); */
+
+    background-color: var(--color-background);
   }
