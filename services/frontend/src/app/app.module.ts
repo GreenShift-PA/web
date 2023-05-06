@@ -16,6 +16,7 @@ import { HeaderComponent } from './containers/header/header.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { VerticalNavbarComponent } from './components/vertical-navbar/vertical-navbar.component';
 import { SectionComponent } from './components/section/section.component';
+import { CardComponent } from './components/card/card.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SectionComponent } from './components/section/section.component';
     HeaderComponent,
     NavbarComponent,
     VerticalNavbarComponent,
-    SectionComponent
+    SectionComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
