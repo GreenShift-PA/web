@@ -12,7 +12,7 @@ import { CalculatorComponent } from './components/calculator/calculator.componen
 import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './containers/footer/footer.component';
-import { HeaderComponent } from './containers/header/header.component';
+import { HeaderComponent } from './components/header/header.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { VerticalNavbarComponent } from './components/vertical-navbar/vertical-navbar.component';
 import { SectionComponent } from './components/section/section.component';

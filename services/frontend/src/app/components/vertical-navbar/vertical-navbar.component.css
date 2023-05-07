@@ -6,4 +6,16 @@
 
 i{
     color: var(--color-icon);
+    width: 23px !important;
 }
+
+.top-span{
+    padding-top: 1.6rem; /* 28px */
+    padding-bottom: 1.6rem; /* 28px */
+    
+}
+
+
+.top-span:hover {
+    background-color: #38635c; /* change the background color on hover */
+  }
