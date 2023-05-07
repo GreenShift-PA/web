@@ -18,9 +18,11 @@
   
   --color-bg: #040C18;
 
-  --color-background: #11342E;
-  --color-background-light: #213b37;
-  --color-icon: #ECE5CB;
+  --color-primary: #11342E;
+  --color-primary-hover: #213b37;
+  --color-secondary: #ECE5CB;
+  --color-secondary-hover: #ECE5CB;
+
 }
 
 
@@ -35,5 +37,5 @@
   
     background:radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%); */
 
-    background-color: var(--color-background);
+    background-color: var(--color-primary);
   }

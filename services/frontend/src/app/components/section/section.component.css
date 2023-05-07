@@ -1,6 +1,6 @@
 .gradient-div{
     background: rgb(17,52,46);
-    background: linear-gradient(0deg, rgba(17,52,46,1) 0%, rgba(56,99,92,1) 100%);
+    background: linear-gradient(0deg, rgba(17,52,46,1) 0%, rgba(56,99,92,1) 150%);
 height: 38rem;
 }
 
@@ -10,4 +10,8 @@ h1{
 
 p{
     font-family: var(--font-family-small);
+    color:  rgb(160, 167, 177);
+}
+*{
+    color: var(--color-secondary);
 }
