@@ -15,7 +15,11 @@ i{
     
 }
 
+.bot-span{
+    padding-top: 1.6rem; /* 28px */
+    padding-bottom: 1.6rem; /* 28px */
+}
 
-.top-span:hover {
-    background-color: #38635c; /* change the background color on hover */
+span:hover {
+    background-color: var(--color-background-light); /* change the background color on hover */
   }
