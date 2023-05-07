@@ -5,7 +5,7 @@
 } */
 
 i{
-    color: var(--color-icon);
+    color: var(--color-secondary);
     width: 23px !important;
 }
 
@@ -21,5 +21,5 @@ i{
 }
 
 span:hover {
-    background-color: var(--color-background-light); /* change the background color on hover */
+    background-color: var(--color-primary-hover); /* change the background color on hover */
   }

@@ -1,0 +1,24 @@
+.get-started_link{
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.get-started_link:hover{
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+.second-button_link {
+    border-color:var(--color-secondary) ;
+    color: var(--color-secondary);
+}
+
+.second-button_link {
+    border-color:var(--color-secondary) ;
+    color: var(--color-secondary);
+}
+
+h1 {
+    font-family: var(--font-family-big);
+}
