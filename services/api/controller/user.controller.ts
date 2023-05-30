@@ -577,6 +577,10 @@ export class UserController {
         res.status(200).json(listValidated)
     }
 
+    userLogin = async (req:Request, res: Response) => {
+        res.status(501).json({"message": "Not finished"})
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get(`/`, this.getAll.bind(this))
@@ -589,6 +593,7 @@ export class UserController {
         router.post(`/`,express.json(), this.createUser.bind(this))
         router.post('/:user_id/valid/:post_id', this.validatePost.bind(this))
         router.post('/:user_id/like/:post_id', this.likePost.bind(this))
+        router.post('/', this.userLogin.bind(this))
         return router
     }
 }
