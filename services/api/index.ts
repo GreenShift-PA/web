@@ -8,6 +8,8 @@ import { MessageController } from "./controller/message.controller";
 import { PostController } from "./controller/post.controller";
 import { CommentController } from "./controller/comment.controller";
 import swaggerDocs from "./outils/swagger";
+import * as morgan from 'morgan'
+const listEndpoints = require('express-list-endpoints')
 const mysql = require('mysql2');
 
 export const pool = mysql.createPool({
@@ -18,6 +20,8 @@ export const pool = mysql.createPool({
 }).promise()
 
 const app = express()
+
+app.use(morgan("short"))
 
 /**
  * @openapi
@@ -55,6 +59,7 @@ app.use(postController.path, postController.buildRouter())
 // Route = /comment/...
 app.use(commentController.path, commentController.buildRouter())
 
+console.table(listEndpoints(app));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server up => ${process.env.PORT}`);
