@@ -22,3 +22,7 @@
 h1 {
     font-family: var(--font-family-big);
 }
+
+img{
+    height: 38rem;
+}
