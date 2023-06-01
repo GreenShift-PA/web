@@ -58,7 +58,7 @@ services:
     volumes:
       - ./services/api_V2:/app
     environment:
-      MONGODB_URI: mongo_db://mongo:27017/Tree-api
+      MONGODB_URI: mongodb://mongo:27017/Tree-api-web
       MANGODB_USER: root
       MANGODB_PASSWORD: passwordRoot
       PORT: 3000
