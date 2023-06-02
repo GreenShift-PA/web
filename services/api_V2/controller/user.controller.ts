@@ -1,5 +1,5 @@
 import { Model } from "mongoose"
-import { Role, RoleModel, User, UserModel } from "../models"
+import { Role, RoleModel, TreeModel, User, UserModel } from "../models"
 import { Router, Response, Request} from "express"
 import * as express from 'express'
 import { SecurityUtils } from "../utils"
@@ -29,7 +29,8 @@ export class UserController {
 
     readonly paramsLogin = {
         "login" : "string",
-        "password" : "string"
+        "password" : "string",
+        "tree_name" : "string"
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -38,11 +39,18 @@ export class UserController {
         const password: string  = req.body.password
 
         try{
+
+            const tree = await TreeModel.create({
+                name: req.body.tree_name,
+                size : 0
+            })
+
             await this.loadGuestRole()
             const user = await UserModel.create({
                 login,
                 password: SecurityUtils.toSHA512(password),
-                roles:[this.guestRole]
+                roles:[this.guestRole],
+                tree
             })
             res.json(user)
 
