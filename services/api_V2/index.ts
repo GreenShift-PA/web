@@ -4,6 +4,8 @@ import * as morgan from "morgan"
 
 import { Response, Request } from "express"
 import listEndpoints = require('express-list-endpoints')
+import { AuthController, UserController } from './controller'
+import { StartService } from './service'
 
 const startServer = async (): Promise<void> => {
 
@@ -14,6 +16,8 @@ const startServer = async (): Promise<void> => {
         authSource: "admin"
     })
 
+    await StartService.userRoles()
+
     const app = express()
 
     app.use(morgan("short"))
@@ -21,6 +25,12 @@ const startServer = async (): Promise<void> => {
     app.get("/", (req:Request, res:Response) => {
         res.send('Server V2 up')
     })
+
+    const userController = new UserController()
+    const authController = new AuthController() 
+
+    app.use(userController.path, userController.buildRouter())
+    app.use(authController.path, authController.buildRouter())
 
     app.listen(process.env.PORT, () => {
         console.log(`Server up on PORT : ${process.env.PORT}`)
