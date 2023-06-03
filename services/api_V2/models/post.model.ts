@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from "mongoose";
 import { User } from "./user.model";
+import { Comment } from "./comment.model";
 
 const postShemma = new Schema<Post>({
     title: {
@@ -13,6 +14,11 @@ const postShemma = new Schema<Post>({
     like: [{
         type: Schema.Types.String,
         def: "User"  
+    }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+        required: true
     }]
 }, {
     versionKey: false,
@@ -24,6 +30,7 @@ export interface Post{
     title: string 
     description: string
     like: User[]
+    comments: Comment[]
 }
 
 
