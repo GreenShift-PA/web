@@ -7,6 +7,7 @@ import listEndpoints = require('express-list-endpoints')
 import { AuthController, UserController } from './controller'
 import { StartService } from './service'
 import { TreeController } from './controller/tree.controller'
+import { PostController } from './controller/post.controller'
 
 const startServer = async (): Promise<void> => {
 
@@ -30,10 +31,12 @@ const startServer = async (): Promise<void> => {
     const userController = new UserController()
     const authController = new AuthController() 
     const treeController = new TreeController()
+    const postController = new PostController()
 
     app.use(userController.path, userController.buildRouter())
     app.use(authController.path, authController.buildRouter())
     app.use(treeController.path, treeController.buildRouter())
+    app.use(postController.path, postController.buildRouter())
 
     app.listen(process.env.PORT, () => {
         console.log(`Server up on PORT : ${process.env.PORT}`)
