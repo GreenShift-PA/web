@@ -4,6 +4,7 @@ import { Router, Response, Request} from "express"
 import * as express from 'express'
 import { SecurityUtils } from "../utils"
 import { checkBody, checkUserRole, checkUserToken } from "../middleware"
+import { RolesEnums } from "../enums"
 
 
 export class UserController {
@@ -107,12 +108,31 @@ export class UserController {
         res.send(roles)
     }
 
+    getAllUsers = async (req:Request, res: Response): Promise<void> => {
+        const users = (await UserModel.find({})).length
+
+        res.status(200).json(users)
+    }
+
+    getOneUser = async (req: Request, res: Response): Promise<void> => {
+        if(!req.query.id || typeof req.query.id !== "string"){
+            res.status(400).end()
+            return
+        }
+
+        const user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+
+        res.status(200).json(user)
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
         // router.patch('/role', express.json(), checkUserToken(), checkUserRole('admin'), this.addRole.bind(this))
         router.get('/me', checkUserToken(), this.me.bind(this))
-        router.get('/role', checkUserToken(), checkUserRole('admin'), this.getRoles.bind(this)) // Return the list of all possible roles 
+        router.get('/count', checkUserToken(), checkUserRole(RolesEnums.admin), this.getAllUsers.bind(this))
+        router.get('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.getOneUser.bind(this))
+        router.get('/role', checkUserToken(), checkUserRole(RolesEnums.admin), this.getRoles.bind(this)) // Return the list of all possible roles 
 
         return router
     }
