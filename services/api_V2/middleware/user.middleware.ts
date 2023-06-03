@@ -1,9 +1,10 @@
 import {Request, RequestHandler} from "express";
 import {SessionModel, User} from "../models";
+import { Document } from "mongoose";
 
 declare module 'express' {
     export interface Request {
-        user?: User;
+        user?: (Document<unknown, {}, User> & Omit<User & Required<{_id: string;}>, never>);
         session?: string;
     }
 }
@@ -32,7 +33,7 @@ export function checkUserToken(): RequestHandler {
             return;
         }
         
-        req.user = session.user as User;
+        req.user = session.user as (Document<unknown, {}, User> & Omit<User & Required<{_id: string;}>, never>);
         req.session = session._id.toString() as string
         next();
     };

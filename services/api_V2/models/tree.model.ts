@@ -9,7 +9,6 @@ const treeShemma = new Schema<Tree>({
     size: {
         type: Schema.Types.Number,
         index: true,
-        unique: true,
         required : true
     }
 }, {

@@ -5,6 +5,7 @@ import { Router, Response, Request } from "express"
 import { checkBody, checkUserRole, checkUserToken } from "../middleware"
 import { RolesEnums } from "../enums"
 import { checkQuery } from "../middleware/query.middleware"
+import { UserModel } from "../models"
 
 export class PostController {
 
@@ -23,7 +24,24 @@ export class PostController {
     }
 
     newPost = async (req: Request, res: Response): Promise<void> => {
-        res.status(501).json({"message": "The functionality is not finished, you can go and get a coffee while you wait."})
+
+        const newPost = await PostModel.create({
+            title: req.body.title,
+            description: req.body.description,
+            like: []
+        })
+
+        try{
+            req.user?.posts.push(newPost)
+            req.user?.save()
+            
+        }catch(err){
+            res.status(500).end()
+            return 
+        }
+        
+        res.status(201).json(newPost)
+        return 
     }
 
     readonly queryPostId = {
@@ -31,7 +49,18 @@ export class PostController {
     }
 
     getOnePost = async (req:Request, res:Response): Promise<void> => {
-        res.status(501).json({"message": "The functionality is not finished, you can go and get a coffee while you wait."})
+        
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if (!post){
+                res.status(404).end()
+                return 
+            }
+            res.status(200).json(post)
+        }catch(err){
+            res.status(500).end()
+            return
+        }
     }
 
 
