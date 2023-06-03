@@ -12,8 +12,9 @@ const postShemma = new Schema<Post>({
         required: true
     },
     like: [{
-        type: Schema.Types.String,
-        def: "User"  
+        type: Schema.Types.ObjectId,
+        def: "User",
+        required: true
     }],
     comments: [{
         type: Schema.Types.ObjectId,
