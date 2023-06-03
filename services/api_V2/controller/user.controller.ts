@@ -5,6 +5,7 @@ import * as express from 'express'
 import { SecurityUtils } from "../utils"
 import { checkBody, checkUserRole, checkUserToken } from "../middleware"
 import { RolesEnums } from "../enums"
+import { checkQuery } from "../middleware/query.middleware"
 
 
 export class UserController {
@@ -125,6 +126,26 @@ export class UserController {
         res.status(200).json(user)
     }
 
+    readonly queryUsersTree = {
+        "id" : "string"
+    }
+
+    getUserTree = async (req: Request, res: Response): Promise<void> => {
+
+        try{
+            const user = await UserModel.findById(req.query.id).populate("tree")
+            
+            if(!user){
+                res.status(404).end(); return 
+            }
+            
+            res.status(200).json(user.tree)
+        }catch(err){
+
+            res.status(400).json({"message": "User not found"})
+        }
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
@@ -133,6 +154,7 @@ export class UserController {
         router.get('/count', checkUserToken(), checkUserRole(RolesEnums.admin), this.getAllUsers.bind(this))
         router.get('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.getOneUser.bind(this))
         router.get('/role', checkUserToken(), checkUserRole(RolesEnums.admin), this.getRoles.bind(this)) // Return the list of all possible roles 
+        router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
 
         return router
     }
