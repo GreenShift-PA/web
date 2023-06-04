@@ -132,10 +132,28 @@ export class PostController {
         }
     }
 
+    nbrLike = async (req: Request, res: Response): Promise<void> => {
+        
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if(!post){
+                res.status(404).end()
+                return
+            }
+
+            res.status(200).json({"likes" : post.like.length})
+            
+        }catch(err){
+            res.status(500).end()
+            return
+        }
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkUserRole(RolesEnums.guest), checkQuery(this.queryPostId), this.getOnePost.bind(this))
+        router.get('/like', checkUserToken(),checkQuery(this.queryPostId), this.nbrLike.bind(this))
         router.post('/', express.json(), checkUserToken(), checkUserRole(RolesEnums.guest), checkBody(this.paramsNewPost), this.newPost.bind(this))
         router.post('/comment', express.json(), checkUserToken(), checkBody(this.paramsComment), this.addComment.bind(this))
         router.patch('/like', express.json(), checkUserToken(), checkBody(this.paramsLike), this.likePost.bind(this))
