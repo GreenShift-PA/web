@@ -147,6 +147,32 @@ export class UserController {
         }
     }
 
+    readonly queryGetPost = {
+        "user_id" : "string | undefined"
+    }
+
+    getAllPost = async (req:Request, res:Response): Promise<void> => {
+
+        if (!req.query.user_id && req.user){
+            res.status(200).json((await req.user.populate("posts")).posts)
+            return
+        }
+
+        try{
+            const user = await UserModel.findById(req.query.user_id).populate("posts")
+            if (!user){
+                res.status(404).json({'message': "User not found"})
+                return 
+            }
+            res.status(200).json(user.posts)
+            return 
+        }catch(err){
+            res.status(500).json({'message': "Server error"})
+            return 
+        }
+    
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
@@ -156,6 +182,7 @@ export class UserController {
         router.get('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.getOneUser.bind(this))
         router.get('/role', checkUserToken(), checkUserRole(RolesEnums.admin), this.getRoles.bind(this)) // Return the list of all possible roles 
         router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
+        router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
 
         return router
     }
