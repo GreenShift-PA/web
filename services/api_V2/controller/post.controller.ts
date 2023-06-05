@@ -46,7 +46,7 @@ export class PostController {
         return 
     }
 
-    readonly queryPostId = {
+    readonly queryPostId = { 
         "id" : "string"
     }
 
@@ -157,11 +157,12 @@ export class PostController {
                 res.status(404).json({"message" :"Post not found"})
                 return 
             }
-            
-            if (req.user?.posts.includes(post)){
+
+            if (req.user && String(req.user._id) === String(post.auth._id)){
                 post.deleteOne()
                 req.user.save()
                 res.status(200).json({"message" : "Post deleted"})
+                return 
             }
             res.status(401).json({"message" : "You're trying to delete a post that doesn't belong to you."})
             return 
@@ -180,7 +181,7 @@ export class PostController {
         router.post('/', express.json(), checkUserToken(), checkUserRole(RolesEnums.guest), checkBody(this.paramsNewPost), this.newPost.bind(this))
         router.post('/comment', express.json(), checkUserToken(), checkBody(this.paramsComment), this.addComment.bind(this))
         router.patch('/like', express.json(), checkUserToken(), checkBody(this.paramsLike), this.likePost.bind(this))
-        router.delete('/', checkQuery(this.queryPostId), checkUserToken(), this.deletePost.bind(this))
+        router.delete('/', checkUserToken(), checkQuery(this.queryPostId),  this.deletePost.bind(this))
         return router
     }
 }
