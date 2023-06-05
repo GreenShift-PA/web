@@ -9,12 +9,10 @@ export class AuthController {
 
     readonly path: string
     readonly model: Model<User>
-    guestRole: Role | null
 
     constructor(){
         this.path = "/auth"
         this.model = UserModel
-        this.guestRole = null
     }
 
     readonly paramsLogin = {

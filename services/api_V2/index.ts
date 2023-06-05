@@ -8,6 +8,7 @@ import { AuthController, UserController } from './controller'
 import { StartService } from './service'
 import { TreeController } from './controller/tree.controller'
 import { PostController } from './controller/post.controller'
+import { MessageController } from './controller/message.controller'
 
 const startServer = async (): Promise<void> => {
 
@@ -32,11 +33,13 @@ const startServer = async (): Promise<void> => {
     const authController = new AuthController() 
     const treeController = new TreeController()
     const postController = new PostController()
+    const messageController = new MessageController()
 
     app.use(userController.path, userController.buildRouter())
     app.use(authController.path, authController.buildRouter())
     app.use(treeController.path, treeController.buildRouter())
     app.use(postController.path, postController.buildRouter())
+    app.use(messageController.path, messageController.buildRouter())
 
     app.listen(process.env.PORT, () => {
         console.log(`Server up on PORT : ${process.env.PORT}`)
