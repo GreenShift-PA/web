@@ -20,12 +20,7 @@ const postShemma = new Schema<Post>({
         type: Schema.Types.ObjectId,
         ref: "Comment",
         required: true
-    }],
-    auth: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        require: true
-    }
+    }]
 }, {
     versionKey: false,
     collection: "Posts"
@@ -37,7 +32,6 @@ export interface Post{
     description: string
     like: User[]
     comments: Comment[]
-    auth: User
 }
 
 
