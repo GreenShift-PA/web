@@ -114,8 +114,7 @@ export class PostController {
                 res.status(403).end()
                 return 
             }
-            // TODO: Not working, its always true
-            if(!(post.like.includes(req.user))){
+            if(!(post.like.some(l => String(l._id) === String(req.user?._id)))){
                 post.like.push(req.user)
                 post.save()
                 res.status(200).end()
