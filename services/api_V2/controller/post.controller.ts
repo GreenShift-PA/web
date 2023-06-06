@@ -157,12 +157,13 @@ export class PostController {
                 return 
             }
 
-            // if (req.user && String(req.user._id) === String(post.auth._id)){
-            //     post.deleteOne()
-            //     req.user.save()
-            //     res.status(200).json({"message" : "Post deleted"})
-            //     return 
-            // }
+            if (req.user && req.user.posts.some(p =>  String(p._id) !== String(post._id))){
+                req.user.posts = req.user.posts.filter(p => {return String(p) !== String(post._id)})
+                post.deleteOne()
+                req.user.save()
+                res.status(200).json({"message" : "Post deleted"})
+                return 
+            }
             res.status(401).json({"message" : "You're trying to delete a post that doesn't belong to you."})
             return 
  
