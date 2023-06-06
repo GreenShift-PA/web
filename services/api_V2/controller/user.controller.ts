@@ -214,7 +214,17 @@ export class UserController {
         }
     }
 
+    readonly queryValidatePost = {
+        "post_id" : "string"
+    }
+
+    validatePost = async (req:Request, res:Response): Promise<void> => {
+        res.status(501).end()
+        return 
+    }
+
     buildRouter = (): Router => {
+        
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
         // router.patch('/role', express.json(), checkUserToken(), checkUserRole('admin'), this.addRole.bind(this))
@@ -226,6 +236,7 @@ export class UserController {
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
+        router.patch('/validate', express.json(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
 
         return router
     }

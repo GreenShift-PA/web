@@ -20,6 +20,11 @@ const postShemma = new Schema<Post>({
         type: Schema.Types.ObjectId,
         ref: "Comment",
         required: true
+    }],
+    whoValidates: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }]
 }, {
     versionKey: false,
@@ -32,6 +37,7 @@ export interface Post{
     description: string
     like: User[]
     comments: Comment[]
+    whoValidates: User[]
 }
 
 
