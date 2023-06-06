@@ -75,6 +75,22 @@ export class UserController {
         res.json(req.user)
     }
 
+    getAllUsersInfo = async (req:Request, res:Response): Promise<void> => {
+
+        const users = await UserModel.find({})
+        if(!users){
+            res.status(404).json({"message" : "Not found"})
+            return
+        }
+        users.forEach(user => {
+            user.password = ""
+            user.roles = []
+        })
+
+        res.status(200).json(users)
+        return 
+    }
+
     addRole = async (req:Request, res:Response): Promise<void> => {
 
         if(!req.user){res.send(401).end(); return}
@@ -183,6 +199,7 @@ export class UserController {
         router.get('/role', checkUserToken(), checkUserRole(RolesEnums.admin), this.getRoles.bind(this)) // Return the list of all possible roles 
         router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
+        router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
 
         return router
     }
