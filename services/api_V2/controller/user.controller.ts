@@ -189,6 +189,31 @@ export class UserController {
     
     }
 
+    readonly paramsUpdateTree = {
+        "name" : "string"
+    }
+
+    updateTree = async (req:Request, res:Response):Promise<void> => {
+        if(!req.user){
+            res.status(500).json({"message" : "No access to your personal information"})
+            return 
+        }
+        try{
+            const tree = await TreeModel.findById(req.user.tree._id)
+            if(!tree){
+                res.status(400).json({"message" : "Tree not found"})
+                return 
+            }
+            tree.name = req.body.name
+            tree.save()
+            res.status(200).json(tree)
+            return
+        }catch(err){
+            res.status(500).json({"message" : "Can't access to your tree"})
+            return 
+        }
+    }
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
@@ -200,6 +225,7 @@ export class UserController {
         router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
+        router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
 
         return router
     }
