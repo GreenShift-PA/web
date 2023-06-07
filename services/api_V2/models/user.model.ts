@@ -38,7 +38,7 @@ export interface User{
     _id: string,
     login: string,
     password: string,
-    roles: string[] | Role[]
+    roles: Role[]
     tree: Tree
     posts: Post[]
 }

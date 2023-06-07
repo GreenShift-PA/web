@@ -12,6 +12,7 @@ const roleShemma = new Schema<Role>({
 })
 
 export interface Role{
+    _id: string
     name: string
 }
 
