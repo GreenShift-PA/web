@@ -1,11 +1,12 @@
 import { Model } from "mongoose"
-import { Role, RoleModel, TreeModel, User, UserModel } from "../models"
+import { PostModel, Role, RoleModel, TreeModel, User, UserModel } from "../models"
 import { Router, Response, Request} from "express"
 import * as express from 'express'
 import { SecurityUtils } from "../utils"
 import { checkBody, checkUserRole, checkUserToken } from "../middleware"
 import { RolesEnums } from "../enums"
 import { checkQuery } from "../middleware/query.middleware"
+import { TreeService } from "../service/tree.service"
 
 
 export class UserController {
@@ -219,8 +220,43 @@ export class UserController {
     }
 
     validatePost = async (req:Request, res:Response): Promise<void> => {
-        res.status(501).end()
-        return 
+    
+        try{
+            const post = await PostModel.findById(req.query.post_id)
+            if(!post){
+                res.status(404).json({"message" : "Post not found"})
+                return 
+            }
+            if(!req.user){
+                res.status(500).end()
+                return 
+            }       
+            // Check that the user hasn't already validated the post
+            if(post.whoValidates.some(validator => String(validator) === String(req.user?._id))){
+                res.status(406).json({"message" : "You have already validated this post"})
+                return
+            }
+            
+            post.whoValidates.push(req.user)
+            post.save()
+            const tree = await TreeModel.findById(post.treeLinked)
+            
+            if(!tree){
+                res.status(404).json({"message" : "Tree not found"})
+                return 
+            }
+            
+            await TreeService.treeAddScore(tree, 1)
+
+            res.status(200).json({"message" : "You validate this post"})
+            return
+
+
+        }catch(err){
+            res.status(400).json({"message" : "This is not a Post Id"})
+            return
+        }
+
     }
 
     buildRouter = (): Router => {
@@ -236,7 +272,7 @@ export class UserController {
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
-        router.patch('/validate', express.json(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
+        router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
 
         return router
     }

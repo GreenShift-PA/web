@@ -30,7 +30,8 @@ export class PostController {
             description: req.body.description,
             like: [],
             comments: [],
-            whoValidates: []
+            whoValidates: [],
+            treeLinked: req.user?.tree
         })
 
         try{

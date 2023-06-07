@@ -1,6 +1,7 @@
 import mongoose, { Schema, Model } from "mongoose";
 import { User } from "./user.model";
 import { Comment } from "./comment.model";
+import { Tree } from "./tree.model";
 
 const postShemma = new Schema<Post>({
     title: {
@@ -25,7 +26,12 @@ const postShemma = new Schema<Post>({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
-    }]
+    }],
+    treeLinked: {
+        type: Schema.Types.ObjectId,
+        ref: "Tree",
+        required: true
+    }
 }, {
     versionKey: false,
     collection: "Posts"
@@ -38,6 +44,7 @@ export interface Post{
     like: User[]
     comments: Comment[]
     whoValidates: User[]
+    treeLinked : Tree
 }
 
 
