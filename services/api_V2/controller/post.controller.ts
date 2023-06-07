@@ -173,16 +173,32 @@ export class PostController {
             return 
         }
     }
+    
+    getValidator = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if(!post){
+                res.status(404).json({"messgae" : "Post not found"})
+                return 
+            }
+            res.status(200).json((await post.populate("whoValidates")).whoValidates)
+            return 
+        }catch(err){
+            res.status(400).json({"message": "This is not a Post Id"})
+            return
+        }
+    }
 
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkUserRole(RolesEnums.guest), checkQuery(this.queryPostId), this.getOnePost.bind(this))
         router.get('/like', checkUserToken(),checkQuery(this.queryPostId), this.nbrLike.bind(this))
+        router.get('/validate', checkUserToken(), checkQuery(this.queryPostId), this.getValidator.bind(this))
         router.post('/', express.json(), checkUserToken(), checkUserRole(RolesEnums.guest), checkBody(this.paramsNewPost), this.newPost.bind(this))
         router.post('/comment', express.json(), checkUserToken(), checkBody(this.paramsComment), this.addComment.bind(this))
         router.patch('/like', express.json(), checkUserToken(), checkBody(this.paramsLike), this.likePost.bind(this))
-        router.delete('/', checkUserToken(), checkQuery(this.queryPostId),  this.deletePost.bind(this))
+        router.delete('/', checkUserToken(), checkQuery(this.queryPostId), this.deletePost.bind(this))
         return router
     }
 }
