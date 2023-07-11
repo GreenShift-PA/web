@@ -1,37 +1,32 @@
 .todo {
 	display: flex;
-	padding: 10px 15px;
+	padding: 12px 15px;
 	background-color: #FFF;
 	border-bottom: 1px solid #DDD;
 }
-
-.todo:nth-child(even) {
-	background-color: #EEE;
-}
-
 .todo:last-of-type {
 	border-bottom: 0;
 }
 
-.todo .id {
-	flex: 1 1 50px;
-}
-
-.todo .content {
-	flex: 1 1 100%;
-}
 
 .todo.done .content {
 	text-decoration: line-through;
+	text-decoration-color: var(--color-secondary);
+	text-decoration-thickness: 0.2rem;
 }
+input::placeholder{
+	color: white;
+	font-family: var(--font-family-todolist);
+  }
 
+  
 .todo-input {
 	display: block;
 	width: 100%;
 	padding: 10px 15px;
 	appearance: none;
-	border: none;
-	background-color: #F3F3F3;
+	border: 1px solid var(--color-secondary);
+	background-color: var(--color-primary);
 	margin-top: 15px;
 	font-size: 20px;
 	outline: none;
@@ -46,11 +41,86 @@
 	outline: none;
 	background: none;
 
-	background-color: #FE4880;
-	color: #FFF;
+	background-color: var(--color-secondary);
+	color: var(--color-primary);
 	margin: 15px auto;
 
 	padding: 10px 15px;
 	font-size: 18px;
 	font-weight: 700;
+	cursor: pointer;
+}
+
+
+h1{
+	color: var(--color-secondary);
+	font-family: var(--font-family-big);
+	margin-bottom: 3rem;
+	margin-top: 3rem;
+}
+
+.todos{
+	width: 55rem;
+	margin: auto;
+}
+
+/* checkbox-rect */
+.checkbox-rect input[type="checkbox"] {
+	display: none;
+  }
+  .checkbox-rect input[type="checkbox"] + label {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 20px;
+	font: 14px/20px "Open Sans", Arial, sans-serif;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+  }
+  .checkbox-rect input[type="checkbox"]:hover + label:hover {
+	color: rgb(23, 86, 228);
+  }
+  .checkbox-rect input[type="checkbox"]:hover + label:before {
+	background: var(--color-secondary);
+	box-shadow: inset 0px 0px 0px 2px #ffffff;
+  }
+  .checkbox-rect input[type="checkbox"] + label:last-child {
+	margin-bottom: 0;
+  }
+  .checkbox-rect input[type="checkbox"] + label:before {
+	content: "";
+	display: block;
+	width: 1.5em;
+	height: 1.5em;
+	border: 3px solid var(--color-primary);
+	border-radius: 0.5em;
+	position: absolute;
+	left: 0;
+	top: 0;
+	-webkit-transition: all 0.2s, background 0.2s ease-in-out;
+	transition: all 0.2s, background 0.2s ease-in-out;
+	background: #f3f3f3;
+  }
+  .checkbox-rect input[type="checkbox"]:checked + label:before {
+	width: 1.5em;
+	height: 1.5em;	
+	border-radius: 0.5em;
+	border: 3px solid var(--color-primary);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+	background: var(--color-secondary);
+	box-shadow: 0 0 0 1px #000;
+  }
+  .content {
+	font-family: var(--font-family-todolist);
+	
+}
+
+.category{
+	font-family: var(--font-family-todolist);
+	text-align: start;
+}
+.tasks{
 }

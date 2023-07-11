@@ -1,11 +1,29 @@
 <div class="todos">
-    <form (submit)="addTodo(inputTodo)">
-        <input type="text" name="inputTodo" placeholder="Enter todo..." class="todo-input" [(ngModel)]="inputTodo" />
-        <input type="submit" value="Add todo" class="todo-submit" >
+    <h1 class="text-3xl font-bold">My To-do-list</h1>
+    <form class="mb-10" (submit)="addTodo(inputTodo)">
+        <input type="text" name="inputTodo" placeholder="Add a task" class="todo-input rounded-2xl text-white border-white	 " [(ngModel)]="inputTodo" />
+        <!-- <input type="submit" value="Add todo" class="todo-submit rounded-lg  " > -->
     </form>
-    <div *ngFor="let todo of todos; let i = index" class="todo {{(todo.completed ? 'done' : '')}}" >
-        <div class="id">{{i}}</div>
-        <div class="content" (click)="toggleDone(i)">{{todo.content}}</div>
-        <button class="delete" (click)="deleteTodo(i)">Remove</button>
+    <p class="category text-white font-bold text-lg mb-3 ml-1">Tasks - {{todos.length}}</p>
+    <div *ngFor="let todo of todos; let i = index" class="tasks rounded-2xl h-12 mb-3 todo {{(todo.completed ? 'done' : '')}}" >
+         <div class="item">
+      <div class="checkbox-rect">
+        <input type="checkbox" id="checkbox-rect{{i}}" name="check" (click)="toggleDone_todos(i)">
+        <label for="checkbox-rect{{i}}"></label>
+      </div>
+    </div>
+        <div class="content font-bold" >{{todo.content}}</div>
+        <!-- <button class="delete" (click)="deleteTodo(i)">Remove</button> -->
+    </div>
+    <p class="category text-white font-bold text-lg mb-3 ml-1">Completed - {{todos_done.length}}</p>
+    <div *ngFor="let todo of todos_done; let i = index" class="tasks rounded-2xl h-12 mb-3 todo {{(todo.completed ? 'done' : '')}}" >
+         <div class="item">
+            <div class="checkbox-rect">
+              <input type="checkbox" id="checkbox-rect{{i+todos.length}}" name="check" (click)="toggleDone_todos_done(i)">
+              <label for="checkbox-rect{{i+todos.length}}"></label>
+            </div>
+          </div>
+        <div class="content font-bold" >{{todo.content}}</div>
+        <!-- <button class="delete" (click)="deleteTodo(i)">Remove</button> -->
     </div>
 </div>

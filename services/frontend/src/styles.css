@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
 
-
+  @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
 
 
@@ -14,7 +14,7 @@
   --font-family: 'Manrope', sans-serif;
   --font-family-big: 'Merriweather', sans-serif;
   --font-family-small: 'Inter', sans-serif;
-
+  --font-family-todolist:'Rubik',sans-serif;
   
   --color-bg: #040C18;
 
