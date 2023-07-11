@@ -22,12 +22,18 @@ export function checkUserToken(): RequestHandler {
             return;
         }
         const token = parts[1];
-        const session = await SessionModel.findById(token).populate({
-            path: "user",
-            populate: {
-                path: "roles"
-            }
-        }).exec();
+        let session
+        try{
+            session = await SessionModel.findById(token).populate({
+                path: "user",
+                populate: {
+                    path: "roles"
+                }
+            }).exec();
+        }catch(e){
+            res.status(400).json({"message": "Authentication token invalid"})
+            return 
+        }
         if(session === null) {
             res.status(401).end(); // unauthorized
             return;

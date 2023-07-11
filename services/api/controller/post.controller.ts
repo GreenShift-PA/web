@@ -63,7 +63,7 @@ export class PostController {
             }
             res.status(200).json(post)
         }catch(err){
-            res.status(500).end()
+            res.status(404).end()
             return
         }
     }
@@ -83,7 +83,7 @@ export class PostController {
                 res.status(404).json({"message": "Post not found"})
             }
         }catch(err){
-            res.status(500).end()
+            res.status(404).end()
             return
         }
 
@@ -127,7 +127,7 @@ export class PostController {
             return 
 
         }catch(err){
-            res.status(500).end()
+            res.status(401).end()
             return
 
         }
@@ -145,7 +145,7 @@ export class PostController {
             res.status(200).json({"likes" : post.like.length})
             
         }catch(err){
-            res.status(500).end()
+            res.status(404).end()
             return
         }
     }
@@ -169,7 +169,7 @@ export class PostController {
             return 
  
         }catch(err){
-            res.status(500).json({"message": "This is not a post Id"})
+            res.status(401).json({"message": "This is not a post Id"})
             return 
         }
     }

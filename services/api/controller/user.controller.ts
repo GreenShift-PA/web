@@ -80,7 +80,7 @@ export class UserController {
 
         const users = await UserModel.find({})
         if(!users){
-            res.status(404).json({"message" : "Not found"})
+            res.status(404).json({"message" : "No users"})
             return
         }
         users.forEach(user => {
@@ -129,7 +129,7 @@ export class UserController {
 
     getRoles = async (req: Request, res: Response): Promise<void> => {
 
-        const roles = await RoleModel.find()
+        const roles = await RoleModel.find({})
 
         res.send(roles)
     }
@@ -146,7 +146,12 @@ export class UserController {
             return
         }
 
-        const user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+        let user
+        try{
+            user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+        }catch(e){
+            res.status(404).json("User not found")
+        }
 
         res.status(200).json(user)
     }

@@ -23,7 +23,7 @@ export class TreeController {
             }
             res.status(200).json(trees)
         }catch(err){
-            res.status(404).json({"message" : "User not found"})
+            res.status(404).json({"message" : "Tree not found"})
             return 
         }
     }
@@ -40,7 +40,7 @@ export class TreeController {
             }
             res.status(200).json(tree)
         }catch(err){
-            res.status(404).json({"message" : "User not found"})
+            res.status(404).json({"message" : "Tree not found"})
             return 
         }
 
