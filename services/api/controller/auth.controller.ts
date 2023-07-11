@@ -29,11 +29,11 @@ export class AuthController {
                 password: SecurityUtils.toSHA512(req.body.password)
             })
         }catch(err){
-            res.status(500).end()
+            res.status(400).end()
             return
         }
         if (!user){
-            res.status(500).end()
+            res.status(401).end()
             return
         }
         
