@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+
+  node-api-v2:
+    container_name: api_node_V2
+    build: ./services/api_V2
+    depends_on:
+      - mongo
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./services/api_V2:/app
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/Tree-api-web
+      MANGODB_USER: root
+      MANGODB_PASSWORD: passwordRoot
+      PORT: 3000
+
+  mongo:
+    image: mongo
+    container_name: mongo_db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: passwordRoot
