@@ -17,6 +17,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { VerticalNavbarComponent } from './components/vertical-navbar/vertical-navbar.component';
 import { SectionComponent } from './components/section/section.component';
 import { CardComponent } from './components/card/card.component';
+import { TodosComponent } from './components/todos/todos.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { CardComponent } from './components/card/card.component';
     NavbarComponent,
     VerticalNavbarComponent,
     SectionComponent,
-    CardComponent
+    CardComponent,
+    TodosComponent
   ],
   imports: [
     BrowserModule,

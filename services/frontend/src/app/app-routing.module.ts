@@ -9,6 +9,7 @@ import { BlogComponent } from './components/blog/blog.component';
 import { ToDoListComponent } from './components/to-do-list/to-do-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
+import { TodosComponent } from './components/todos/todos.component';
 
 const routes: Routes = [
   
@@ -19,7 +20,7 @@ const routes: Routes = [
   { path: 'virtualforest', component: VirtualForestComponent },
   { path: 'blog', component: BlogComponent },
   { path: 'calculator', component: CalculatorComponent },
-  { path: 'todolist', component: ToDoListComponent },
+  { path: 'todolist', component: TodosComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

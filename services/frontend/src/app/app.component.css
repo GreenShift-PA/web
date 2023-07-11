@@ -3,10 +3,12 @@
     padding: 0;
     margin: 0;
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 body{
     background : var(--color-bg);
+
 }
 
 
@@ -43,4 +45,11 @@ a {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .container{
+    /* border: 1px solid red; */
+    margin-left: 7rem;
+    max-width: none;
+    width: 94vw;
   }

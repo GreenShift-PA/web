@@ -7,7 +7,9 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "npm run build && npm start",
-    "dev-nodemon": "npx nodemon -L ./index.ts"
+    "dev-nodemon": "npx nodemon -L ./index.ts",
+    "nodemon": "npx nodemon -L ./index.ts"
+
   },
   "author": "",
   "license": "ISC",
