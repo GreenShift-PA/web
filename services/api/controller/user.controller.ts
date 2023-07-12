@@ -62,7 +62,7 @@ export class UserController {
         }catch(err: unknown){
             const me = err as {[key: string]: unknown}
             if (me['name'] === "MongoServerError" && me['code'] === 11000){
-                res.status(409).end()
+                res.status(409).json({"message": "The login is already in use."})
             }else{
                 console.log(me)
                 res.status(500).end()
@@ -150,6 +150,10 @@ export class UserController {
         let user
         try{
             user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+            if(user){
+                user.password = ""
+                user.roles = []
+            }
         }catch(e){
             res.status(404).json("User not found")
         }
