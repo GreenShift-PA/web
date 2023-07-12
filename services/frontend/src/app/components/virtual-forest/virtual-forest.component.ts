@@ -2,187 +2,156 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import * as THREE from "three"
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 @Component({
-  selector: 'app-virtual-forest',
-  templateUrl: './virtual-forest.component.html',
-  styleUrls: ['./virtual-forest.component.css']
+selector: 'app-virtual-forest',
+templateUrl: './virtual-forest.component.html',
+styleUrls: ['./virtual-forest.component.css']
 })
-export class VirtualForestComponent implements OnInit, AfterViewInit{
+export class VirtualForestComponent implements OnInit{
 
-  ngOnInit(): void {
-    this.createThreeJsBox();
-  }
+	ngOnInit(): void {
+		this.createThreeJsBox();
+	}
 
-  ngAfterViewInit(): void {
-      
-  }
+	tileToPosition(tileX:number, tileY:number){
+		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
+	}
+	
+	createThreeJsBox = () => {
+		
+		const canvas = document.getElementById('canvas')
+		if (!canvas){return }
+		
+		//Setup debug 
+		const gui = new dat.GUI()
+		const gui_scene = gui.addFolder("Scene")
+		const gui_light = gui_scene.addFolder("Lights")
+		const gui_directional_light = gui_light.addFolder("Directional light")
+		const gui_anbiant_light = gui_light.addFolder("Ambient light")
+		const parameters_scene = {
+			bg_color: "#ffeecc"
+		}
+		
+		// Set up Scene
+		const scene = new THREE.Scene()
+		scene.background = new THREE.Color(parameters_scene.bg_color)
+		gui_scene.addColor(parameters_scene, "bg_color").onChange((value: THREE.Color) => {
+			// TODO: Maybe need to change
+			scene.background = new THREE.Color(parameters_scene.bg_color)
+		})
 
-  createThreeJsBox(): void {
-    THREE.ColorManagement.enabled = false
+		const hexagon_group = new THREE.Group()
+		const height : number = 3
 
-    const gui = new dat.GUI()
+		const hexagon_grometry = new THREE.CylinderGeometry(1, 1, height, 6, 1, false)
+		const hexagon_material = new THREE.MeshStandardMaterial({color: '#B2B6B1'})
 
-    const canvas = document.getElementById('canvas');
-    if(!canvas){
-      console.log("pas de canvas")
-      return 
-    }
+		for (let i = -10; i <= 10; i++){
+			for (let j = -10; j <= 10; j++){
+				const hexa = new THREE.Mesh(hexagon_grometry, hexagon_material)
+				const hexa_position: THREE.Vector2 = this.tileToPosition(i, j)
+				
+				if (hexa_position.length() > 16) continue
+				
+				hexa.position.set(hexa_position.x, height * 0.5, hexa_position.y)
+				hexagon_group.add(hexa)
+			}
+		}
 
-    const scene = new THREE.Scene();
+		scene.add(hexagon_group)
 
-    const parameters = {
-      count : 1000,
-      size : 0.02,
-      radius : 5,
-      branches : 3,
-      spin : 1,
-      randomness : 0.2,
-      randomnessPower : 3,
-      insideColor : "#ff6030",
-      outsideColor : "#1b3984",
-    }
 
-    let geometry:any = null
-    let points:any = null
-    let material:any = null
+		// Ambient light
+		const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.12)
+		gui_anbiant_light.add(ambientLight, 'intensity').min(0).max(1).step(0.001).name("Intensity ambiant light")
+		scene.add(ambientLight)
+		
+		// Directional light
+		const directionalLight = new THREE.DirectionalLight('#b9d5ff', 0.12)
+		directionalLight.position.set(4, 10, 0)
+		
+		const directionalLightCameraHelper = new THREE.DirectionalLightHelper(directionalLight)
+		directionalLightCameraHelper.visible = false
+		scene.add(directionalLightCameraHelper)
 
-    const generateGalaxy = () => {
+		gui_directional_light.add(directionalLightCameraHelper, "visible")
+		gui_directional_light.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
+		gui_directional_light.add(directionalLight.position, 'x').min(- 5).max(15).step(0.001)
+		gui_directional_light.add(directionalLight.position, 'y').min(- 5).max(15).step(0.001)
+		gui_directional_light.add(directionalLight.position, 'z').min(- 5).max(15).step(0.001)
+		scene.add(directionalLight)
 
-      // Disctroy old galaxy
-      if (points !== null){
-          geometry.dispose()
-          material.dispose()
-          scene.remove(points)
-      }
-  
-      geometry = new THREE.BufferGeometry()
-      
-      const position = new Float32Array(parameters.count * 3)
-      const colors = new Float32Array(parameters.count * 3)
-      
-      const colorInside = new THREE.Color(parameters.insideColor)
-      const colorOutside = new THREE.Color(parameters.outsideColor)
-      
-      for (let i = 0; i < parameters.count; i++){
-          const i3 = i * 3
-  
-          // Position
-          const radius = Math.random() * parameters.radius
-          const spinAngle = radius * parameters.spin
-          const branchesAngle = ( i % parameters.branches ) / parameters.branches * Math.PI * 2
-  
-          const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-          const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-          const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-          
-          position[i3] = Math.cos(branchesAngle + spinAngle) * radius + randomX
-          position[i3 + 1] = 0 + randomY
-          position[i3 + 2] = Math.sin(branchesAngle + spinAngle) * radius + randomZ
-  
-          // Color 
-          const mixedColor = colorInside.clone()
-          mixedColor.lerp(colorOutside, radius / parameters.radius)
-  
-          colors[i3 + 0] = mixedColor.r
-          colors[i3 + 1] = mixedColor.g
-          colors[i3 + 2] = mixedColor.b
-      }
-      
-      geometry.setAttribute('position', new THREE.BufferAttribute(position, 3))
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-  
-      
-      material = new THREE.PointsMaterial({
-          size: parameters.size,
-          sizeAttenuation: true,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-          vertexColors: true
-      })
-      
-      points = new THREE.Points(geometry, material)
-      scene.add(points)
-      
-    }
 
-    gui.add(parameters, "count").min(100).max(10000).step(100).onFinishChange(generateGalaxy)
-    gui.add(parameters, "size").min(0.01).max(0.1).step(0.01).onFinishChange(generateGalaxy)
-    gui.add(parameters, "radius").min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
-    gui.add(parameters, "branches").min(2).max(20).step(1).onFinishChange(generateGalaxy)
-    gui.add(parameters, "spin").min(-5).max(5).step(0.1).onFinishChange(generateGalaxy)
-    gui.add(parameters, "randomness").min(0).max(2).step(0.001).onFinishChange(generateGalaxy)
-    gui.add(parameters, "randomnessPower").min(1).max(10).step(0.01).onFinishChange(generateGalaxy)
-    gui.addColor(parameters, "insideColor").onFinishChange(generateGalaxy)
-    gui.addColor(parameters, "outsideColor").onFinishChange(generateGalaxy)
+		const sizes = {
+			width: window.innerWidth,
+			height: window.innerHeight
+		}
 
-    generateGalaxy()
+		window.addEventListener('resize', () =>
+{
+			// Update sizes
+			sizes.width = window.innerWidth
+			sizes.height = window.innerHeight
 
-    /**
-     * Sizes
-    */
-    const sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight
-    }
+			// Update camera
+			camera.aspect = sizes.width / sizes.height
+			camera.updateProjectionMatrix()
 
-    window.addEventListener('resize', () =>
-    {
-      // Update sizes
-      sizes.width = window.innerWidth
-      sizes.height = window.innerHeight
+			// Update renderer
+			renderer.setSize(sizes.width, sizes.height)
+			renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+		})
+		/**
+		 * Camera
+		 */
+		// Base camera
+		const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000)
+		camera.position.set(-17, 31, 33);
+		scene.add(camera)
 
-      // Update camera
-      camera.aspect = sizes.width / sizes.height
-      camera.updateProjectionMatrix()
+		// Controls
+		const controls = new OrbitControls(camera, canvas)
+		controls.target.set(0,0,0)
+		controls.enableDamping = true
 
-      // Update renderer
-      renderer.setSize(sizes.width, sizes.height)
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    })
-    /**
-     * Camera
-     */
-    // Base camera
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-    camera.position.x = 3
-    camera.position.y = 3
-    camera.position.z = 3
-    scene.add(camera)
+		// Renderer
+		const renderer = new THREE.WebGLRenderer({
+			canvas: canvas
+		})
+		renderer.setSize(innerWidth, innerHeight)
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+		renderer.setClearColor('#262837')
 
-    // Controls
-    const controls = new OrbitControls(camera, canvas)
-    controls.enableDamping = true
 
-    /**
-     * Renderer
-     */
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas
-    })
-    renderer.outputColorSpace = THREE.LinearSRGBColorSpace
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+		
 
-    /**
-     * Animate
-     */
-    const clock = new THREE.Clock()
 
-    const tick = () =>
-    {
-        const elapsedTime = clock.getElapsedTime()
 
-        // Update controls
-        controls.update()
+		/**
+ 		* Animate
+		*/
+		const clock = new THREE.Clock()
 
-        // Render
-        renderer.render(scene, camera)
+		const tick = () => {
 
-        // Call tick again on the next frame
-        window.requestAnimationFrame(tick)
-    }
+			const elapsedTime = clock.getElapsedTime()
 
-    tick()
-  }
+			// Update controls
+			controls.update()
+
+			// Render
+			renderer.render(scene, camera)
+		
+			// Call tick again on the next frame
+			window.requestAnimationFrame(tick)
+
+		}
+
+		tick()
+	}
+
+
+
 }
