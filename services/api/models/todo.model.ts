@@ -1,7 +1,4 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { Role } from "./role.model";
-import { Tree } from "./tree.model";
-import { Post } from "./post.model";
 import { Subtask } from "./subTask.model";
 
 const todoShemma = new Schema<Todo>({

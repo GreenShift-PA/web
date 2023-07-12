@@ -54,7 +54,8 @@ export class UserController {
                 password: SecurityUtils.toSHA512(password),
                 roles:[this.guestRole],
                 tree,
-                posts: []
+                posts: [],
+                todoTask: []
             })
             res.json(user)
 

@@ -16,11 +16,6 @@ const subtaskShemma = new Schema<Subtask>({
     description:{
         type: Schema.Types.String,
         required: true
-    },
-    masterTask: {
-        type: Schema.Types.ObjectId,
-        ref: "Todo",
-        required: true 
     }
 }, {
     versionKey: false,
@@ -32,7 +27,6 @@ export interface Subtask{
     isDone: boolean,
     title: string,
     description: string,
-    masterTask: Todo
 }
 
 export const SubtaskModel: Model<Subtask> = mongoose.model("Subtask", subtaskShemma)
