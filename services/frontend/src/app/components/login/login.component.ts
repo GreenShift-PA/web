@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent {
-  email = '';
-  password = '';
+  user = {
+    email: null,
+    password: null
+  };
 
-  constructor(private authService: AuthService) { }
+  constructor() {}
 
-  login(): void {
-    if (this.authService.login(this.email, this.password)) {
-      alert('Logged in!');
-    } else {
-      alert('Invalid email or password');
-    }
+  onSubmit(user: any) {
+    console.log(user);
   }
 }

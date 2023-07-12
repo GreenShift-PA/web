@@ -13,6 +13,11 @@
     border-color:var(--color-secondary) ;
     color: var(--color-secondary);
 }
+.second-button_link:hover{
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border-color: var(--color-secondary);
+}
 
 .second-button_link {
     border-color:var(--color-secondary) ;

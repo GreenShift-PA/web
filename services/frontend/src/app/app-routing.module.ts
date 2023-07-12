@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'calculator', component: CalculatorComponent },
   { path: 'todolist', component: TodosComponent },
+  
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
