@@ -1,0 +1,11 @@
+.border-green-500 {
+    border-color: #34D399 !important;
+  }
+  
+  .border-red-500 {
+    border-color: #EF4444 !important;
+  }
+
+  .password-rules-title{
+    text-align: start;
+  }

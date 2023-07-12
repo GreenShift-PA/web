@@ -50,6 +50,8 @@ export class TodosComponent implements OnInit {
   }
 
   toggleDone_todos(id: number) {
+    setTimeout(()=>{
+ 
     const todo = this.todos[id];
     todo.completed = !todo.completed;
   
@@ -57,16 +59,23 @@ export class TodosComponent implements OnInit {
       this.todos_done.push(todo);
       this.todos = this.todos.filter((_, i) => i !== id);
     }
+    
+},300)
   }
   
   toggleDone_todos_done(id: number) {
-    const todo = this.todos_done[id];
-    todo.completed = !todo.completed;
-  
-    if (!todo.completed) {
-      this.todos.push(todo);
-      this.todos_done = this.todos_done.filter((_, i) => i !== id);
-    }
+setTimeout(()=>{
+ 
+  const todo = this.todos_done[id];
+  todo.completed = !todo.completed;
+
+  if (!todo.completed) {
+    this.todos.push(todo);
+    this.todos_done = this.todos_done.filter((_, i) => i !== id);
+  }
+},300)
+
+   
   }
   
   deleteTodo(id:number){

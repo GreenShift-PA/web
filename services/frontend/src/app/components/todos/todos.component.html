@@ -19,7 +19,7 @@
     <div *ngFor="let todo of todos_done; let i = index" class="tasks rounded-2xl h-12 mb-3 todo {{(todo.completed ? 'done' : '')}}" >
          <div class="item">
             <div class="checkbox-rect">
-              <input type="checkbox" id="checkbox-rect{{i+todos.length}}" name="check" (click)="toggleDone_todos_done(i)">
+              <input type="checkbox" id="checkbox-rect{{i+todos.length}}" name="check" [checked]="todo.completed" (click)="toggleDone_todos_done(i)" >
               <label for="checkbox-rect{{i+todos.length}}"></label>
             </div>
           </div>
