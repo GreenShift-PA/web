@@ -34,18 +34,26 @@ export class StartService{
                 name: "First tree of " + login.split("@")[0],
                 size : 0
             })
-            let userRoles:(Document<unknown, {}, Role> & Omit<Role & {_id: Types.ObjectId;}, never>)[] = []
-            if (login.includes("admin")){
-                userRoles = roles.map((role) => {if(role.name === "admin"){return role} else {return null}}).filter((role) => {if(role){return role} else {return null}}) as (Document<unknown, {}, Role> & Omit<Role & {_id: Types.ObjectId;}, never>)[]
-            }else{
-                userRoles = roles.map((role) => {if(role.name === "guest"){return role} else {return null}}).filter((role) => {if(role){return role} else {return null}}) as (Document<unknown, {}, Role> & Omit<Role & {_id: Types.ObjectId;}, never>)[]
+            let userRoles: (Document<unknown, {}, Role> & Omit<Role & {_id: string;}, never>)[] = [];
+            const adminRole = roles.find((role) => role.name === "admin");
+            const guestRole = roles.find((role) => role.name === "guest");
+
+            if (login.includes("admin")) {
+                if (adminRole && guestRole) {
+                    userRoles = [adminRole, guestRole];
+                }
+            } else {
+                if (guestRole) {
+                    userRoles = [guestRole];
+                }
             }
             UserModel.create({
                 login,
                 password: SecurityUtils.toSHA512("password"),
                 roles: userRoles,
                 tree,
-                posts: []
+                posts: [],
+                todoTask: []
             })
         })
         await Promise.all(usersRequest)

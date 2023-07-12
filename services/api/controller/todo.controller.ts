@@ -171,18 +171,37 @@ export class TodoController {
             res.status(401).json({"message": "You can't do this"})
             return 
         }
-
+        
         await TodoModel.findByIdAndDelete(req.query.todo_id)
-
+        
         res.status(200).json({"message": "The todo task is deleted."})
         return
     }
 
+    readonly queryGetOneTask = {
+        "todo_id" : "string | undefined"
+    }
+
     getTask = async (req:Request, res:Response): Promise<void> => {
         // Get your tasks 
-        if (!req.user){res.status(500).json({"message": "This error should not be learned."}); return }
-        
-        res.status(200).json(((await req.user?.populate("todoTask"))?.todoTask))
+
+        // If the task is not specified, return all 
+        if (!req.query.todo_id){
+            res.status(200).json(((await req.user?.populate("todoTask"))?.todoTask))
+            return 
+        }
+
+        // If not return the task
+        if (!req.user || typeof req.query.todo_id !== "string"){res.status(500).end(); return}
+
+        const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id )
+
+        if (typeof todo_task === "boolean"){
+            res.status(401).json({"message": "You can't do this"})
+            return 
+        }
+
+        res.status(200).json(await todo_task.populate("subtask"))
         return 
 
     }
@@ -208,9 +227,10 @@ export class TodoController {
         return
     }
 
+
     buildRouter = (): Router => {
         const router = express.Router()
-        router.get('/', checkUserToken(), this.getTask.bind(this))
+        router.get('/', checkUserToken(), checkQuery(this.queryGetOneTask), this.getTask.bind(this))
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
         router.post('/', express.json(), checkUserToken(), checkBody(this.paramsCreateTask), this.createTask.bind(this))
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))

@@ -40,10 +40,11 @@ export class UserController {
 
         const login: string = req.body.login
         const password: string  = req.body.password
+        let tree
 
         try{
 
-            const tree = await TreeModel.create({
+            tree = await TreeModel.create({
                 name: req.body.tree_name,
                 size : 0
             })
@@ -62,6 +63,10 @@ export class UserController {
         }catch(err: unknown){
             const me = err as {[key: string]: unknown}
             if (me['name'] === "MongoServerError" && me['code'] === 11000){
+                if(tree){
+                    console.log("le tree en plus est supprimer")
+                    await TreeModel.findByIdAndDelete(tree._id)
+                }
                 res.status(409).json({"message": "The login is already in use."})
             }else{
                 console.log(me)

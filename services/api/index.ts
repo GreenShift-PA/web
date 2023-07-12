@@ -21,22 +21,25 @@ const startServer = async (): Promise<void> => {
     })
 
     await StartService.userRoles()
-    await StartService.createUsers()
-
+    
     const app = express()
-
+    
     app.use(morgan("short"))
-
+    
     app.get("/", (req:Request, res:Response) => {
         res.send('Server up')
     })
-
+    
     const userController = new UserController()
     const authController = new AuthController() 
     const treeController = new TreeController()
     const postController = new PostController()
     const messageController = new MessageController()
     const todoController = new TodoController()
+    
+    // This call to the function is out of place because if we put StartService.createUsers() after StartService.userRoles(), 
+    //      then the creation doesn't work because the program is trying to create a user while the creation role is not finished.
+    await StartService.createUsers()
 
     app.use(userController.path, userController.buildRouter())
     app.use(authController.path, authController.buildRouter())
