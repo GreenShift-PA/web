@@ -5,6 +5,7 @@ export function checkBody(params: Record<string, string>): RequestHandler{
         
         // Check if there is a body
         if(!req.body){
+            console.log("There is no body")
             res.status(400).end()
             return 
         }
@@ -14,6 +15,7 @@ export function checkBody(params: Record<string, string>): RequestHandler{
             let type = params[param]
 
             if (!(param in req.body )&& !type.includes('undefined')){
+                console.log(`${param} is missing`)
                 res.status(400).end()
                 return
             }

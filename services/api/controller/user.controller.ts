@@ -40,10 +40,11 @@ export class UserController {
 
         const login: string = req.body.login
         const password: string  = req.body.password
+        let tree
 
         try{
 
-            const tree = await TreeModel.create({
+            tree = await TreeModel.create({
                 name: req.body.tree_name,
                 size : 0
             })
@@ -54,14 +55,19 @@ export class UserController {
                 password: SecurityUtils.toSHA512(password),
                 roles:[this.guestRole],
                 tree,
-                posts: []
+                posts: [],
+                todoTask: []
             })
             res.json(user)
 
         }catch(err: unknown){
             const me = err as {[key: string]: unknown}
             if (me['name'] === "MongoServerError" && me['code'] === 11000){
-                res.status(409).end()
+                if(tree){
+                    console.log("le tree en plus est supprimer")
+                    await TreeModel.findByIdAndDelete(tree._id)
+                }
+                res.status(409).json({"message": "The login is already in use."})
             }else{
                 console.log(me)
                 res.status(500).end()
@@ -149,6 +155,10 @@ export class UserController {
         let user
         try{
             user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+            if(user){
+                user.password = ""
+                user.roles = []
+            }
         }catch(e){
             res.status(404).json("User not found")
         }

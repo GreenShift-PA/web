@@ -2,6 +2,7 @@ import mongoose, { Schema, Model } from "mongoose";
 import { Role } from "./role.model";
 import { Tree } from "./tree.model";
 import { Post } from "./post.model";
+import { Todo } from "./todo.model";
 
 const userShemma = new Schema<User>({
     login: {
@@ -28,6 +29,11 @@ const userShemma = new Schema<User>({
         type: Schema.Types.ObjectId,
         ref: "Post",
         required: true
+    }],
+    todoTask: [{
+        type: Schema.Types.ObjectId,
+        ref: "Todo",
+        required: true
     }]
 }, {
     versionKey: false,
@@ -41,6 +47,7 @@ export interface User{
     roles: Role[]
     tree: Tree
     posts: Post[]
+    todoTask: Todo[]
 }
 
 export const UserModel: Model<User> = mongoose.model("User", userShemma)
