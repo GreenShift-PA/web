@@ -1,296 +1,204 @@
+import { Document, Model } from "mongoose"
+import { Post, PostModel } from "../models/post.model"
+import * as express from "express"
 import { Router, Response, Request } from "express"
-import * as express from 'express'
-import { UserService } from "../services/user.service"
-import { PostService } from "../services/post.service"
-import { CommentService } from "../services/comment.service"
+import { checkBody, checkUserRole, checkUserToken } from "../middleware"
+import { RolesEnums } from "../enums"
+import { checkQuery } from "../middleware/query.middleware"
+import { CommentModel, UserModel } from "../models"
 
-export class PostController{
+export class PostController {
 
     readonly path: string
-    readonly pool: any
+    readonly model: Model<Post>
 
-    constructor(pool:any){
+
+    constructor(){
         this.path = "/post"
-        this.pool = pool
+        this.model = PostModel
     }
 
-    /**
-     * @openapi
-     * /post/{id}:
-     *   get:
-     *     tags:
-     *       - Post
-     *     summary: Get information about a post
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         required: true
-     *         description: Post ID
-     *         schema:
-     *           type: integer
-     *     responses:
-     *       200:
-     *         description: OK
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 ID:
-     *                   type: integer
-     *                   default: 0
-     *                   example: 6
-     *                 user_id:
-     *                   type: integer
-     *                   default: 0
-     *                   example: 1
-     *                 tree_id:
-     *                   type: integer
-     *                   default: 0
-     *                   example: 2
-     *                 title:
-     *                   type: string
-     *                   default: ""
-     *                   example: "My awesome post"
-     *                 description:
-     *                   type: string
-     *                   default: ""
-     *                   example: "This is the description of my awesome post"
-     *                 likes:
-     *                   type: integer
-     *                   default: 0
-     *                   example: 10
-     *                 is_valid:
-     *                   type: integer
-     *                   default: 0
-     *                   example: 12
-     *                 date:
-     *                   type: string
-     *                   format: date-time
-     *                   default: "2023-05-05T00:00:00.000Z"
-     *                   example: "2023-05-05T12:34:56.000Z"
-     *       404:
-     *         description: Not found
-     */
-    getPost = async (req:Request<{id: number}>, res:Response) => {
-        const [post] = await PostService.getPost(req.params.id, this.pool)
-        if(!post){ 
-            res.status(404).end()
-            return 
-        }        
-        res.status(200).json(post)
+    readonly paramsNewPost = {
+        "title" : "string",
+        "description" : "string",
     }
 
-    /**
-     * @openapi
-     * /post:
-     *   post:
-     *     tags:
-     *       - Post
-     *     summary: Create a new post
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               user_id:
-     *                 type: integer
-     *               title:
-     *                 type: string
-     *               description:
-     *                 type: string
-     *             required:
-     *               - user_id
-     *               - title
-     *               - description
-     *     responses:
-     *       201:
-     *         description: OK
-     *         content:
-     *           text/plain:
-     *             schema:
-     *               type: string
-     *               example: ok
-     *       400:
-     *         description: Bad request
-     *       500:
-     *         description: Internal server error
-     */
+    newPost = async (req: Request, res: Response): Promise<void> => {
 
-    newPost = async (req:Request, res:Response) => {
+        const newPost = await PostModel.create({
+            title: req.body.title,
+            description: req.body.description,
+            like: [],
+            comments: [],
+            whoValidates: [],
+            treeLinked: req.user?.tree
+        })
 
-        if (!req.body || !req.body.user_id || !req.body.title || !req.body.description){
-            // If there is not all the parameters
-            res.status(400).end()
+        try{
+            req.user?.posts.push(newPost)
+            req.user?.save()
+            
+        }catch(err){
+            res.status(500).end()
             return 
         }
-
-        if(typeof req.body.user_id !== 'number' || typeof req.body.title !== 'string' || typeof req.body.description !== 'string'){
-            // If the types are not the correct one
-            res.status(400).end()
-            return
-        }
-
-        if (!await UserService.isUser(req.body.user_id, this.pool)){
-            // If user do not existe
-            res.status(400).end()
-            return
-        }
-
-        const answer = await PostService.newPost(req.body.user_id, req.body.title, req.body.description, this.pool)
-        if (answer){
-            res.status(201).send("ok")
-        }
-        res.status(500).end() 
-        return 
-    }
-
-    /**
-     * @openapi
-     * /post/{id}:
-     *   delete:
-     *     tags:
-     *       - Post
-     *     summary: Delete a post
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         required: true
-     *         description: Post ID
-     *         schema:
-     *           type: integer
-     *     responses:
-     *       201:
-     *         description: OK
-     *         content:
-     *           text/plain:
-     *             schema:
-     *               type: string
-     *               example: OK
-     *       400:
-     *         description: Bad request
-     *       500:
-     *         description: Internal Server Error
-     */
-    deletePost = async (req:Request<{id: number}>, res:Response) => {
-        // TODO: Check if the user how delete is the same how created the post 
-
-        // Check if the post exist
-        if (!await PostService.postExist(req.params.id, this.pool)){
-            res.status(400).end()
-            return 
-        }
-
-        const answer = await PostService.deletePost(req.params.id, this.pool)
-        if (answer){
-            res.status(201).send("ok")
-        }
-        res.status(500).end() 
-        return 
-
-    }
-
-    /**
-     * @openapi
-     * /post/{id}/comments:
-     *   get:
-     *     tags:
-     *       - Post
-     *     summary: Get all comments associated with a post
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         required: true
-     *         description: Post ID
-     *         schema:
-     *           type: integer
-     *     responses:
-     *       200:
-     *         description: OK
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: array
-     *               items:
-     *                 type: object
-     *                 properties:
-     *                   ID:
-     *                     type: integer
-     *                     example: 1
-     *                   post_id:
-     *                     type: integer
-     *                     example: 2
-     *                   user_id:
-     *                     type: integer
-     *                     example: 3
-     *                   description:
-     *                     type: string
-     *                     example: "This is a comment."
-     *                   likes:
-     *                     type: integer
-     *                     example: 5
-     *       406:
-     *         description: Not Acceptable
-     *       404:
-     *         description: Not Found
-     */
-    getAllComments = async (req:Request<{id: number}>, res:Response) => {
-        if (!await PostService.postExist(req.params.id, this.pool)){
-            res.status(406).end()
-            return 
-        }
-        const comments = await PostService.getAllComments(req.params.id, this.pool)
-        if(!comments){ 
-            res.status(404).end()
-            return 
-        }
-        res.status(200).json(comments)
-    }
-
-    /**
-     * @openapi
-     * /post/{id}/validated:
-     *   get:
-     *     tags:
-     *       - Post
-     *     summary: Get the number of validations for a post
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         required: true
-     *         description: Post ID
-     *         schema:
-     *           type: integer
-     *     responses:
-     *       200:
-     *         description: OK
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: integer
-     *               example: 5
-     *       406:
-     *         description: Not Acceptable
-     *       404:
-     *         description: Not Found
-     */
-    getNbrValidated = async (req:Request<{id: number}>, res:Response) => {
-
-        const answer = await PostService.getNbrValidation(req.params.id, this.pool)
         
-        res.status(200).send(`${answer}`)
+        res.status(201).json(newPost)
+        return 
     }
+
+    readonly queryPostId = { 
+        "id" : "string"
+    }
+
+    getOnePost = async (req:Request, res:Response): Promise<void> => {
+        
+        try{
+            const post = await PostModel.findById(req.query.id).populate({
+                path: "comments"
+            })
+            if (!post){
+                res.status(404).end()
+                return 
+            }
+            res.status(200).json(post)
+        }catch(err){
+            res.status(404).end()
+            return
+        }
+    }
+
+    readonly paramsComment = {
+        "id_post" : "string",
+        "description": "string"
+    }
+
+    addComment = async (req: Request, res: Response): Promise<void> => {
+
+        let post : (Document<unknown, {}, Post> & Omit<Post & Required<{_id: string;}>, never>) | null  
+
+        try{
+            post = await PostModel.findById(req.body.id_post)
+            if(!post){
+                res.status(404).json({"message": "Post not found"})
+            }
+        }catch(err){
+            res.status(404).end()
+            return
+        }
+
+        const newComment = await CommentModel.create({
+            description: req.body.description,
+            author: req.user
+        })
+
+        post?.comments.push(newComment)
+        post?.save()
+
+        res.status(201).json(newComment)
+        return
+
+    }
+
+    readonly paramsLike = {
+        "post_id" : "string"
+    }
+
+    likePost = async (req:Request, res:Response): Promise<void> => {
+        
+        try{
+            const post = await PostModel.findById(req.body.post_id)
+            if (!post){
+                res.status(404).json({"message": "Post not found"})
+                return
+            }
+            if (!req.user){
+                res.status(403).end()
+                return 
+            }
+            if(!(post.like.some(l => String(l._id) === String(req.user?._id)))){
+                post.like.push(req.user)
+                post.save()
+                res.status(200).end()
+                return
+            }
+
+            res.status(401).json({"message" : "You've already liked this post"})
+            return 
+
+        }catch(err){
+            res.status(401).end()
+            return
+
+        }
+    }
+
+    nbrLike = async (req: Request, res: Response): Promise<void> => {
+        
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if(!post){
+                res.status(404).end()
+                return
+            }
+
+            res.status(200).json({"likes" : post.like.length})
+            
+        }catch(err){
+            res.status(404).end()
+            return
+        }
+    }
+
+    deletePost = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if(!post){
+                res.status(404).json({"message" :"Post not found"})
+                return 
+            }
+
+            if (req.user && req.user.posts.some(p =>  String(p._id) !== String(post._id))){
+                req.user.posts = req.user.posts.filter(p => {return String(p) !== String(post._id)})
+                post.deleteOne()
+                req.user.save()
+                res.status(200).json({"message" : "Post deleted"})
+                return 
+            }
+            res.status(401).json({"message" : "You're trying to delete a post that doesn't belong to you."})
+            return 
+ 
+        }catch(err){
+            res.status(401).json({"message": "This is not a post Id"})
+            return 
+        }
+    }
+    
+    getValidator = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const post = await PostModel.findById(req.query.id)
+            if(!post){
+                res.status(404).json({"messgae" : "Post not found"})
+                return 
+            }
+            res.status(200).json((await post.populate("whoValidates")).whoValidates)
+            return 
+        }catch(err){
+            res.status(400).json({"message": "This is not a Post Id"})
+            return
+        }
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
-        router.get(`/:id`, this.getPost.bind(this))
-        router.get(`/:id/comments`, this.getAllComments.bind(this))
-        router.get('/:id/validated', this.getNbrValidated.bind(this))
-        router.post('/', express.json(), this.newPost.bind(this))
-        router.delete('/:id', this.deletePost.bind(this))
+        router.get('/', checkUserToken(), checkUserRole(RolesEnums.guest), checkQuery(this.queryPostId), this.getOnePost.bind(this))
+        router.get('/like', checkUserToken(),checkQuery(this.queryPostId), this.nbrLike.bind(this))
+        router.get('/validate', checkUserToken(), checkQuery(this.queryPostId), this.getValidator.bind(this))
+        router.post('/', express.json(), checkUserToken(), checkUserRole(RolesEnums.guest), checkBody(this.paramsNewPost), this.newPost.bind(this))
+        router.post('/comment', express.json(), checkUserToken(), checkBody(this.paramsComment), this.addComment.bind(this))
+        router.patch('/like', express.json(), checkUserToken(), checkBody(this.paramsLike), this.likePost.bind(this))
+        router.delete('/', checkUserToken(), checkQuery(this.queryPostId), this.deletePost.bind(this))
         return router
     }
-
 }

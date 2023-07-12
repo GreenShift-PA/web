@@ -1,260 +1,99 @@
-import { Router, Response, Request } from "express"
-import * as express from 'express'
-import { UserService } from "../services/user.service"
-import { MessageService } from "../services/message.service"
+import { Model } from "mongoose"
+import { Message, MessageModel, UserModel } from "../models"
 
+import * as express from "express"
+import { Router, Response, Request } from "express"
+import { checkBody, checkUserToken } from "../middleware"
+import { checkQuery } from "../middleware/query.middleware"
 
 export class MessageController {
+
     readonly path: string
-    readonly pool: any
+    readonly model: Model<Message>
 
-    constructor(pool:any){
+    constructor(){
         this.path = "/message"
-        this.pool = pool
+        this.model = MessageModel
     }
 
-    /**
- * @openapi
- * /message/{id}:
- *   get:
- *     tags:
- *       - Message
- *     summary: Have a list of all conversations of a user
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: User ID
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   conversation_id:
- *                     type: integer
- *                     example: 1
- *                   last_message_date:
- *                     type: string
- *                     format: date-time
- *                     example: "2023-05-05T12:30:00Z"
- *                   sender_id:
- *                     type: integer
- *                     example: 2
- *                   sender_fullname:
- *                     type: string
- *                     example: "John Doe"
- *                   receiver_id:
- *                     type: integer
- *                     example: 3
- *                   receiver_fullname:
- *                     type: string
- *                     example: "Jane Smith"
- *             example: 
- *              - conversation_id: "3_4"
- *                last_message_date: '2023-05-04T17:05:11.000Z'
- *                sender_id: 3
- *                sender_fullname: Cristian URSU
- *                receiver_id: 4
- *                receiver_fullname: Lulu BUBU
- *              - conversation_id: "5_6"
- *                last_message_date: '2023-05-03T14:53:39.000Z'  
- *                sender_id: 5
- *                sender_fullname: Tata Gia
- *                receiver_id: 6
- *                receiver_fullname: Baba DID
- *       406:
- *         description: Not Acceptable
- *       404:
- *         description: Not Found
- */
-
-    getAllConversations = async (req: Request<{ id: number}>, res: Response) => {
-        // Checks if the user exists 
-        if (!await UserService.isUser(req.params.id, this.pool)){
-            res.status(406).end()
-            return 
-        }
-        // Returns a list of all the user's contacts 
-        const conv = await MessageService.getAllConversations(req.params.id, this.pool)
-        if(!conv){ 
-            res.status(404).end()
-            return 
-        }
-        res.status(200).json(conv)
+    readonly paramsSendMessage = {
+        "to": "string",
+        "message" : "string"
     }
 
-    /**
-     * @openapi
-     * /message/{idFrom}/{idTo}:
-     *   get:
-     *     tags:
-     *       - Message
-     *     summary: Get conversation between two users
-     *     parameters:
-     *       - in: path
-     *         name: idFrom
-     *         required: true
-     *         description: Sender's user ID
-     *         schema:
-     *           type: integer
-     *       - in: path
-     *         name: idTo
-     *         required: true
-     *         description: Receiver's user ID
-     *         schema:
-     *           type: integer
-     *     responses:
-     *       200:
-     *         description: OK
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: array
-     *               items:
-     *                 type: object
-     *                 properties:
-     *                   content:
-     *                     type: string
-     *                     example: "Hello, how are you?"
-     *                   sender_id:
-     *                     type: integer
-     *                     example: 1
-     *                   sender_fullname:
-     *                     type: string
-     *                     example: "John Doe"
-     *                   receiver_id:
-     *                     type: integer
-     *                     example: 2
-     *                   receiver_fullname:
-     *                     type: string
-     *                     example: "Jane Smith"
-     *                   date:
-     *                     type: string
-     *                     example: "2023-05-05T10:30:00.000Z"
-     *             example: 
-     *              - content: "Hello, how are you?"
-     *                sender_id: 4
-     *                sender_fullname: Cristian URSU
-     *                receiver_id: 3
-     *                receiver_fullname: John Doe
-     *                date: '2023-05-04T17:05:11.000Z'
-     *              - content: "Good and you ?"
-     *                sender_id: 4
-     *                sender_fullname: John Doe
-     *                receiver_id: 3
-     *                receiver_fullname: Cristian URSU
-     *                date: '2023-05-03T14:53:39.000Z'    
-     *       400:
-     *         description: Bad request
-     *       406:
-     *         description: Not Acceptable
-     *       500:
-     *         description: Internal Server Error
-     */
-    getConversation = async (req:Request<{ idFrom: number, idTo: number}>, res:Response) => {
-        if (req.params.idFrom === req.params.idTo){
-            res.status(406).end()
+    sendMessage = async (req: Request, res: Response): Promise<void> => {
+
+        console.log(req.body.to, req.user?._id);
+        if ( !req.user || req.user._id == req.body.to){
+            res.status(400).json({"message": "You can't send a message to yourself"})
             return 
         }
 
-        if (!await UserService.isUser(req.params.idFrom, this.pool) || !await UserService.isUser(req.params.idTo, this.pool)){
-            res.status(406).end()
-            return 
-        }
-        
+        let recipient
 
-        // Returns the conversation between 2 users  
-        const conv = await MessageService.getConversation(req.params.idFrom,req.params.idTo, this.pool)
-        if(!conv){ 
-            res.status(404).end()
+        try{
+            recipient = await UserModel.findById(req.body.to)
+        }catch(err){
+            res.status(400).json({"message" : "The recipient is not an Id"})
             return 
         }
-        res.status(200).json(conv)
+
+        if(!recipient){
+            res.status(404).json({"message" : "The user doesn't exist"})
+            return 
+        }
+
+        const message = await MessageModel.create({
+            from: req.user,
+            to: recipient,
+            message: req.body.message,
+            date: new Date()
+        })
+
+        res.status(201).json(message)
+        return 
     }
 
-    /**
-     * @openapi
-     * /message/:
-     *   post:
-     *     tags:
-     *       - Message
-     *     summary: Send a message from one user to another
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               from:
-     *                 type: number
-     *                 description: ID of the user sending the message
-     *               to:
-     *                 type: number
-     *                 description: ID of the user receiving the message
-     *               content:
-     *                 type: string
-     *                 description: Content of the message
-     *     responses:
-     *       200:
-     *         description: OK
-     *         content:
-     *           text/plain:
-     *             schema:
-     *               type: string
-     *               example: ok
-     *       400:
-     *         description: Bad request
-     *       406:
-     *         description: Not Acceptable
-     *       500:
-     *         description: Internal Server Error
-     */
-    sendMessage = async (req:Request, res:Response)=> {
-        if (!req.body || !req.body.from || !req.body.to || !req.body.content){
-            // If there is not all the parameters
-            res.status(400).end()
+    readonly queryGetConv = {
+        "contact" : "string"
+    }
+
+    getConversation = async (req: Request, res: Response): Promise<void> => {
+        let contact
+
+        try{
+            contact = await UserModel.findById(req.query.contact)
+            if(!contact){
+                res.status(404).json({"message" : "User not found"})
+            }
+        }catch(err){
+            res.status(400).json({"message": "This is not an user Id"})
             return 
         }
-        if(typeof req.body.from !== 'number' || typeof req.body.to !== 'number' || typeof req.body.content !== 'string' ){
-            // If the types are not the correct one
-            res.status(400).end()
+
+        try{
+            const conversation = await MessageModel.find({$or:[
+                {from: req.user, to:contact},
+                {from: contact, to:req.user}
+            ]})
+            if(!contact){
+                res.status(204).json({"message": "No conversation with this contact"})
+                return 
+            }
+            res.status(200).json(conversation)
             return
-        }
-        if (!await UserService.isUser(req.body.from, this.pool) ||  !await UserService.isUser(req.body.to, this.pool)){
-            // If users do not existe
-            res.status(400).end()
-            return
-        }
-
-        if (req.body.from === req.body.to){
-            res.status(406).end()
-            return 
-        }
-
-        const answer = await MessageService.sendMessage(req.body.from, req.body.to, req.body.content, this.pool)
-        if(!answer){
+        }catch(err){
+            console.log(err)
             res.status(500).end()
             return 
         }
-        res.status(200).send("ok")
-        return 
-
     }
 
 
     buildRouter = (): Router => {
         const router = express.Router()
-        router.get('/:id/', this.getAllConversations.bind(this))
-        router.get('/:idFrom/:idTo', this.getConversation.bind(this))
-        router.post('/', express.json(), this.sendMessage.bind(this))
+        router.get('/', checkUserToken(), checkQuery(this.queryGetConv), this.getConversation.bind(this))
+        router.post('/', express.json(), checkUserToken(), checkBody(this.paramsSendMessage), this.sendMessage.bind(this))
         return router
     }
 }

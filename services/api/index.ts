@@ -1,63 +1,60 @@
-import * as dotenv from "dotenv"
-dotenv.config()
-
 import * as express from 'express'
-import { UserController } from "./controller/user.controller"
-import { TreeController } from "./controller/tree.controller";
-import { MessageController } from "./controller/message.controller";
-import { PostController } from "./controller/post.controller";
-import { CommentController } from "./controller/comment.controller";
-import swaggerDocs from "./outils/swagger";
-const mysql = require('mysql2');
+import * as mongoose from 'mongoose'
+import * as morgan from "morgan"
 
-export const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PWD,
-    database: process.env.DB_NAME
-}).promise()
+import { Response, Request } from "express"
+import listEndpoints = require('express-list-endpoints')
+import { AuthController, UserController } from './controller'
+import { StartService } from './service'
+import { TreeController } from './controller/tree.controller'
+import { PostController } from './controller/post.controller'
+import { MessageController } from './controller/message.controller'
+import { TodoController } from './controller/todo.controller'
 
-const app = express()
+const startServer = async (): Promise<void> => {
 
-/**
- * @openapi
- * /:
- *  get:
- *     tags:
- *     - Healthcheck
- *     description: Responds if the app is up and running
- *     responses:
- *       200:
- *         description: App is up and running
- */
-app.get("/", (req, res) => {
-    res.status(200).send("Server Up")
-})
+    const connection = await mongoose.connect(process.env.MONGODB_URI as string, {auth: {
+            username: process.env.MANGODB_USER as string,
+            password: process.env.MANGODB_PASSWORD as string
+        },
+        authSource: "admin"
+    })
 
-const userController = new UserController(pool)
-const treeController = new TreeController(pool)
-const messageController = new MessageController(pool)
-const postController = new PostController(pool)
-const commentController = new CommentController(pool)
+    await StartService.userRoles()
+    
+    const app = express()
+    
+    app.use(morgan("short"))
+    
+    app.get("/", (req:Request, res:Response) => {
+        res.send('Server up')
+    })
+    
+    const userController = new UserController()
+    const authController = new AuthController() 
+    const treeController = new TreeController()
+    const postController = new PostController()
+    const messageController = new MessageController()
+    const todoController = new TodoController()
+    
+    // This call to the function is out of place because if we put StartService.createUsers() after StartService.userRoles(), 
+    //      then the creation doesn't work because the program is trying to create a user while the creation role is not finished.
+    await StartService.createUsers()
 
-// Route : /user/...
-app.use(userController.path, userController.buildRouter())
+    app.use(userController.path, userController.buildRouter())
+    app.use(authController.path, authController.buildRouter())
+    app.use(treeController.path, treeController.buildRouter())
+    app.use(postController.path, postController.buildRouter())
+    app.use(messageController.path, messageController.buildRouter())
+    app.use(todoController.path, todoController.buildRouter())
 
-// Route = /tree/...
-app.use(treeController.path, treeController.buildRouter())
+    app.listen(process.env.PORT, () => {
+        console.log(`Server up on PORT : ${process.env.PORT}`)
+    })
 
-// Route = /message/...
-app.use(messageController.path, messageController.buildRouter())
+    console.table(listEndpoints(app))
 
-// Route = /post/...
-app.use(postController.path, postController.buildRouter())
-
-// Route = /comment/...
-app.use(commentController.path, commentController.buildRouter())
-
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server up => ${process.env.PORT}`);
-
-    swaggerDocs(app)
+}
+startServer().catch((err) => {
+    console.error(err)
 })
