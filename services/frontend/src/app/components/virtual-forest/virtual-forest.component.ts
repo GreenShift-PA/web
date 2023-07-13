@@ -193,6 +193,8 @@ export class VirtualForestComponent implements OnInit{
 		const gui_light = gui_scene.addFolder("Lights")
 		const gui_directional_light = gui_light.addFolder("Directional light")
 		const gui_anbiant_light = gui_light.addFolder("Ambient light")
+
+		const gui_helper = gui.addFolder("Helpers")
 		const parameters_scene = {
 			bg_color: "#ffeecc",
 			height_water: this.MAX_HEIGHT * 0.2,
@@ -355,6 +357,10 @@ export class VirtualForestComponent implements OnInit{
 		camera.position.set(-17, 31, 33);
 		scene.add(camera)
 		
+		var arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffff00)
+		scene.add(arrowHelper)
+		gui_helper.add(arrowHelper, 'visible')
+		
 		// Controls
 		const controls = new OrbitControls(camera, canvas)
 		controls.target.set(0,0,0)
@@ -370,6 +376,33 @@ export class VirtualForestComponent implements OnInit{
 		renderer.shadowMap.enabled = true
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+		const mouse = new THREE.Vector2()
+		let intersects = new Array()
+
+		window.addEventListener('mousemove', (_event) => {
+
+			mouse.x = (_event.clientX / renderer.domElement.clientWidth) * 2 - 1,
+			mouse.y = -(_event.clientY / renderer.domElement.clientHeight) * 2 + 1,
+
+			raycaster.setFromCamera(
+				mouse,
+				camera
+			)
+			intersects = raycaster.intersectObjects(scene.children, false)
+			if (intersects.length > 0) {
+				let n = new THREE.Vector3()
+				n.copy(intersects[0].face.normal)
+				n.transformDirection(intersects[0].object.matrixWorld)
+				arrowHelper.setDirection(n)
+				arrowHelper.position.copy(intersects[0].point)
+			}
+		})
+
+		const raycaster = new THREE.Raycaster()
+
+		raycaster.setFromCamera(mouse, camera)
+
+
 
 		
 
@@ -384,6 +417,7 @@ export class VirtualForestComponent implements OnInit{
 		const tick = () => {
 
 			const elapsedTime = clock.getElapsedTime()
+
 
 			// Update controls
 			controls.update()
