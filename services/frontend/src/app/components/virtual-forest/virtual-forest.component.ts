@@ -45,14 +45,38 @@ export class VirtualForestComponent implements OnInit{
 
 		if (height > this.STONE_HEIGHT){
 			this.stoneGeo = mergeGeometries([this.stoneGeo, geo])
+			if(Math.random() > 0.8){
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+			}
+
 		}else if (height > this.DIRT_HEIGHT) {
 			this.dirstGeo = mergeGeometries([this.dirstGeo, geo])
+
+			if(Math.random() > 0.7){
+				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
+			}
+
 		}else if (height > this.GRASS_HEIGHT) {
 			this.grassGeo = mergeGeometries([this.grassGeo, geo])
+			if(Math.random() > 0.8){
+				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
+			}
+			if(Math.random() > 0.9 && this.stoneGeo){
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+			}
+
 		}else if (height > this.SAND_HEIGHT) {
 			this.sandGeo = mergeGeometries([this.sandGeo, geo])
+			if(Math.random() > 0.85 && this.stoneGeo){
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+			}
+
 		}else if (height > this.DIRT2_HEIGHT) {
 			this.dirst2Geo = mergeGeometries([this.dirst2Geo, geo])
+
+			if(Math.random() > 0.9 && this.stoneGeo){
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+			}
 		}
 	}
 
@@ -66,6 +90,33 @@ export class VirtualForestComponent implements OnInit{
 		mesh.receiveShadow = true
 
 		return mesh
+	}
+
+	makesStone = (height:number, position:THREE.Vector2) => {
+		const px = Math.random() * 0.4
+		const pz = Math.random() * 0.4
+
+		const geo = new THREE.SphereGeometry(Math.random() * 0.3 + 0.1, 7, 7)
+		geo.translate(position.x + px, height, position.y + pz)
+
+		return geo
+	}
+
+	makeTree = (height: number , position: THREE.Vector2) => {
+		// To change the height of the tree
+		const treeHeight = Math.random() * 1 + 1.25
+
+		const geo = new THREE.CylinderGeometry(0, 1.5, treeHeight, 3)
+		geo.translate(position.x, height + treeHeight * 0 + 1, position.y)
+
+		const geo2 = new THREE.CylinderGeometry(0, 1.15, treeHeight, 3)
+		geo2.translate(position.x, height + treeHeight * 0.6 + 1, position.y)
+
+		const geo3 = new THREE.CylinderGeometry(0, 0.8, treeHeight, 3)
+		geo3.translate(position.x, height + treeHeight * 1.25 + 1, position.y)
+
+		return mergeGeometries([geo, geo2, geo3])
+
 	}
 	
 	createThreeJsBox = () => {
@@ -182,7 +233,7 @@ export class VirtualForestComponent implements OnInit{
 		
 		// Directional light
 		const directionalLight = new THREE.DirectionalLight('#ffcb8e', 0.5)
-		directionalLight.position.set(10, 20, 10)
+		directionalLight.position.set(10, 12, 10)
 
 		// Direction Light Shadow setup Create shadows
 		directionalLight.castShadow = true
