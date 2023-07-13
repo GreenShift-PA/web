@@ -4,8 +4,7 @@ import { Document, Model } from "mongoose"
 import { Todo, TodoModel } from "../models/todo.model"
 import { Router, Request, Response } from "express"
 import { checkBody, checkUserToken } from "../middleware"
-import { UserModel } from "../models"
-import { SubtaskModel } from "../models/subTask.model"
+import { SubtaskModel, UserModel } from "../models"
 import { checkQuery } from "../middleware/query.middleware"
 
 export class TodoController {
@@ -13,41 +12,41 @@ export class TodoController {
     readonly path: string
     readonly model: Model<Todo>
 
-    constructor(){
+    constructor() {
         this.path = "/todo"
         this.model = TodoModel
     }
 
-    ifYourtask = async (user_id: string, task_id:string): Promise<(Document<unknown, {}, Todo> & Omit<Todo & Required<{_id: string;}>, never>) | boolean> => {
+    ifYourtask = async (user_id: string, task_id: string): Promise<(Document<unknown, {}, Todo> & Omit<Todo & Required<{ _id: string; }>, never>) | boolean> => {
         // If the user and the task's author are the same 
         // Return the Todo object 
         // else Return false 
-        try{
+        try {
 
             const todo_task = await TodoModel.findById(task_id)
             const user = await UserModel.findById(user_id)
 
-            if (!user || !todo_task){return false}
-            
-            for (let user_task of user?.todoTask){
-                if(JSON.stringify(user_task) === JSON.stringify(todo_task._id)){
-                    return todo_task   
+            if (!user || !todo_task) { return false }
+
+            for (let user_task of user?.todoTask) {
+                if (JSON.stringify(user_task) === JSON.stringify(todo_task._id)) {
+                    return todo_task
                 }
             }
             return false
 
-        }catch(e){
+        } catch (e) {
             return false
         }
     }
 
     readonly paramsCreateTask = {
-        "title" : "string",
+        "title": "string",
         "description": "string",
         "deadline": "string",
     }
 
-    createTask = async (req:Request, res:Response): Promise<void> => {
+    createTask = async (req: Request, res: Response): Promise<void> => {
 
         const newTask = await TodoModel.create({
             isDone: false,
@@ -65,22 +64,22 @@ export class TodoController {
     }
 
     readonly paramsUpdateStatusTask = {
-        "todo_id" : "string",
-        "isDone" : "boolean | undefined",
-        "title" : "string | undefined",
+        "todo_id": "string",
+        "isDone": "boolean | undefined",
+        "title": "string | undefined",
         "description": "string | undefined",
         "deadline": "string | undefined",
     }
 
-    updateStatusTask = async (req:Request, res:Response): Promise<void> => {
+    updateStatusTask = async (req: Request, res: Response): Promise<void> => {
 
-        if (!req.user){res.status(500).end(); return}
+        if (!req.user) { res.status(500).end(); return }
 
-        const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id )
+        const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id)
 
-        if (!todo_task || typeof todo_task === "boolean"){
-            res.status(401).json({"message": "You can't do this"})
-            return 
+        if (!todo_task || typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
         }
 
         const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
@@ -88,29 +87,29 @@ export class TodoController {
             title: req.body.title,
             description: req.body.description,
             deadline: req.body.deadline,
-        }, 
-        { new: true })
+        },
+            { new: true })
 
 
         res.status(200).json(updated_todo_task)
         return
     }
-    
+
     readonly paramsCreateSubtask = {
-        "todo_id" : "string",
-        "title" : "string",
+        "todo_id": "string",
+        "title": "string",
         "description": "string",
     }
 
-    createSubtask = async (req:Request, res:Response): Promise<void> => {
+    createSubtask = async (req: Request, res: Response): Promise<void> => {
 
-        if (!req.user){res.status(500).end(); return}
+        if (!req.user) { res.status(500).end(); return }
 
-        const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id )
+        const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id)
 
-        if (!todo_task || typeof todo_task === "boolean"){
-            res.status(401).json({"message": "You can't do this"})
-            return 
+        if (!todo_task || typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
         }
 
         const new_subtask = await SubtaskModel.create({
@@ -123,86 +122,86 @@ export class TodoController {
         todo_task.save()
 
         res.status(201).json(new_subtask)
-        return 
+        return
     }
 
     readonly paramsUpdateStatusSubtask = {
-        "subtask_id" : "string",
-        "isDone" : "boolean | undefined",
-        "title" : "string | undefined",
+        "subtask_id": "string",
+        "isDone": "boolean | undefined",
+        "title": "string | undefined",
         "description": "string | undefined",
     }
 
-    updateStatusSubtask = async (req:Request, res:Response): Promise<void> => {
+    updateStatusSubtask = async (req: Request, res: Response): Promise<void> => {
 
-        try{
+        try {
             const updated_todo_task = await SubtaskModel.findByIdAndUpdate(req.body.subtask_id, {
                 isDone: req.body.isDone,
                 title: req.body.title,
                 description: req.body.description,
                 deadline: req.body.deadline,
-            }, 
-            { new: true })
+            },
+                { new: true })
 
-            if(!updated_todo_task){
+            if (!updated_todo_task) {
                 res.status(404).end()
-                return 
+                return
             }
-            
+
             res.status(200).json(updated_todo_task)
             return
-        }catch(e){
-            res.status(401).json({"message": "Not a good Id"})
-            return 
+        } catch (e) {
+            res.status(401).json({ "message": "Not a good Id" })
+            return
         }
     }
 
     readonly queryDeleteTask = {
-        "todo_id" : "string"
+        "todo_id": "string"
     }
 
-    deleteTask = async (req:Request, res:Response): Promise<void> => {
+    deleteTask = async (req: Request, res: Response): Promise<void> => {
 
-        if (!req.user || typeof req.query.todo_id !== "string"){res.status(500).end(); return}
+        if (!req.user || typeof req.query.todo_id !== "string") { res.status(500).end(); return }
 
-        const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id )
+        const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id)
 
-        if (typeof todo_task === "boolean"){
-            res.status(401).json({"message": "You can't do this"})
-            return 
+        if (typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
         }
-        
+
         await TodoModel.findByIdAndDelete(req.query.todo_id)
-        
-        res.status(200).json({"message": "The todo task is deleted."})
+
+        res.status(200).json({ "message": "The todo task is deleted." })
         return
     }
 
     readonly queryGetOneTask = {
-        "todo_id" : "string | undefined"
+        "todo_id": "string | undefined"
     }
 
-    getTask = async (req:Request, res:Response): Promise<void> => {
+    getTask = async (req: Request, res: Response): Promise<void> => {
         // Get your tasks 
 
         // If the task is not specified, return all 
-        if (!req.query.todo_id){
+        if (!req.query.todo_id) {
             res.status(200).json(((await req.user?.populate("todoTask"))?.todoTask))
-            return 
+            return
         }
 
         // If not return the task
-        if (!req.user || typeof req.query.todo_id !== "string"){res.status(500).end(); return}
+        if (!req.user || typeof req.query.todo_id !== "string") { res.status(500).end(); return }
 
-        const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id )
+        const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id)
 
-        if (typeof todo_task === "boolean"){
-            res.status(401).json({"message": "You can't do this"})
-            return 
+        if (typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
         }
 
         res.status(200).json(await todo_task.populate("subtask"))
-        return 
+        return
 
     }
 
@@ -210,15 +209,15 @@ export class TodoController {
         "todo_id": "string"
     }
 
-    getSubtask = async (req:Request, res:Response): Promise<void> => {
+    getSubtask = async (req: Request, res: Response): Promise<void> => {
         // Get the subtasks only of a task
-        if (!req.user || typeof req.query.todo_id !== "string"){res.status(500).json({"message": "This error should not be learned."}); return }
+        if (!req.user || typeof req.query.todo_id !== "string") { res.status(500).json({ "message": "This error should not be learned." }); return }
 
         const todo_task = await this.ifYourtask(req.user._id, req.query.todo_id)
-        
-        if (typeof todo_task === "boolean"){
-            res.status(401).json({"message": "You can't do this"})
-            return 
+
+        if (typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
         }
 
         await todo_task.populate("subtask")
