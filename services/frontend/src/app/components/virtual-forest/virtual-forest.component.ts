@@ -20,8 +20,8 @@ export class VirtualForestComponent implements OnInit{
 	}
 
 	// Size of the make (1 make a map of 10/10)
-	// YOU GO NO FURTHER THAN 5
-	SIZE = 2
+	// DON'T GO FURTHER THAN 4
+	SIZE = 1
 
 	MAX_HEIGHT:number = 10
 	STONE_HEIGHT: number = this.MAX_HEIGHT * 0.8
