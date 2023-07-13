@@ -19,6 +19,10 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
+	// Size of the make (1 make a map of 10/10)
+	// YOU GO NO FURTHER THAN 5
+	SIZE = 2
+
 	MAX_HEIGHT:number = 10
 	STONE_HEIGHT: number = this.MAX_HEIGHT * 0.8
 	DIRT_HEIGHT: number = this.MAX_HEIGHT * 0.7
@@ -122,6 +126,7 @@ export class VirtualForestComponent implements OnInit{
 	makeclouds = () => {
 		let geo:any = new THREE.SphereGeometry(0, 0, 0); 
 		let count = Math.floor(Math.pow(Math.random(), 0.45) * 4);
+		count = (count * this.SIZE)
 	  
 		for(let i = 0; i < count; i++) {
 		  const puff1 = new THREE.SphereGeometry(1.2, 7, 7);
@@ -134,9 +139,9 @@ export class VirtualForestComponent implements OnInit{
 	  
 		  const cloudGeo = mergeGeometries([puff1, puff2, puff3]);
 		  cloudGeo.translate( 
-			Math.random() * 20 - 10, 
+			(Math.random() * 20 - 10 * this.SIZE), 
 			Math.random() * 7 + 13 , 
-			Math.random() * 20 - 10 
+			(Math.random() * 20 - 10 * this.SIZE), 
 		  );
 		  cloudGeo.rotateY(Math.random() * Math.PI * 2);
 	  
@@ -196,11 +201,11 @@ export class VirtualForestComponent implements OnInit{
 
 		const noise2D = createNoise2D();
 
-		for (let i = -10; i <= 10; i++){
-			for (let j = -10; j <= 10; j++){
+		for (let i = (-10 * this.SIZE); i <= (10 * this.SIZE); i++){
+			for (let j = (-10 * this.SIZE); j <= (10 * this.SIZE); j++){
 				let position = this.tileToPosition(i, j)
 
-				if (position.length() > 16) continue
+				if (position.length() > (16 * this.SIZE)) continue
 
 				// The noise to make the relief
 				let noise = (noise2D(i * 0.1, j * 0.1) + 1) * 0.5
@@ -221,7 +226,7 @@ export class VirtualForestComponent implements OnInit{
 
 		// Add water
 		const seaMesh = new THREE.Mesh(
-			new THREE.CylinderGeometry(17, 17, parameters_scene.height_water, 50),
+			new THREE.CylinderGeometry((17 * this.SIZE), (17 * this.SIZE), parameters_scene.height_water, 50),
 			new THREE.MeshPhysicalMaterial({
 				color: "#55aaff",
 				ior: 1.4,
@@ -253,7 +258,7 @@ export class VirtualForestComponent implements OnInit{
 
 		// Add map floor
 		const mapFloor = new THREE.Mesh(
-			new THREE.CylinderGeometry(18.5, 18.5, this.MAX_HEIGHT * 0.1, 50),
+			new THREE.CylinderGeometry((18.5 * this.SIZE), (18.5 * this.SIZE), this.MAX_HEIGHT * 0.1, 50),
 			new THREE.MeshPhysicalMaterial({
 				map: textures.dirt2,
 				side: THREE.DoubleSide
