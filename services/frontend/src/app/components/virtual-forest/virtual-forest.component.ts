@@ -178,12 +178,12 @@ export class VirtualForestComponent implements OnInit{
 		// Textures Loader
 		const textureLoader = new THREE.TextureLoader()
 		const textures = {
-			dirt: textureLoader.load("/assets/map/dirt.png"),
-			dirt2: textureLoader.load("/assets/map/dirt2.jpg"),
-			grass: textureLoader.load("/assets/map/grass.jpg"),
-			sand: textureLoader.load("/assets/map/sand.jpg"),
-			water: textureLoader.load("/assets/map/water.jpg"),
-			stone: textureLoader.load("/assets/map/stone.png"),
+			dirt: textureLoader.load("/assets/map/1/dirt.png"),
+			dirt2: textureLoader.load("/assets/map/1/dirt2.jpg"),
+			grass: textureLoader.load("/assets/map/1/grass.jpg"),
+			sand: textureLoader.load("/assets/map/1/sand.jpg"),
+			water: textureLoader.load("/assets/map/1/water.jpg"),
+			stone: textureLoader.load("/assets/map/1/stone.png"),
 		}
 		
 		// Set up Scene
@@ -270,7 +270,8 @@ export class VirtualForestComponent implements OnInit{
 
 		// Ambient light
 		const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.15)
-		gui_anbiant_light.add(ambientLight, 'intensity').min(0).max(1).step(0.001).name("Intensity ambiant light")
+		gui_anbiant_light.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+		gui_anbiant_light.addColor(ambientLight, 'color')
 		scene.add(ambientLight)
 		
 		// Directional light
@@ -299,6 +300,7 @@ export class VirtualForestComponent implements OnInit{
 		gui_directional_light.add(directionalLight.position, 'x').min(-50).max(50).step(0.001)
 		gui_directional_light.add(directionalLight.position, 'y').min(-50).max(50).step(0.001)
 		gui_directional_light.add(directionalLight.position, 'z').min(-50).max(50).step(0.001)
+		gui_directional_light.addColor(directionalLight, "color")
 		scene.add(directionalLight)
 
 
