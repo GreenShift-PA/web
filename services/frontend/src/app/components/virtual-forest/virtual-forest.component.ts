@@ -130,7 +130,7 @@ export class VirtualForestComponent implements OnInit{
 
 
 		// Add water
-		let seaMesh = new THREE.Mesh(
+		const seaMesh = new THREE.Mesh(
 			new THREE.CylinderGeometry(17, 17, parameters_scene.height_water, 50),
 			new THREE.MeshPhysicalMaterial({
 				color: "#55aaff",
@@ -147,6 +147,31 @@ export class VirtualForestComponent implements OnInit{
 		seaMesh.receiveShadow = true
 		seaMesh.position.set(0, parameters_scene.position_water, 0)
 		scene.add(seaMesh)
+
+		// Add map container 
+		// const mapContainer = new THREE.Mesh(
+		// 	new THREE.CylinderGeometry(17, 17.1, this.MAX_HEIGHT * 0.25, 50, 1, true),
+		// 	new THREE.MeshPhysicalMaterial({
+		// 		map: textures.dirt,
+		// 		envMapIntensity: 0.2,
+		// 	})
+		// )
+		// mapContainer.receiveShadow = true
+		// mapContainer.position.set(0, this.MAX_HEIGHT * 0.124, 0)
+		// scene.add(mapContainer)
+
+
+		// Add map floor
+		const mapFloor = new THREE.Mesh(
+			new THREE.CylinderGeometry(18.5, 18.5, this.MAX_HEIGHT * 0.1, 50),
+			new THREE.MeshPhysicalMaterial({
+				map: textures.dirt2,
+				side: THREE.DoubleSide
+			})
+		)
+		mapFloor.receiveShadow = true
+		mapFloor.position.set(0, - this.MAX_HEIGHT * 0.05, 0)
+		scene.add(mapFloor)
 
 
 
