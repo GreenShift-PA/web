@@ -19,6 +19,12 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
+	tree_params:any = {
+		max_nbr : 5,
+		counter : 0,
+		position : []
+	}
+
 	// Size of the make (1 make a map of 10/10)
 	// DON'T GO FURTHER THAN 4
 	SIZE = 1
@@ -36,6 +42,7 @@ export class VirtualForestComponent implements OnInit{
 	dirst2Geo:any = new THREE.BoxGeometry(0,0,0)
 	sandGeo:any = new THREE.BoxGeometry(0,0,0)
 	grassGeo:any = new THREE.BoxGeometry(0,0,0)
+	
 
 	hexGeometry = (height: number, position: THREE.Vector2) => {
 		let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1 , false)
@@ -56,14 +63,26 @@ export class VirtualForestComponent implements OnInit{
 		}else if (height > this.DIRT_HEIGHT) {
 			this.dirstGeo = mergeGeometries([this.dirstGeo, geo])
 
-			if(Math.random() > 0.7){
+			if(Math.random() > 0.7 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
+				this.tree_params.position.push({
+					x: position.x,
+					y: position.y,
+					z: height
+				})
+				this.tree_params.counter ++
 			}
 
 		}else if (height > this.GRASS_HEIGHT) {
 			this.grassGeo = mergeGeometries([this.grassGeo, geo])
-			if(Math.random() > 0.8){
+			if(Math.random() > 0.8 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
+				this.tree_params.position.push({
+					x: position.x,
+					y: position.y,
+					z: height
+				})
+				this.tree_params.counter ++
 			}
 			if(Math.random() > 0.9 && this.stoneGeo){
 				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
@@ -335,12 +354,12 @@ export class VirtualForestComponent implements OnInit{
 		const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000)
 		camera.position.set(-17, 31, 33);
 		scene.add(camera)
-
+		
 		// Controls
 		const controls = new OrbitControls(camera, canvas)
 		controls.target.set(0,0,0)
 		controls.enableDamping = true
-
+		
 		// Renderer
 		const renderer = new THREE.WebGLRenderer({
 			canvas: canvas
@@ -360,6 +379,7 @@ export class VirtualForestComponent implements OnInit{
  		* Animate
 		*/
 		const clock = new THREE.Clock()
+		console.log(this.tree_params.position)
 
 		const tick = () => {
 
