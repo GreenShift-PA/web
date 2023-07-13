@@ -80,7 +80,9 @@ export class VirtualForestComponent implements OnInit{
 		const gui_directional_light = gui_light.addFolder("Directional light")
 		const gui_anbiant_light = gui_light.addFolder("Ambient light")
 		const parameters_scene = {
-			bg_color: "#ffeecc"
+			bg_color: "#ffeecc",
+			height_water: this.MAX_HEIGHT * 0.2,
+			position_water: this.MAX_HEIGHT * 0.099,
 		}
 
 		// Textures Loader
@@ -128,6 +130,23 @@ export class VirtualForestComponent implements OnInit{
 
 
 		// Add water
+		let seaMesh = new THREE.Mesh(
+			new THREE.CylinderGeometry(17, 17, parameters_scene.height_water, 50),
+			new THREE.MeshPhysicalMaterial({
+				color: "#55aaff",
+				ior: 1.4,
+				transmission: 1,
+				transparent: true,
+				thickness: 1,
+				roughness :1, 
+				metalness: 0.025,
+				roughnessMap: textures.water,
+				metalnessMap: textures.water
+			})
+		)
+		seaMesh.receiveShadow = true
+		seaMesh.position.set(0, parameters_scene.position_water, 0)
+		scene.add(seaMesh)
 
 
 
