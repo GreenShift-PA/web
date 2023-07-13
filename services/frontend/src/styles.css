@@ -42,3 +42,10 @@
   *{
     font-family: var(--font-family);
   }
+
+
+  body{
+    background-color: white;
+/* 100: "#213b37",
+200: "#195148", */
+  }

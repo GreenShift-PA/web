@@ -8,9 +8,7 @@
 
 body{
     background : var(--color-bg);
-
 }
-
 
 a {
     color: unset;
@@ -18,7 +16,6 @@ a {
   }
 
   .content-wrap{
-    margin-bottom: 2.5rem;
     text-align: center;
   }
 
@@ -52,4 +49,7 @@ a {
     margin-left: 7rem;
     max-width: none;
     width: 94vw;
+    height: 100vh;
   }
+  /* 100: "#213b37",
+  200: "#195148", */

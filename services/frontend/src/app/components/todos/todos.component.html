@@ -4,7 +4,7 @@
         <input type="text" name="inputTodo" placeholder="Add a task" class="todo-input rounded-2xl text-white border-white	 " [(ngModel)]="inputTodo" />
         <!-- <input type="submit" value="Add todo" class="todo-submit rounded-lg  " > -->
     </form>
-    <p class="category text-white font-bold text-lg mb-3 ml-1">Tasks - {{todos.length}}</p>
+    <p class="category text-white font-bold text-lg mb-3 ml-1">Todo - {{todos.length}}</p>
     <div *ngFor="let todo of todos; let i = index" class="tasks rounded-2xl h-12 mb-3 todo {{(todo.completed ? 'done' : '')}}" >
          <div class="item">
       <div class="checkbox-rect">
