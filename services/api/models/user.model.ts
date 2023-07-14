@@ -13,7 +13,7 @@ const userShemma = new Schema<User>({
     },
     password:{
         type: Schema.Types.String,
-        require: true
+        required: true
     },
     roles:[{
         type: Schema.Types.ObjectId,
@@ -34,7 +34,54 @@ const userShemma = new Schema<User>({
         type: Schema.Types.ObjectId,
         ref: "Todo",
         required: true
-    }]
+    }],
+    
+    // User personal infos
+    adress: {
+        type: Schema.Types.String,
+        required: true
+    },
+    phone: {
+        type: Schema.Types.String,
+        required: true
+    },
+    skills: [{
+        type: Schema.Types.String,
+        required: true
+    }],
+    hobbies: [{
+        type: Schema.Types.String,
+        required: true
+    }],
+    job: {
+        type: Schema.Types.String,
+        required: true
+    },
+    aboutMe: {
+        type: Schema.Types.String,
+        required: true
+    },
+    workHistory : [{
+        type: Schema.Types.String,
+        required: true
+    }],
+    joinDate : {
+        type: Schema.Types.Date,
+        required: true
+    },
+    organization : {
+        type: Schema.Types.String,
+        required: true
+    },
+    dirthday : {
+        type: Schema.Types.Date,
+        required: true
+    },
+    languages : [{
+        type: Schema.Types.String,
+        required: true
+    }],
+
 }, {
     versionKey: false,
     collection: "Users"
@@ -48,6 +95,20 @@ export interface User{
     tree: Tree
     posts: Post[]
     todoTask: Todo[]
+
+    // User personal infos
+    adress: string
+    phone: string
+    skills: string[]
+    hobbies: string[]
+    job: string
+    aboutMe: string
+    workHistory: string[]
+    joinDate: Date
+    organization: string
+    dirthday: Date
+    languages: string []
+
 }
 
 export const UserModel: Model<User> = mongoose.model("User", userShemma)

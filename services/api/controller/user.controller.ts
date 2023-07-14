@@ -33,7 +33,18 @@ export class UserController {
     readonly paramsLogin = {
         "login" : "string",
         "password" : "string",
-        "tree_name" : "string"
+        "tree_name" : "string",
+        "adress" : "string",
+        "phone" : "string",
+        "skills" : "object",
+        "hobbies" : "object",
+        "job" : "string",
+        "aboutMe" : "string",
+        "workHistory" : "object",
+        "joinDate" : "string",
+        "organization" : "string",
+        "dirthday" : "string",
+        "languages" : "object",
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -41,6 +52,8 @@ export class UserController {
         const login: string = req.body.login
         const password: string  = req.body.password
         let tree
+
+        console.log(req.body.workHistory)
 
         try{
 
@@ -56,7 +69,18 @@ export class UserController {
                 roles:[this.guestRole],
                 tree,
                 posts: [],
-                todoTask: []
+                todoTask: [],
+                adress : req.body.adress,
+                phone : req.body.phone,
+                skills : req.body.skills,
+                hobbies : req.body.hobbies,
+                job : req.body.job,
+                aboutMe : req.body.aboutMe,
+                workHistory : req.body.workHistory,
+                joinDate : req.body.joinDate,
+                organization : req.body.organization,
+                dirthday : req.body.dirthday,
+                languages : req.body.languages,
             })
             res.json(user)
 
@@ -74,6 +98,62 @@ export class UserController {
             }
         }
 
+    }
+
+    readonly paramsUpdateUser = {
+        "password" : "string | undefined",
+        "adress" : "string | undefined",
+        "phone" : "string | undefined",
+        "skills" : "object | undefined",
+        "hobbies" : "object | undefined",
+        "job" : "string | undefined",
+        "aboutMe" : "string | undefined",
+        "organization" : "string | undefined",
+        "languages" : "object | undefined",
+    }
+
+    updateUser = async (req:Request, res:Response) => {
+
+        let workHistory
+        let updated_user
+        let password
+        if(req.body.organization !== req.user?.organization){
+            workHistory = req.user?.workHistory.push(req.user.organization)
+        }
+        if(req.body.password){
+            password = SecurityUtils.toSHA512(req.body.password)
+        }
+
+
+        try{
+            updated_user = await UserModel.findByIdAndUpdate(req.user?._id,{
+                password,
+                adress : req.body.adress,
+                phone : req.body.phone,
+                skills : req.body.skills,
+                hobbies : req.body.hobbies,
+                job : req.body.job,
+                aboutMe : req.body.aboutMe,
+                workHistory : workHistory,
+                organization : req.body.organization,
+                languages : req.body.languages,
+            }, 
+            { new: true})
+
+            if(!updated_user){
+                res.status(404).end()
+                return 
+            }
+
+        }catch(e){
+            console.log(e)
+            res.status(500).json({"message" : "we were unable to update the user."})
+            return
+        }
+
+
+        res.status(200).json(updated_user)
+        return 
     }
 
     
@@ -292,6 +372,7 @@ export class UserController {
         router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
+        router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateUser), this.updateUser.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))

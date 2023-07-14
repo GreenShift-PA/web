@@ -53,7 +53,18 @@ export class StartService{
                 roles: userRoles,
                 tree,
                 posts: [],
-                todoTask: []
+                todoTask: [],
+                adress : "C'est un utilisateur de test",
+                phone : "C'est un utilisateur de test",
+                skills : "C'est un utilisateur de test",
+                hobbies : "C'est un utilisateur de test",
+                job : "C'est un utilisateur de test",
+                aboutMe : "C'est un utilisateur de test",
+                workHistory :"C'est un utilisateur de test",
+                joinDate : new Date(),
+                organization : "C'est un utilisateur de test",
+                dirthday : new Date(),
+                languages : "C'est un utilisateur de test",
             })
         })
         await Promise.all(usersRequest)
