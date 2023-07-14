@@ -114,11 +114,12 @@ export class UserController {
 
     updateUser = async (req:Request, res:Response) => {
 
-        let workHistory
+        let workHistory:any
         let updated_user
         let password
         if(req.body.organization !== req.user?.organization){
-            workHistory = req.user?.workHistory.push(req.user.organization)
+            workHistory = req.user?.workHistory
+            workHistory?.push(req.body.organization)
         }
         if(req.body.password){
             password = SecurityUtils.toSHA512(req.body.password)
