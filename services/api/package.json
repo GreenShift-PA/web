@@ -9,7 +9,6 @@
     "dev": "npm run build && npm start",
     "dev-nodemon": "npx nodemon -L ./index.ts",
     "nodemon": "npx nodemon -L ./index.ts"
-
   },
   "keywords": [],
   "author": "",

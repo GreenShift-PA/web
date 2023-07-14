@@ -11,12 +11,14 @@ import { HomeComponent } from './components/home/home.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import { TodosComponent } from './components/todos/todos.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path:'forgot-password', component:ForgotPasswordComponent},
   { path: 'profile', component: ProfileComponent },
   { path: 'virtualforest', component: VirtualForestComponent },
   { path: 'blog', component: BlogComponent },

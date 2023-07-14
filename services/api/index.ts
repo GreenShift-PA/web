@@ -10,6 +10,7 @@ import { TreeController } from './controller/tree.controller'
 import { PostController } from './controller/post.controller'
 import { MessageController } from './controller/message.controller'
 import { TodoController } from './controller/todo.controller'
+const cors = require('cors');
 
 const startServer = async (): Promise<void> => {
 
@@ -20,15 +21,23 @@ const startServer = async (): Promise<void> => {
         authSource: "admin"
     })
 
+
     await StartService.userRoles()
     
     const app = express()
-    
+    // Specify allowed origins explicitly
+    const corsOptions = {
+        origin: 'http://localhost:4200', // Update with your Angular application's URL
+    };
+    app.use(cors(corsOptions));
+  
+
     app.use(morgan("short"))
-    
-    app.get("/", (req:Request, res:Response) => {
-        res.send('Server up')
-    })
+    app.get('/', (req, res) => {
+        const response = { message: 'Server is up' };
+        res.json(response);
+      });
+      
     
     const userController = new UserController()
     const authController = new AuthController() 

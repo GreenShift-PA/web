@@ -20,6 +20,7 @@ import { CardComponent } from './components/card/card.component';
 import { TodosComponent } from './components/todos/todos.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SettingsComponent } from './components/settings/settings.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     SectionComponent,
     CardComponent,
     TodosComponent,
-    SettingsComponent
+    SettingsComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
