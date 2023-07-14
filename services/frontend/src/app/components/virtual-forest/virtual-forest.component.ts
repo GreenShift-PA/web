@@ -99,6 +99,11 @@ export class VirtualForestComponent implements OnInit{
 	makeTree = (height: number , position: THREE.Vector2) => {
 		// To change the height of the tree
 		const treeHeight = Math.random() * 1 + 1.25
+		const tree_size = this.trees[this.tree_params.counter].tree.size
+		const new_tree_size = ((tree_size - 0) / (100 - 0)) * (10 - 1) + 1;
+		console.log(treeHeight, tree_size, new_tree_size)
+
+		console.log(treeHeight)
 
 		const geo = new THREE.CylinderGeometry(0, 1.5, treeHeight, 3)
 		geo.translate(position.x, height + treeHeight * 0 + 1, position.y)
@@ -396,9 +401,6 @@ export class VirtualForestComponent implements OnInit{
 		raycaster.setFromCamera(mouse, camera)
 
 
-		console.log(this.metadata)
-
-
 		/**
  		* Animate
 		*/
@@ -408,6 +410,7 @@ export class VirtualForestComponent implements OnInit{
 
 			const elapsedTime = clock.getElapsedTime()
 			
+			// Make the hit box look at you 
 			for (let hitBox of this.tree_params.hit_box){
 				hitBox.lookAt(camera.position)
 				
