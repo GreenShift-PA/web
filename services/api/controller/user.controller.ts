@@ -397,10 +397,33 @@ export class UserController {
 
     }
 
+    getFollower = async (req:Request, res:Response):Promise<void> => {
+        const user_tree:any[] = []
+        try{
+            const list_followers = req.user?.follow
+            if(!list_followers){
+                res.status(204).json({"message" : "you are following no one"})
+                return 
+            }
+
+            for (let user of list_followers){
+                const user_info = await UserModel.findById(user._id).populate("tree")
+                user_tree.push(user_info)
+            }
+            res.status(200).json(user_tree)
+            
+        }catch(e){
+            console.log(e)
+            res.status(500).end()
+            return 
+        }
+    }
+
     buildRouter = (): Router => {
         
         const router = express.Router()
         router.post(`/subscribe`, express.json(), checkBody(this.paramsLogin), this.subscribe.bind(this))
+        router.get('/follow', express.json(), checkUserToken(), this.getFollower.bind(this))
         router.get('/me', checkUserToken(), this.me.bind(this))
         router.get('/count', checkUserToken(), checkUserRole(RolesEnums.admin), this.getAllUsers.bind(this))
         router.get('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.getOneUser.bind(this))
