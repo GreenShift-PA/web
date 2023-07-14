@@ -403,6 +403,8 @@ export class VirtualForestComponent implements OnInit{
 		const mouse = new THREE.Vector2()
 		let intersects = new Array()
 
+		let currentIntersect:any = null
+
 		window.addEventListener('mousemove', (_event) => {
 
 			mouse.x = (_event.clientX / renderer.domElement.clientWidth) * 2 - 1,
@@ -412,18 +414,33 @@ export class VirtualForestComponent implements OnInit{
 				mouse,
 				camera
 			)
+
 			intersects = raycaster.intersectObjects(this.tree_params.hit_box, false)
+			const display_box = document.querySelector('.description')
+
 			if (intersects.length > 0) {
 				let n = new THREE.Vector3()
 				n.copy(intersects[0].face.normal)
 				n.transformDirection(intersects[0].object.matrixWorld)
 				arrowHelper.setDirection(n)
 				arrowHelper.position.copy(intersects[0].point)
+
+				if(currentIntersect === null){
+					display_box?.classList.toggle("no_visible")
+				}
+				currentIntersect = intersects[0]
 				
 				// When hover hitbox 
-				
+				// TODO: Crée tout les elements ici
+
+			}else{
+				if(currentIntersect){
+					display_box?.classList.toggle("no_visible")
+				}
+				currentIntersect = null
 
 			}
+
 		})
 
 		const raycaster = new THREE.Raycaster()
