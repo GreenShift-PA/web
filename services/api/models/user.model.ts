@@ -37,6 +37,10 @@ const userShemma = new Schema<User>({
     }],
     
     // User personal infos
+    image: {
+        type: Schema.Types.String,
+        required: true
+    },
     adress: {
         type: Schema.Types.String,
         required: true
@@ -97,6 +101,7 @@ export interface User{
     todoTask: Todo[]
 
     // User personal infos
+    image: string,
     adress: string
     phone: string
     skills: string[]
