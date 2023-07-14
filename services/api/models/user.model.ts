@@ -85,6 +85,11 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     }],
+    follow: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }]
 
 }, {
     versionKey: false,
@@ -113,6 +118,9 @@ export interface User{
     organization: string
     dirthday: Date
     languages: string []
+
+    // Online
+    follow: User[]
 
 }
 

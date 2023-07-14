@@ -83,6 +83,7 @@ export class UserController {
                 organization : req.body.organization,
                 dirthday : req.body.dirthday,
                 languages : req.body.languages,
+                follow: []
             })
             res.json(user)
 
@@ -363,6 +364,36 @@ export class UserController {
             res.status(400).json({"message" : "This is not a Post Id"})
             return
         }
+    }
+
+    readonly queryFollow = {
+        "user_id" : "string"
+    }
+
+    follow = async (req:Request, res:Response): Promise<void> => {
+
+        if ( !req.user || req.user._id == req.query.user_id){
+            res.status(400).json({"message": "You can't follow yourself"})
+            return 
+        }
+
+        try{
+            const follow_user = await UserModel.findById(req.query.user_id)
+            if (!follow_user){
+                res.status(404).json({"message" : "We can't find this user"})
+                return 
+            }
+            req.user?.follow.push(follow_user)
+            req.user?.save()
+
+            res.status(200).send("OK")
+            return 
+        }catch(e){
+            console.log(e);
+            res.status(400).json({"message" : "This is not a user's ID"})
+            return
+        }
+
 
     }
 
@@ -381,6 +412,7 @@ export class UserController {
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))
+        router.put('/follow', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
  
         return router
     }

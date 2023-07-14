@@ -66,6 +66,7 @@ export class StartService{
                 organization : "C'est un utilisateur de test",
                 dirthday : new Date(),
                 languages : "C'est un utilisateur de test",
+                follow: []
             })
         })
         await Promise.all(usersRequest)
