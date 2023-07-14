@@ -26,12 +26,12 @@ export class VirtualForestComponent implements OnInit{
 			size: 0
 		},
 		{
-			_id: "64b12696f4cba4ffd6d5aef6",
+			id: "64b12696f4cba4ffd6d5aef6",
 			name: "First tree of admin",
 			size: 0
 		},
 		{
-			_id: "64b126b6f4cba4ffd6d5af00",
+			id: "64b126b6f4cba4ffd6d5af00",
 			name: "Persistent optimal budgetary management",
 			size: 0
 		}
@@ -200,7 +200,21 @@ export class VirtualForestComponent implements OnInit{
 		mesh.castShadow = true
 	  
 		return mesh
-	  }
+	}
+
+	show_info_html = (tree_info:any) => {
+		const tree_name = document.getElementById("tree_name")
+		// const image = document.getElementById("profile_image")
+		const username = document.getElementById("user_name")
+
+		if(!tree_name || !username ){
+			return 
+		}
+
+		tree_name.innerHTML = tree_info.name 
+		username.innerHTML = `id : ${tree_info.id}`
+
+	}	
 	
 	createThreeJsBox = () => {
 		
@@ -453,7 +467,7 @@ export class VirtualForestComponent implements OnInit{
 					display_box?.classList.toggle("no_visible")
 					intersects[0].object.material.color.set("#00ff00")
 					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
-					console.log(tree_info)
+					this.show_info_html(tree_info)
 
 				}
 				this.currentIntersect = intersects[0]
