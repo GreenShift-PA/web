@@ -16,16 +16,6 @@ export class TreeController {
     }
 
     getAllTrees = async (req: Request, res:Response): Promise<void> => {
-        // try{
-        //     const trees = await TreeModel.find({})
-        //     if (!trees){
-        //         res.status(404).json({"message": "No tree"}); return
-        //     }
-        //     res.status(200).json(trees)
-        // }catch(err){
-        //     res.status(404).json({"message" : "Tree not found"})
-        //     return 
-        // }
     
         const user_tree:any[] = []
         try{
