@@ -186,12 +186,16 @@ export class VirtualForestComponent implements OnInit{
 		
 		//Setup debug 
 		const gui = new dat.GUI()
+		gui.close();
 		const gui_scene = gui.addFolder("Scene")
 		const gui_light = gui_scene.addFolder("Lights")
 		const gui_directional_light = gui_light.addFolder("Directional light")
 		const gui_anbiant_light = gui_light.addFolder("Ambient light")
+		const gui_camera = gui_scene.addFolder("Camera helper")
+		const gui_look_at = gui_camera.addFolder("Look at")
 
-		const gui_helper = gui.addFolder("Helpers")
+		const gui_helper = gui.addFolder("Cursor Helpers")
+
 		const parameters_scene = {
 			bg_color: "#ffeecc",
 			height_water: this.MAX_HEIGHT * 0.2,
@@ -368,7 +372,10 @@ export class VirtualForestComponent implements OnInit{
 		 */
 		// Base camera
 		const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000)
-		camera.position.set(-17, 31, 33);
+		camera.position.set(-22, 31, -35);
+		gui_camera.add(camera.position, "x").min(-50).max(50).step(1)
+		gui_camera.add(camera.position, "y").min(-20).max(50).step(1)
+		gui_camera.add(camera.position, "z").min(-50).max(50).step(1)
 		scene.add(camera)
 		
 		var arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffff00)
@@ -377,7 +384,10 @@ export class VirtualForestComponent implements OnInit{
 		
 		// Controls
 		const controls = new OrbitControls(camera, canvas)
-		controls.target.set(0,0,0)
+		controls.target.set(2, 1, 0)
+		gui_look_at.add(controls.target, "x").min(-50).max(50).step(1)
+		gui_look_at.add(controls.target, "y").min(-20).max(50).step(1)
+		gui_look_at.add(controls.target, "z").min(-50).max(50).step(1)
 		controls.enableDamping = true
 		
 		// Renderer
