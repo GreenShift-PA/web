@@ -33,7 +33,18 @@ export class UserController {
     readonly paramsLogin = {
         "login" : "string",
         "password" : "string",
-        "tree_name" : "string"
+        "tree_name" : "string",
+        "adress" : "string",
+        "phone" : "string",
+        "skills" : "object",
+        "hobbies" : "object",
+        "job" : "string",
+        "aboutMe" : "string",
+        "workHistory" : "object",
+        "joinDate" : "string",
+        "organization" : "string",
+        "dirthday" : "string",
+        "languages" : "object",
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -41,6 +52,8 @@ export class UserController {
         const login: string = req.body.login
         const password: string  = req.body.password
         let tree
+
+        console.log(req.body.workHistory)
 
         try{
 
@@ -56,7 +69,18 @@ export class UserController {
                 roles:[this.guestRole],
                 tree,
                 posts: [],
-                todoTask: []
+                todoTask: [],
+                adress : req.body.adress,
+                phone : req.body.phone,
+                skills : req.body.skills,
+                hobbies : req.body.hobbies,
+                job : req.body.job,
+                aboutMe : req.body.aboutMe,
+                workHistory : req.body.workHistory,
+                joinDate : req.body.joinDate,
+                organization : req.body.organization,
+                dirthday : req.body.dirthday,
+                languages : req.body.languages,
             })
             res.json(user)
 
