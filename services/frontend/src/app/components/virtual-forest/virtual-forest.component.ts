@@ -19,6 +19,36 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
+	trees:any = [
+		{
+			id: "64b12696f4cba4ffd6d5aef7",
+			name: "First tree of guest",
+			size: 0
+		},
+		{
+			_id: "64b12696f4cba4ffd6d5aef6",
+			name: "First tree of admin",
+			size: 0
+		},
+		{
+			_id: "64b126b6f4cba4ffd6d5af00",
+			name: "Persistent optimal budgetary management",
+			size: 0
+		}
+	]
+
+	metadata:any = {}
+	metaCounter = 0
+
+	currentIntersect:any = null
+
+	tree_params:any = {
+		max_nbr : this.trees.length,
+		counter : 0,
+		position : [],
+		hit_box: []
+	}
+
 	// Size of the make (1 make a map of 10/10)
 	// DON'T GO FURTHER THAN 4
 	SIZE = 1
@@ -36,6 +66,7 @@ export class VirtualForestComponent implements OnInit{
 	dirst2Geo:any = new THREE.BoxGeometry(0,0,0)
 	sandGeo:any = new THREE.BoxGeometry(0,0,0)
 	grassGeo:any = new THREE.BoxGeometry(0,0,0)
+	
 
 	hexGeometry = (height: number, position: THREE.Vector2) => {
 		let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1 , false)
@@ -56,13 +87,13 @@ export class VirtualForestComponent implements OnInit{
 		}else if (height > this.DIRT_HEIGHT) {
 			this.dirstGeo = mergeGeometries([this.dirstGeo, geo])
 
-			if(Math.random() > 0.7){
+			if(Math.random() > 0.7 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 
 		}else if (height > this.GRASS_HEIGHT) {
 			this.grassGeo = mergeGeometries([this.grassGeo, geo])
-			if(Math.random() > 0.8){
+			if(Math.random() > 0.8 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 			if(Math.random() > 0.9 && this.stoneGeo){
@@ -119,6 +150,14 @@ export class VirtualForestComponent implements OnInit{
 		const geo3 = new THREE.CylinderGeometry(0, 0.8, treeHeight, 3)
 		geo3.translate(position.x, height + treeHeight * 1.25 + 1, position.y)
 
+		this.tree_params.position.push({
+			x: position.x,
+			y: position.y,
+			z: height,
+			size: treeHeight
+		})
+		this.tree_params.counter ++
+
 		return mergeGeometries([geo, geo2, geo3])
 
 	}
@@ -170,10 +209,16 @@ export class VirtualForestComponent implements OnInit{
 		
 		//Setup debug 
 		const gui = new dat.GUI()
+		gui.close();
 		const gui_scene = gui.addFolder("Scene")
 		const gui_light = gui_scene.addFolder("Lights")
 		const gui_directional_light = gui_light.addFolder("Directional light")
 		const gui_anbiant_light = gui_light.addFolder("Ambient light")
+		const gui_camera = gui_scene.addFolder("Camera helper")
+		const gui_look_at = gui_camera.addFolder("Look at")
+
+		const gui_helper = gui.addFolder("Cursor Helpers")
+
 		const parameters_scene = {
 			bg_color: "#ffeecc",
 			height_water: this.MAX_HEIGHT * 0.2,
@@ -189,6 +234,7 @@ export class VirtualForestComponent implements OnInit{
 			sand: textureLoader.load("/assets/map/1/sand.jpg"),
 			water: textureLoader.load("/assets/map/1/water.jpg"),
 			stone: textureLoader.load("/assets/map/1/stone.png"),
+			target: textureLoader.load("/assets/target.png")
 		}
 		
 		// Set up Scene
@@ -221,6 +267,24 @@ export class VirtualForestComponent implements OnInit{
 		const dirstMesh = this.hexMesh(this.dirstGeo, textures.dirt)
 		const sandMesh = this.hexMesh(this.sandGeo, textures.sand)
 		scene.add(stoneMesh, grassMesh, dirst2Mesh, dirstMesh, sandMesh)
+
+
+		// Make the hitBox
+		for (let box of this.tree_params.position){
+			const hitBox = new THREE.Mesh(
+				new THREE.BoxGeometry( 2, box.size * 2, 2 ),
+				new THREE.MeshBasicMaterial( {
+					color: 0x0000ff,
+					transparent: true,
+					map: textures.target
+				} )
+			)
+			hitBox.position.set(box.x, box.z + box.size , box.y)
+			this.tree_params.hit_box.push(hitBox)
+			this.metadata[hitBox.uuid] = this.metaCounter
+			this.metaCounter ++
+			scene.add(hitBox)
+		}
 
 
 
@@ -257,16 +321,16 @@ export class VirtualForestComponent implements OnInit{
 
 
 		// Add map floor
-		const mapFloor = new THREE.Mesh(
-			new THREE.CylinderGeometry((18.5 * this.SIZE), (18.5 * this.SIZE), this.MAX_HEIGHT * 0.1, 50),
-			new THREE.MeshPhysicalMaterial({
-				map: textures.dirt2,
-				side: THREE.DoubleSide
-			})
-		)
-		mapFloor.receiveShadow = true
-		mapFloor.position.set(0, - this.MAX_HEIGHT * 0.05, 0)
-		scene.add(mapFloor)
+		// const mapFloor = new THREE.Mesh(
+		// 	new THREE.CylinderGeometry((18.5 * this.SIZE), (18.5 * this.SIZE), this.MAX_HEIGHT * 0.1, 50),
+		// 	new THREE.MeshPhysicalMaterial({
+		// 		map: textures.dirt2,
+		// 		side: THREE.DoubleSide
+		// 	})
+		// )
+		// mapFloor.receiveShadow = true
+		// mapFloor.position.set(0, - this.MAX_HEIGHT * 0.05, 0)
+		// scene.add(mapFloor)
 
 		// Add clouds 
 		const clouds = this.makeclouds()
@@ -333,14 +397,25 @@ export class VirtualForestComponent implements OnInit{
 		 */
 		// Base camera
 		const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000)
-		camera.position.set(-17, 31, 33);
+		camera.position.set(-22, 31, -35);
+		gui_camera.add(camera.position, "x").min(-50).max(50).step(1)
+		gui_camera.add(camera.position, "y").min(-20).max(50).step(1)
+		gui_camera.add(camera.position, "z").min(-50).max(50).step(1)
 		scene.add(camera)
-
+		
+		var arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffff00)
+		arrowHelper.visible = false
+		scene.add(arrowHelper)
+		gui_helper.add(arrowHelper, 'visible')
+		
 		// Controls
 		const controls = new OrbitControls(camera, canvas)
-		controls.target.set(0,0,0)
+		controls.target.set(2, 1, 0)
+		gui_look_at.add(controls.target, "x").min(-50).max(50).step(1)
+		gui_look_at.add(controls.target, "y").min(-20).max(50).step(1)
+		gui_look_at.add(controls.target, "z").min(-50).max(50).step(1)
 		controls.enableDamping = true
-
+		
 		// Renderer
 		const renderer = new THREE.WebGLRenderer({
 			canvas: canvas
@@ -351,9 +426,58 @@ export class VirtualForestComponent implements OnInit{
 		renderer.shadowMap.enabled = true
 		renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+		const mouse = new THREE.Vector2()
+		let intersects = new Array()
 
-		
+		window.addEventListener('mousemove', (_event) => {
 
+			mouse.x = (_event.clientX / renderer.domElement.clientWidth) * 2 - 1,
+			mouse.y = -(_event.clientY / renderer.domElement.clientHeight) * 2 + 1,
+
+			raycaster.setFromCamera(
+				mouse,
+				camera
+			)
+
+			intersects = raycaster.intersectObjects(this.tree_params.hit_box, false)
+			const display_box = document.querySelector('.description')
+
+			if (intersects.length > 0) {
+				let n = new THREE.Vector3()
+				n.copy(intersects[0].face.normal)
+				n.transformDirection(intersects[0].object.matrixWorld)
+				arrowHelper.setDirection(n)
+				arrowHelper.position.copy(intersects[0].point)
+
+				if(this.currentIntersect === null){
+					display_box?.classList.toggle("no_visible")
+					intersects[0].object.material.color.set("#00ff00")
+					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
+					console.log(tree_info)
+
+				}
+				this.currentIntersect = intersects[0]
+				
+				// When hover hitbox 
+				// TODO: Crée tout les elements ici
+
+			}else{
+				if(this.currentIntersect){
+					display_box?.classList.toggle("no_visible")
+					this.currentIntersect.object.material.color.set("#0000ff")
+				}
+				this.currentIntersect = null
+
+			}
+
+		})
+
+		const raycaster = new THREE.Raycaster()
+
+		raycaster.setFromCamera(mouse, camera)
+
+
+		console.log(this.metadata)
 
 
 		/**
@@ -364,6 +488,12 @@ export class VirtualForestComponent implements OnInit{
 		const tick = () => {
 
 			const elapsedTime = clock.getElapsedTime()
+			
+			for (let hitBox of this.tree_params.hit_box){
+				hitBox.lookAt(camera.position)
+				
+			}
+
 
 			// Update controls
 			controls.update()

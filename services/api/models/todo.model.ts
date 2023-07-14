@@ -1,22 +1,22 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { Subtask } from "./subTask.model";
+import { Subtask } from "./subtask.model";
 
 const todoShemma = new Schema<Todo>({
     isDone: {
         type: Schema.Types.Boolean,
-        required : true
+        required: true
     },
-    title:{
+    title: {
         type: Schema.Types.String,
         require: true
     },
-    description:{
+    description: {
         type: Schema.Types.String,
         required: true
     },
     deadline: {
         type: Schema.Types.Date,
-        required: true 
+        required: true
     },
     subtask: [{
         type: Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const todoShemma = new Schema<Todo>({
     collection: "Todos"
 })
 
-export interface Todo{
+export interface Todo {
     _id: string,
     isDone: boolean,
     title: string,
