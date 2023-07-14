@@ -20,7 +20,7 @@ export class TreeService {
 			tree: {
 				_id: "64b12696f4cba4ffd6d5aef7",
 				name: "First tree of guest",
-				size: 0
+				size: 6
 			},
 			posts: [],
 			todoTask: [],
@@ -53,7 +53,7 @@ export class TreeService {
 			tree: {
 				_id: "64b12696f4cba4ffd6d5aef6",
 				name: "First tree of admin",
-				size: 0
+				size: 25
 			},
 			posts: [],
 			todoTask: [],
@@ -86,7 +86,7 @@ export class TreeService {
 			tree: {
 				_id: "64b126b6f4cba4ffd6d5af00",
 				name: "Persistent optimal budgetary management",
-				size: 0
+				size: 50
 			},
 			posts: [],
 			todoTask: [],
@@ -127,7 +127,7 @@ export class TreeService {
 			tree: {
 				_id: "64b185b52216de8857edede5",
 				name: "Enterprise-wide hybrid data-warehouse",
-				size: 0
+				size: 90
 			},
 			posts: [],
 			todoTask: [],
