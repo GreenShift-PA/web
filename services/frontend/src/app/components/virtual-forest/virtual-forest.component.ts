@@ -19,8 +19,31 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
+	trees:any = [
+		{
+			id: "64b12696f4cba4ffd6d5aef7",
+			name: "First tree of guest",
+			size: 0
+		},
+		{
+			_id: "64b12696f4cba4ffd6d5aef6",
+			name: "First tree of admin",
+			size: 0
+		},
+		{
+			_id: "64b126b6f4cba4ffd6d5af00",
+			name: "Persistent optimal budgetary management",
+			size: 0
+		}
+	]
+
+	metadata:any = {}
+	metaCounter = 0
+
+	currentIntersect:any = null
+
 	tree_params:any = {
-		max_nbr : 5,
+		max_nbr : this.trees.length,
 		counter : 0,
 		position : [],
 		hit_box: []
@@ -258,6 +281,8 @@ export class VirtualForestComponent implements OnInit{
 			)
 			hitBox.position.set(box.x, box.z + box.size , box.y)
 			this.tree_params.hit_box.push(hitBox)
+			this.metadata[hitBox.uuid] = this.metaCounter
+			this.metaCounter ++
 			scene.add(hitBox)
 		}
 
@@ -296,16 +321,16 @@ export class VirtualForestComponent implements OnInit{
 
 
 		// Add map floor
-		const mapFloor = new THREE.Mesh(
-			new THREE.CylinderGeometry((18.5 * this.SIZE), (18.5 * this.SIZE), this.MAX_HEIGHT * 0.1, 50),
-			new THREE.MeshPhysicalMaterial({
-				map: textures.dirt2,
-				side: THREE.DoubleSide
-			})
-		)
-		mapFloor.receiveShadow = true
-		mapFloor.position.set(0, - this.MAX_HEIGHT * 0.05, 0)
-		scene.add(mapFloor)
+		// const mapFloor = new THREE.Mesh(
+		// 	new THREE.CylinderGeometry((18.5 * this.SIZE), (18.5 * this.SIZE), this.MAX_HEIGHT * 0.1, 50),
+		// 	new THREE.MeshPhysicalMaterial({
+		// 		map: textures.dirt2,
+		// 		side: THREE.DoubleSide
+		// 	})
+		// )
+		// mapFloor.receiveShadow = true
+		// mapFloor.position.set(0, - this.MAX_HEIGHT * 0.05, 0)
+		// scene.add(mapFloor)
 
 		// Add clouds 
 		const clouds = this.makeclouds()
@@ -379,6 +404,7 @@ export class VirtualForestComponent implements OnInit{
 		scene.add(camera)
 		
 		var arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffff00)
+		arrowHelper.visible = false
 		scene.add(arrowHelper)
 		gui_helper.add(arrowHelper, 'visible')
 		
@@ -403,8 +429,6 @@ export class VirtualForestComponent implements OnInit{
 		const mouse = new THREE.Vector2()
 		let intersects = new Array()
 
-		let currentIntersect:any = null
-
 		window.addEventListener('mousemove', (_event) => {
 
 			mouse.x = (_event.clientX / renderer.domElement.clientWidth) * 2 - 1,
@@ -425,19 +449,24 @@ export class VirtualForestComponent implements OnInit{
 				arrowHelper.setDirection(n)
 				arrowHelper.position.copy(intersects[0].point)
 
-				if(currentIntersect === null){
+				if(this.currentIntersect === null){
 					display_box?.classList.toggle("no_visible")
+					intersects[0].object.material.color.set("#00ff00")
+					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
+					console.log(tree_info)
+
 				}
-				currentIntersect = intersects[0]
+				this.currentIntersect = intersects[0]
 				
 				// When hover hitbox 
 				// TODO: Crée tout les elements ici
 
 			}else{
-				if(currentIntersect){
+				if(this.currentIntersect){
 					display_box?.classList.toggle("no_visible")
+					this.currentIntersect.object.material.color.set("#0000ff")
 				}
-				currentIntersect = null
+				this.currentIntersect = null
 
 			}
 
@@ -448,9 +477,7 @@ export class VirtualForestComponent implements OnInit{
 		raycaster.setFromCamera(mouse, camera)
 
 
-
-		
-
+		console.log(this.metadata)
 
 
 		/**
