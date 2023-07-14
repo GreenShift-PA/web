@@ -12,4 +12,4 @@ ENV PORT 4200
 
 EXPOSE $PORT
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+CMD ["ng", "serve","--proxy-config","proxy.conf.json" ,"--poll", "2000","--disable-host-check", "--host", "0.0.0.0"]

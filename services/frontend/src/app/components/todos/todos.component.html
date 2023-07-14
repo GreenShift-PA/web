@@ -1,7 +1,7 @@
 <div class="todos">
     <h1 class="text-3xl font-bold">My To-do-list</h1>
     <form class="mb-10" (submit)="addTodo(inputTodo)">
-        <input type="text" name="inputTodo" placeholder="Add a task" class="todo-input rounded-2xl text-white border-white	 " [(ngModel)]="inputTodo" />
+        <input type="text" name="inputTodo" placeholder="Add a task ..." class="todo-input rounded-2xl text-white border-white	 " [(ngModel)]="inputTodo" />
         <!-- <input type="submit" value="Add todo" class="todo-submit rounded-lg  " > -->
     </form>
     <p class="category text-white font-bold text-lg mb-3 ml-1">Todo - {{todos.length}}</p>

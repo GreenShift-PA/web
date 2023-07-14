@@ -18,6 +18,8 @@ import { VerticalNavbarComponent } from './components/vertical-navbar/vertical-n
 import { SectionComponent } from './components/section/section.component';
 import { CardComponent } from './components/card/card.component';
 import { TodosComponent } from './components/todos/todos.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
@@ -36,12 +38,14 @@ import { TodosComponent } from './components/todos/todos.component';
     VerticalNavbarComponent,
     SectionComponent,
     CardComponent,
-    TodosComponent
+    TodosComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule 
+    FormsModule ,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

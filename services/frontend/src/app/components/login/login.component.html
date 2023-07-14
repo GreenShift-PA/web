@@ -1,7 +1,7 @@
 <section class="mx-28 my-16">
     <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-20 lg:py-16 lg:grid-cols-12">
       <div class="w-full place-self-center lg:col-span-6">
-        <div class="p-6 mx-auto rounded-lg shadow-xl bg-primary-50 sm:max-w-xl sm:p-8">
+        <div class="p-6 mx-auto rounded-lg shadow-xl  bg-primary-50 sm:max-w-xl sm:p-8">
           <h1 class="mb-2 text-2xl font-bold leading-tight tracking-tight text-secondary-100">
             Welcome back
           </h1>
@@ -13,11 +13,11 @@
             <div class="grid gap-6 sm:grid-cols-2">
               <div>
                 <label for="email" class="block mb-2 text-sm font-medium text-secondary-100">Email</label>
-                <input [(ngModel)]="user.email" type="email" name="email" id="email" class="bg-secondary-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required="">
+                <input [(ngModel)]="user.email" type="email" name="email" id="email" class="bg-secondary-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required>
               </div>
               <div>
                 <label for="password" class="block mb-2 text-sm font-medium text-secondary-100">Password</label>
-                <input [(ngModel)]="user.password" type="password" name="password" id="password" placeholder="••••••••" class="bg-secondary-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                <input [(ngModel)]="user.password" type="password" name="password" id="password" placeholder="••••••••" class="bg-secondary-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required>
               </div>
             </div>
             
@@ -59,5 +59,8 @@
         <img class="hidden mx-auto lg:flex" src="../assets/undraw_camping_noc8.svg" alt="illustration">  
       </div>             
     </div>
+
+    <button (click)="getData()">Get Data</button>
+
   </section>
   

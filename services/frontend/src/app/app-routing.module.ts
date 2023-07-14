@@ -10,6 +10,7 @@ import { ToDoListComponent } from './components/to-do-list/to-do-list.component'
 import { HomeComponent } from './components/home/home.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import { TodosComponent } from './components/todos/todos.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
   
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'calculator', component: CalculatorComponent },
   { path: 'todolist', component: TodosComponent },
+  { path: 'settings', component: SettingsComponent },
   
 ];
 @NgModule({
