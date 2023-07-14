@@ -34,6 +34,7 @@ export class UserController {
         "login" : "string",
         "password" : "string",
         "tree_name" : "string",
+        "image" : "string",
         "adress" : "string",
         "phone" : "string",
         "skills" : "object",
@@ -70,6 +71,7 @@ export class UserController {
                 tree,
                 posts: [],
                 todoTask: [],
+                image: req.body.image,
                 adress : req.body.adress,
                 phone : req.body.phone,
                 skills : req.body.skills,
@@ -102,6 +104,7 @@ export class UserController {
 
     readonly paramsUpdateUser = {
         "password" : "string | undefined",
+        "image": "string | undefined",
         "adress" : "string | undefined",
         "phone" : "string | undefined",
         "skills" : "object | undefined",
@@ -129,6 +132,7 @@ export class UserController {
         try{
             updated_user = await UserModel.findByIdAndUpdate(req.user?._id,{
                 password,
+                image: req.body.image,
                 adress : req.body.adress,
                 phone : req.body.phone,
                 skills : req.body.skills,

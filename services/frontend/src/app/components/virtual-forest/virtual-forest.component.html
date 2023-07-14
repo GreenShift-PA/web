@@ -1,18 +1,56 @@
 <canvas id="canvas" class="webgl"></canvas>
 
-<div class="description no_visible absolute right-0 top-1/2 bg bg-green-700 w-1/5">
-    <div class="content">
-        <!-- L'element a afficher au moment du hover -->
-        <p>Put content here</p>
-        <h4>Tree name </h4>
-        <div class="flex">
-            <div class="w-1/2 h-11 bg-red-500"></div>
-            <div class="">
-                <p>user firstname</p>
-                <p>user lastname</p>
-            </div>
+<div class="flex justify-center items-center h-screen w-full ">
+
+    <div class="description no_visible absolute right-0 w-1/5 bg-white border mr-2 border-gray-200 rounded-lg shadow dark:bg-primary-50 dark:bg-primary-70 justify-center items-center">
+        <div class="flex justify-end px-4 pt-4">
+            <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                
+            </button>
+            <!-- Dropdown menu -->
+        </div>
+        <div class="flex flex-col items-center pb-10">
+            <img id="user_image" class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://i.pinimg.com/564x/bc/d0/ef/bcd0eff44aa24902838412abb9747f69.jpg" alt="Bonnie image"/>
+            <h5 id="user_name" class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
+            <span id="tree_name" class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
         </div>
 
     </div>
-
+   
 </div>
+
+
+    <!-- <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex justify-end px-4 pt-4">
+            <button id="dropdownButton" data-dropdown-toggle="dropdown" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                <span class="sr-only">Open dropdown</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                </svg>
+            </button>
+            <div id="dropdown" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2" aria-labelledby="dropdownButton">
+                <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
+                </li>
+                <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>
+                </li>
+                <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                </li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col items-center pb-10">
+            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
+            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
+            <span class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+            <div class="flex mt-4 space-x-3 md:mt-6">
+                <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add friend</a>
+                <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Message</a>
+            </div>
+        </div>
+    </div> -->
+
+

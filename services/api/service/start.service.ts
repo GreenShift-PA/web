@@ -54,6 +54,7 @@ export class StartService{
                 tree,
                 posts: [],
                 todoTask: [],
+                iamge: "IMAGE",
                 adress : "C'est un utilisateur de test",
                 phone : "C'est un utilisateur de test",
                 skills : "C'est un utilisateur de test",

@@ -16,15 +16,27 @@ export class TreeController {
     }
 
     getAllTrees = async (req: Request, res:Response): Promise<void> => {
+    
+        const user_tree:any[] = []
         try{
-            const trees = await TreeModel.find({})
-            if (!trees){
-                res.status(404).json({"message": "No tree"}); return
+            const users = await UserModel.find().populate("tree")
+            if(!users){
+                res.status(500).json({"message": "This error will nether appear"})
+                return
             }
-            res.status(200).json(trees)
-        }catch(err){
-            res.status(404).json({"message" : "Tree not found"})
+            for (let user of users){
+                const tree = user.tree
+                user_tree.push({tree, user})
+            }
+
+            res.status(200).json(user_tree).end()
             return 
+
+        }catch(e){
+            console.log(e);
+            res.status(404).end()
+            return 
+            
         }
     }
 

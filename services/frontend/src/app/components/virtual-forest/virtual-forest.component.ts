@@ -4,12 +4,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
 import * as dat from 'lil-gui'
 import { createNoise2D } from 'simplex-noise'
+import { TreeService } from 'src/app/services/virtual_forest/tree.service';
 @Component({
 selector: 'app-virtual-forest',
 templateUrl: './virtual-forest.component.html',
 styleUrls: ['./virtual-forest.component.css']
 })
 export class VirtualForestComponent implements OnInit{
+
+	constructor(private treeService: TreeService) {}
 
 	ngOnInit(): void {
 		this.createThreeJsBox();
@@ -19,23 +22,7 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
-	trees:any = [
-		{
-			id: "64b12696f4cba4ffd6d5aef7",
-			name: "First tree of guest",
-			size: 0
-		},
-		{
-			_id: "64b12696f4cba4ffd6d5aef6",
-			name: "First tree of admin",
-			size: 0
-		},
-		{
-			_id: "64b126b6f4cba4ffd6d5af00",
-			name: "Persistent optimal budgetary management",
-			size: 0
-		}
-	]
+	trees:any[] = this.treeService.getTreeData()
 
 	metadata:any = {}
 	metaCounter = 0
@@ -68,20 +55,14 @@ export class VirtualForestComponent implements OnInit{
 	grassGeo:any = new THREE.BoxGeometry(0,0,0)
 	
 
-	hexGeometry = (height: number, position: THREE.Vector2) => {
-		let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1 , false)
-		geo.translate(position.x, height * 0.5, position.y)
-
-		return geo
-	}
 
 	makeHex = (height:number, position:THREE.Vector2) => {
-		const geo = this.hexGeometry(height, position)
+		const geo: THREE.CylinderGeometry = this.treeService.hexGeometry(height, position)
 
 		if (height > this.STONE_HEIGHT){
 			this.stoneGeo = mergeGeometries([this.stoneGeo, geo])
 			if(Math.random() > 0.8){
-				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.treeService.makesStone(height, position)])
 			}
 
 		}else if (height > this.DIRT_HEIGHT) {
@@ -97,44 +78,22 @@ export class VirtualForestComponent implements OnInit{
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 			if(Math.random() > 0.9 && this.stoneGeo){
-				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.treeService.makesStone(height, position)])
 			}
 
 		}else if (height > this.SAND_HEIGHT) {
 			this.sandGeo = mergeGeometries([this.sandGeo, geo])
 			if(Math.random() > 0.85 && this.stoneGeo){
-				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.treeService.makesStone(height, position)])
 			}
 
 		}else if (height > this.DIRT2_HEIGHT) {
 			this.dirst2Geo = mergeGeometries([this.dirst2Geo, geo])
 
 			if(Math.random() > 0.9 && this.stoneGeo){
-				this.stoneGeo = mergeGeometries([this.stoneGeo, this.makesStone(height, position)])
+				this.stoneGeo = mergeGeometries([this.stoneGeo, this.treeService.makesStone(height, position)])
 			}
 		}
-	}
-
-	// TODO: Change any into a type 	
-	hexMesh = (geo:any, map:any) => {
-		const mat = new THREE.MeshPhysicalMaterial({
-			map
-		})
-		const mesh = new THREE.Mesh(geo, mat)
-		mesh.castShadow = true
-		mesh.receiveShadow = true
-
-		return mesh
-	}
-
-	makesStone = (height:number, position:THREE.Vector2) => {
-		const px = Math.random() * 0.4
-		const pz = Math.random() * 0.4
-
-		const geo = new THREE.SphereGeometry(Math.random() * 0.3 + 0.1, 7, 7)
-		geo.translate(position.x + px, height, position.y + pz)
-
-		return geo
 	}
 
 	makeTree = (height: number , position: THREE.Vector2) => {
@@ -161,46 +120,6 @@ export class VirtualForestComponent implements OnInit{
 		return mergeGeometries([geo, geo2, geo3])
 
 	}
-
-	makeclouds = () => {
-		let geo:any = new THREE.SphereGeometry(0, 0, 0); 
-		let count = Math.floor(Math.pow(Math.random(), 0.45) * 4);
-		count = (count * this.SIZE)
-	  
-		for(let i = 0; i < count; i++) {
-		  const puff1 = new THREE.SphereGeometry(1.2, 7, 7);
-		  const puff2 = new THREE.SphereGeometry(1.5, 7, 7);
-		  const puff3 = new THREE.SphereGeometry(0.9, 7, 7);
-		 
-		  puff1.translate(-1.85, Math.random() * 0.3, 0);
-		  puff2.translate(0,     Math.random() * 0.3, 0);
-		  puff3.translate(1.85,  Math.random() * 0.3, 0);
-	  
-		  const cloudGeo = mergeGeometries([puff1, puff2, puff3]);
-		  cloudGeo.translate( 
-			(Math.random() * 20 - 10 * this.SIZE), 
-			Math.random() * 7 + 13 , 
-			(Math.random() * 20 - 10 * this.SIZE), 
-		  );
-		  cloudGeo.rotateY(Math.random() * Math.PI * 2);
-	  
-		  geo = mergeGeometries([geo, cloudGeo]);
-		}
-		
-		const mesh = new THREE.Mesh(
-		  geo,
-		  new THREE.MeshStandardMaterial({
-			envMapIntensity: 0.75, 
-			flatShading: true,
-			// transparent: true,
-			// opacity: 0.85,
-		  })
-		);
-
-		mesh.castShadow = true
-	  
-		return mesh
-	  }
 	
 	createThreeJsBox = () => {
 		
@@ -261,11 +180,11 @@ export class VirtualForestComponent implements OnInit{
 			}
 		}
 
-		const stoneMesh = this.hexMesh(this.stoneGeo, textures.stone)
-		const grassMesh = this.hexMesh(this.grassGeo, textures.grass)
-		const dirst2Mesh = this.hexMesh(this.dirst2Geo, textures.dirt2)
-		const dirstMesh = this.hexMesh(this.dirstGeo, textures.dirt)
-		const sandMesh = this.hexMesh(this.sandGeo, textures.sand)
+		const stoneMesh = this.treeService.hexMesh(this.stoneGeo, textures.stone)
+		const grassMesh = this.treeService.hexMesh(this.grassGeo, textures.grass)
+		const dirst2Mesh = this.treeService.hexMesh(this.dirst2Geo, textures.dirt2)
+		const dirstMesh = this.treeService.hexMesh(this.dirstGeo, textures.dirt)
+		const sandMesh = this.treeService.hexMesh(this.sandGeo, textures.sand)
 		scene.add(stoneMesh, grassMesh, dirst2Mesh, dirstMesh, sandMesh)
 
 
@@ -333,7 +252,7 @@ export class VirtualForestComponent implements OnInit{
 		// scene.add(mapFloor)
 
 		// Add clouds 
-		const clouds = this.makeclouds()
+		const clouds = this.treeService.makeclouds(this.SIZE)
 		scene.add(clouds)
 
 
@@ -453,7 +372,7 @@ export class VirtualForestComponent implements OnInit{
 					display_box?.classList.toggle("no_visible")
 					intersects[0].object.material.color.set("#00ff00")
 					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
-					console.log(tree_info)
+					this.treeService.show_info_html(tree_info)
 
 				}
 				this.currentIntersect = intersects[0]
