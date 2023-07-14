@@ -23,3 +23,9 @@ i{
 span:hover {
     background-color: var(--color-primary-hover); /* change the background color on hover */
   }
+
+
+.vertical-container-navbar{
+    
+    z-index: 99;
+}

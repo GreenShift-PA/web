@@ -1,5 +1,5 @@
 import { Model } from "mongoose"
-import { Role, Tree, TreeModel } from "../models"
+import { Role, Tree, TreeModel, UserModel } from "../models"
 import * as express from 'express'
 import { Router, Response, Request} from 'express'
 import { checkUserToken } from "../middleware"
@@ -35,10 +35,14 @@ export class TreeController {
 
         try{
             const tree = await TreeModel.findById(req.query.id)
-            if (!tree){
+            const user = await UserModel.findOne({
+                tree: req.query.id
+            })
+            if (!tree || !user){
                 res.status(404).json({"message": "No tree"}); return
             }
-            res.status(200).json(tree)
+            user.password = ""
+            res.status(200).json({ tree, user })
         }catch(err){
             res.status(404).json({"message" : "Tree not found"})
             return 

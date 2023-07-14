@@ -5,3 +5,8 @@
     left: 0; */
     outline: none;
 }
+
+.no_visible
+{
+    opacity: 0;
+}

@@ -44,10 +44,10 @@ a {
 
   .container{
     /* border: 1px solid red; */
-    margin-left: 7rem;
     max-width: none;
-    width: 94vw;
+    width: 100vw;
     height: 100vh;
+    z-index: -1;
   }
   /* 100: "#213b37",
   200: "#195148", */
