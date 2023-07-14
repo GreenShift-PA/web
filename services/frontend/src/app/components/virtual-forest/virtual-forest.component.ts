@@ -22,23 +22,7 @@ export class VirtualForestComponent implements OnInit{
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
-	trees:any = [
-		{
-			id: "64b12696f4cba4ffd6d5aef7",
-			name: "First tree of guest",
-			size: 0
-		},
-		{
-			id: "64b12696f4cba4ffd6d5aef6",
-			name: "First tree of admin",
-			size: 0
-		},
-		{
-			id: "64b126b6f4cba4ffd6d5af00",
-			name: "Persistent optimal budgetary management",
-			size: 0
-		}
-	]
+	trees:any[] = this.treeService.getTreeData()
 
 	metadata:any = {}
 	metaCounter = 0
