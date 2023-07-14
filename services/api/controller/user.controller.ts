@@ -170,7 +170,7 @@ export class UserController {
 
     getAllUsersInfo = async (req:Request, res:Response): Promise<void> => {
 
-        const users = await UserModel.find({})
+        const users = await UserModel.find({}).populate("tree")
         if(!users){
             res.status(404).json({"message" : "No users"})
             return
