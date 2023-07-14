@@ -21,6 +21,7 @@ import { TodosComponent } from './components/todos/todos.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     CardComponent,
     TodosComponent,
     SettingsComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

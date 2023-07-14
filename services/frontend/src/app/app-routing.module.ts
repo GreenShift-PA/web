@@ -12,20 +12,25 @@ import { CalculatorComponent } from './components/calculator/calculator.componen
 import { TodosComponent } from './components/todos/todos.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-
+import { AuthGuard } from './auth/auth-guard';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 const routes: Routes = [
   
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent  },
   { path: 'signup', component: SignupComponent },
-  { path:'forgot-password', component:ForgotPasswordComponent},
-  { path: 'profile', component: ProfileComponent },
-  { path: 'virtualforest', component: VirtualForestComponent },
-  { path: 'blog', component: BlogComponent },
-  { path: 'calculator', component: CalculatorComponent },
-  { path: 'todolist', component: TodosComponent },
-  { path: 'settings', component: SettingsComponent },
-  
+  { path:'forgot-password', component:ForgotPasswordComponent  , canActivate: [AuthGuard]},
+  { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},
+  { path: 'virtualforest', component: VirtualForestComponent, canActivate: [AuthGuard] },
+  { path: 'blog', component: BlogComponent , canActivate: [AuthGuard]},
+  { path: 'calculator', component: CalculatorComponent , canActivate: [AuthGuard]},
+  { path: 'todolist', component: TodosComponent, canActivate: [AuthGuard] },
+  { path: 'settings', component: SettingsComponent , canActivate: [AuthGuard]},
+  // { path: 'disconnect', component: SettingsComponent , canActivate: [AuthGuard]},
+  { path: 'not-found', redirectTo: '' } ,// Default route for unknown paths
+
+  { path: '**', component:PageNotFoundComponent } // Default route for unknown paths
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
