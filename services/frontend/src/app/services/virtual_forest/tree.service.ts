@@ -9,187 +9,162 @@ export class TreeService {
   constructor() {}
 
   getTreeData = () => {
-    return [
+	// Il faut appeller la route GET {{URL}}/user/all
+	return [
 		{
+			follow: [],
+			_id: "64b12696f4cba4ffd6d5aefc",
+			login: "guest@mail.com",
+			password: "",
+			roles: [],
 			tree: {
-				id: "64b12696f4cba4ffd6d5aef7",
+				_id: "64b12696f4cba4ffd6d5aef7",
 				name: "First tree of guest",
 				size: 0
 			},
-			user: {
-				id: "64b12696f4cba4ffd6d5aefc",
-				login: "guest@mail.com",
-				password: "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
-				roles: [],
-				tree: {
-					id: "64b12696f4cba4ffd6d5aef7",
-					name: "First tree of guest",
-					size: 0
-				},
-				posts: [],
-				todoTask: [],
-				adress: "C'est un tutilisateur de test",
-				phone: "C'est un tutilisateur de test",
-				skills: [
-					"C'est un tutilisateur de test"
-				],
-				hobbies: [
-					"C'est un tutilisateur de test"
-				],
-				job: "C'est un tutilisateur de test",
-				aboutMe: "C'est un tutilisateur de test",
-				workHistory: [
-					"C'est un tutilisateur de test"
-				],
-				joinDate: "2023-07-14T10:42:30.235Z",
-				organization: "C'est un tutilisateur de test",
-				dirthday: "2023-07-14T10:42:30.235Z",
-				languages: [
-					"C'est un tutilisateur de test"
-				]
-			}
+			posts: [],
+			todoTask: [],
+			adress: "C'est un tutilisateur de test",
+			phone: "C'est un tutilisateur de test",
+			skills: [
+				"C'est un tutilisateur de test"
+			],
+			hobbies: [
+				"C'est un tutilisateur de test"
+			],
+			job: "C'est un tutilisateur de test",
+			aboutMe: "C'est un tutilisateur de test",
+			workHistory: [
+				"C'est un tutilisateur de test"
+			],
+			joinDate: "2023-07-14T10:42:30.235Z",
+			organization: "C'est un tutilisateur de test",
+			dirthday: "2023-07-14T10:42:30.235Z",
+			languages: [
+				"C'est un tutilisateur de test"
+			]
 		},
 		{
+			follow: [],
+			_id: "64b12696f4cba4ffd6d5aefe",
+			login: "admin@mail.com",
+			password: "",
+			roles: [],
 			tree: {
-				id: "64b12696f4cba4ffd6d5aef6",
+				_id: "64b12696f4cba4ffd6d5aef6",
 				name: "First tree of admin",
 				size: 0
 			},
-			user: {
-				id: "64b12696f4cba4ffd6d5aefe",
-				login: "admin@mail.com",
-				password: "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
-				roles: [],
-				tree: {
-					id: "64b12696f4cba4ffd6d5aef6",
-					name: "First tree of admin",
-					size: 0
-				},
-				posts: [],
-				todoTask: [],
-				adress: "C'est un tutilisateur de test",
-				phone: "C'est un tutilisateur de test",
-				skills: [
-					"C'est un tutilisateur de test"
-				],
-				hobbies: [
-					"C'est un tutilisateur de test"
-				],
-				job: "C'est un tutilisateur de test",
-				aboutMe: "C'est un tutilisateur de test",
-				workHistory: [
-					"C'est un tutilisateur de test"
-				],
-				joinDate: "2023-07-14T10:42:30.240Z",
-				organization: "C'est un tutilisateur de test",
-				dirthday: "2023-07-14T10:42:30.240Z",
-				languages: [
-					"C'est un tutilisateur de test"
-				]
-			}
+			posts: [],
+			todoTask: [],
+			adress: "C'est un tutilisateur de test",
+			phone: "C'est un tutilisateur de test",
+			skills: [
+				"C'est un tutilisateur de test"
+			],
+			hobbies: [
+				"C'est un tutilisateur de test"
+			],
+			job: "C'est un tutilisateur de test",
+			aboutMe: "C'est un tutilisateur de test",
+			workHistory: [
+				"C'est un tutilisateur de test"
+			],
+			joinDate: "2023-07-14T10:42:30.240Z",
+			organization: "C'est un tutilisateur de test",
+			dirthday: "2023-07-14T10:42:30.240Z",
+			languages: [
+				"C'est un tutilisateur de test"
+			]
 		},
 		{
+			follow: [],
+			_id: "64b126b6f4cba4ffd6d5af03",
+			login: "user1@mail.com",
+			password: "",
+			roles: [],
 			tree: {
-				id: "64b126b6f4cba4ffd6d5af00",
+				_id: "64b126b6f4cba4ffd6d5af00",
 				name: "Persistent optimal budgetary management",
 				size: 0
 			},
-			user: {
-				id: "64b126b6f4cba4ffd6d5af03",
-				login: "user1@mail.com",
-				password: "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
-				roles: [
-					"64b12696f4cba4ffd6d5aef1"
-				],
-				tree: {
-					id: "64b126b6f4cba4ffd6d5af00",
-					name: "Persistent optimal budgetary management",
-					size: 0
-				},
-				posts: [],
-				todoTask: [],
-				adress: "68842 Jan Road",
-				phone: "760-597-7117",
-				skills: [
-					"Robust monitor synergize Sleek",
-					"monitor Legacy Strategist Accounts Implementation",
-					"Rubber circuit synthesize Pennsylvania"
-				],
-				hobbies: [
-					"multi-byte",
-					"open-source",
-					"open-source"
-				],
-				job: "Central Interactions Agent",
-				aboutMe: "Qui explicabo porro. Voluptatem qui a possimus neque laudantium totam. Debitis incidunt nisi nam rerum. Et consectetur quasi.",
-				workHistory: [
-					"2",
-					"Kuhic, Anderson and Tromp",
-					"Larson LLC",
-					"Durgan Inc"
-				],
-				joinDate: "2022-08-28T11:49:45.000Z",
-				organization: "Durgan Inc",
-				dirthday: "2022-07-27T02:08:27.000Z",
-				languages: [
-					"Guinea",
-					"Barbados",
-					"Lesotho"
-				]
-			}
+			posts: [],
+			todoTask: [],
+			adress: "68842 Jan Road",
+			phone: "760-597-7117",
+			skills: [
+				"Robust monitor synergize Sleek",
+				"monitor Legacy Strategist Accounts Implementation",
+				"Rubber circuit synthesize Pennsylvania"
+			],
+			hobbies: [
+				"multi-byte",
+				"open-source",
+				"open-source"
+			],
+			job: "Central Interactions Agent",
+			aboutMe: "Qui explicabo porro. Voluptatem qui a possimus neque laudantium totam. Debitis incidunt nisi nam rerum. Et consectetur quasi.",
+			workHistory: [
+				"2",
+				"Kuhic, Anderson and Tromp",
+				"Larson LLC",
+				"Durgan Inc"
+			],
+			joinDate: "2022-08-28T11:49:45.000Z",
+			organization: "Durgan Inc",
+			dirthday: "2022-07-27T02:08:27.000Z",
+			languages: [
+				"Guinea",
+				"Barbados",
+				"Lesotho"
+			]
 		},
 		{
+			_id: "64b185b52216de8857edede7",
+			login: "user2@mail.com",
+			password: "",
+			roles: [],
 			tree: {
-				id: "64b185b52216de8857edede5",
+				_id: "64b185b52216de8857edede5",
 				name: "Enterprise-wide hybrid data-warehouse",
 				size: 0
 			},
-			user: {
-				id: "64b185b52216de8857edede7",
-				login: "user2@mail.com",
-				password: "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
-				roles: [
-					"64b12696f4cba4ffd6d5aef1"
-				],
-				tree: {
-					id: "64b185b52216de8857edede5",
-					name: "Enterprise-wide hybrid data-warehouse",
-					size: 0
-				},
-				posts: [],
-				todoTask: [],
-				image: "http://placeimg.com/640/480/people",
-				adress: "0740 Conn Island",
-				phone: "277-405-6864",
-				skills: [
-					"Generic Utah blue",
-					"Loan payment white",
-					"Planner lime"
-				],
-				hobbies: [
-					"digital",
-					"1080p",
-					"back-end"
-				],
-				job: "Principal Security Engineer",
-				aboutMe: "Excepturi sint sequi. Dolorem voluptas recusandae qui. Debitis dolore suscipit laboriosam sunt quo tempora. Quas quibusdam qui exercitationem aspernatur magnam eveniet ut. Nihil dolor in delectus possimus rerum et.",
-				workHistory: [
-					"Rohan, Moore and Pagac",
-					"Paucek Group",
-					"Littel - Lubowitz"
-				],
-				joinDate: "2023-07-10T12:29:46.000Z",
-				organization: "Kub LLC",
-				dirthday: "2022-10-13T20:47:40.000Z",
-				languages: [
-					"Estonia",
-					"Tokelau",
-					"Japan"
-				]
-			}
+			posts: [],
+			todoTask: [],
+			image: "http://placeimg.com/640/480/people",
+			adress: "0740 Conn Island",
+			phone: "277-405-6864",
+			skills: [
+				"Generic Utah blue",
+				"Loan payment white",
+				"Planner lime"
+			],
+			hobbies: [
+				"digital",
+				"1080p",
+				"back-end"
+			],
+			job: "Principal Security Engineer",
+			aboutMe: "Excepturi sint sequi. Dolorem voluptas recusandae qui. Debitis dolore suscipit laboriosam sunt quo tempora. Quas quibusdam qui exercitationem aspernatur magnam eveniet ut. Nihil dolor in delectus possimus rerum et.",
+			workHistory: [
+				"Rohan, Moore and Pagac",
+				"Paucek Group",
+				"Littel - Lubowitz"
+			],
+			joinDate: "2023-07-10T12:29:46.000Z",
+			organization: "Kub LLC",
+			dirthday: "2022-10-13T20:47:40.000Z",
+			languages: [
+				"Estonia",
+				"Tokelau",
+				"Japan"
+			],
+			follow: [
+				"64b185b52216de8857edede7"
+			]
 		}
 	]
-  };
+  }
 
   hexGeometry = (height: number, position: THREE.Vector2) => {
     let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1, false);
@@ -270,6 +245,6 @@ export class TreeService {
     }
 
     tree_name.innerHTML = tree_info.tree.name;
-    username.innerHTML = `${tree_info.user.login}`;
+    username.innerHTML = `${tree_info.login}`;
   };
 }
