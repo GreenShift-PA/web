@@ -20,6 +20,7 @@
     "@angular/router": "^15.2.0",
     "@types/three": "^0.153.0",
     "fontawesome": "^5.6.3",
+    "gsap": "^3.5.1",
     "lil-gui": "^0.18.2",
     "rxjs": "~7.8.0",
     "simplex-noise": "^4.0.1",

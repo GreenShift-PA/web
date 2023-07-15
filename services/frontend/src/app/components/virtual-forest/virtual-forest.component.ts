@@ -5,6 +5,8 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
 import * as dat from 'lil-gui'
 import { createNoise2D } from 'simplex-noise'
 import { TreeService } from 'src/app/services/virtual_forest/tree.service';
+import { gsap } from 'gsap';
+
 @Component({
 selector: 'app-virtual-forest',
 templateUrl: './virtual-forest.component.html',
@@ -38,7 +40,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	// Size of the make (1 make a map of 10/10)
 	// DON'T GO FURTHER THAN 4
-	SIZE = 1
+	SIZE:number = 1
 
 	MAX_HEIGHT:number = 10
 	STONE_HEIGHT: number = this.MAX_HEIGHT * 0.8
@@ -103,9 +105,6 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		const treeHeight = Math.random() * 1 + 1.25
 		const tree_size = this.trees[this.tree_params.counter].tree.size
 		const new_tree_size = ((tree_size - 0) / (100 - 0)) * (10 - 1) + 1;
-		console.log(treeHeight, tree_size, new_tree_size)
-
-		console.log(treeHeight)
 
 		const geo = new THREE.CylinderGeometry(0, 1.5, treeHeight, 3)
 		geo.translate(position.x, height + treeHeight * 0 + 1, position.y)
@@ -152,7 +151,16 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		}
 
 		// Textures Loader
-		const textureLoader = new THREE.TextureLoader()
+		const loaddingManager = new THREE.LoadingManager(
+			// Loaded
+			() => {
+				gsap.to(camera.position, {y:(31 * this.SIZE), z:(-35 * this.SIZE  ), duration: 3} )
+			}, 
+			// Progress
+			() => {
+			}
+		)
+		const textureLoader = new THREE.TextureLoader(loaddingManager)
 		const textures = {
 			dirt: textureLoader.load("/assets/map/1/dirt.png"),
 			dirt2: textureLoader.load("/assets/map/1/dirt2.jpg"),
@@ -322,7 +330,8 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		 */
 		// Base camera
 		const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000)
-		camera.position.set(-22, 31, -35);
+		camera.position.set(-22, (60 * this.SIZE), (50 * (this.SIZE * 0.5)));
+		// camera.position.set(50,50,50);
 		gui_camera.add(camera.position, "x").min(-50).max(50).step(1)
 		gui_camera.add(camera.position, "y").min(-20).max(50).step(1)
 		gui_camera.add(camera.position, "z").min(-50).max(50).step(1)
