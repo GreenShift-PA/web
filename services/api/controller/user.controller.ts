@@ -33,6 +33,8 @@ export class UserController {
     readonly paramsLogin = {
         "login" : "string",
         "password" : "string",
+        "firstname" : "string",
+        "lastname" : "string",
         "tree_name" : "string",
         "image" : "string",
         "adress" : "string",
@@ -67,6 +69,8 @@ export class UserController {
             const user = await UserModel.create({
                 login,
                 password: SecurityUtils.toSHA512(password),
+                firstname : req.body.firstname,
+                lastname : req.body.lastname,
                 roles:[this.guestRole],
                 tree,
                 posts: [],
