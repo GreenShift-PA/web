@@ -15,6 +15,14 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
+    firstname: {
+        type: Schema.Types.String,
+        required: true
+    },
+    lastname: {
+        type: Schema.Types.String,
+        required: true
+    },
     roles:[{
         type: Schema.Types.ObjectId,
         ref: "Role",
@@ -97,16 +105,18 @@ const userShemma = new Schema<User>({
 })
 
 export interface User{
-    _id: string,
-    login: string,
-    password: string,
+    _id: string
+    login: string
+    password: string
+    firstname: string
+    lastname: string
     roles: Role[]
     tree: Tree
     posts: Post[]
     todoTask: Todo[]
 
     // User personal infos
-    image: string,
+    image: string
     adress: string
     phone: string
     skills: string[]
