@@ -397,13 +397,26 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 			
 			intersects = raycaster.intersectObjects(this.tree_params.hit_box, false)
 			const display_box = document.querySelector('.description')
+
 			
-			if (intersects.length > 0) {
+			if (intersects.length > 0 ) {
 				let n = new THREE.Vector3()
 				n.copy(intersects[0].face.normal)
 				n.transformDirection(intersects[0].object.matrixWorld)
 				arrowHelper.setDirection(n)
 				arrowHelper.position.copy(intersects[0].point)
+
+
+				if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object){
+					if(this.currentIntersect){
+						display_box?.classList.toggle("no_visible")
+						this.currentIntersect.object.material.color.set("#0000ff")
+					}
+	
+					this.currentIntersect = null
+					this.currentTree_info = null
+				}
+		
 				
 				if(this.currentIntersect === null){
 					display_box?.classList.toggle("no_visible")
@@ -412,9 +425,10 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 					this.treeService.show_info_html(tree_info)
 					
 				}
+
 				this.currentIntersect = intersects[0]
 				this.currentTree_info = this.trees[this.metadata[intersects[0].object.uuid]]
-				
+
 				
 			}else{
 				if(this.currentIntersect){
