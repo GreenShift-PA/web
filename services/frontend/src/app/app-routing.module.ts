@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent  },
   { path: 'signup', component: SignupComponent },
-  { path:'forgot-password', component:ForgotPasswordComponent  , canActivate: [AuthGuard]},
+  { path:'forgot-password', component:ForgotPasswordComponent  },
   { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},
   { path: 'virtualforest', component: VirtualForestComponent, canActivate: [AuthGuard] },
   { path: 'blog', component: BlogComponent , canActivate: [AuthGuard]},

@@ -4,14 +4,14 @@
           <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-10">
              <img class="mb-2 w-20 h-20 rounded-2xl " src="https://demos.creative-tim.com/soft-ui-flowbite-pro/images/users/jese-leos-2x.png" alt="Jese portrait">
              <div>
-                <h2 class="text-xl font-bold  text-secondary-100">Alec Thompson</h2>
+                <h2 class="flex text-xl font-bold  text-secondary-100">Alec Thompson</h2>
                 <ul class="mt-2 space-y-1">
                    <li class="flex items-center text-sm font-semibold  text-secondary-100">
                       <svg class="mr-2 w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                          <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"></path>
                          <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"></path>
                       </svg>
-                      CEO / Co-Founder
+                      {{job}}
                    </li>
                    <li class="flex items-center text-sm font-semibold   text-secondary-100">
                       <svg class="mr-2 w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -26,15 +26,23 @@
              <div class="sm:flex-1">
                 <address class="text-sm not-italic font-semibold   text-secondary-100">
                    <div class="mt-4">Email adress</div>
-                   <a class="text-sm font-semibold  text-white" href="mailto:webmaster@flowbite.com">yourname@flowbite.com</a>
+                   <a class="text-sm font-semibold  text-white" href="mailto:webmaster@flowbite.com">{{email}}</a>
                    <div class="mt-4">Home adress</div>
                    <div class="mb-2 text-sm font-semibold  text-white">
-                      92 Miles Drive, Newark, NJ 07103, California,
+                      {{address}}
                       <br>United States of America
                    </div>
-                   <div class="mt-4">Phone number</div>
+                   <div class="mt-4">Posts</div>
                    <div class="mb-2 text-sm font-semibold  text-white">
-                      +00 123 456 789 / +12 345 678
+                      {{posts}}
+                   </div>
+                   <div class="mt-4">Tasks done</div>
+                   <div class="mb-2 text-sm font-semibold  text-white">
+                      {{tasks}}
+                   </div>
+                   <div class="mt-4">Roles</div>
+                   <div class="mb-2 text-sm font-semibold  text-white" *ngIf="roles && roles.length > 0">
+                      <span *ngFor="let role of roles">{{role.name.toUpperCase()}}</span>
                    </div>
                 </address>
              </div>
@@ -84,36 +92,10 @@
           <div class="flow-root">
              <h3 class="text-xl font-bold  text-secondary-100">Skills</h3>
              <ul class="flex flex-wrap mt-4">
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Brand Design
+                <li *ngFor="let skill of skills" class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
+                    {{skill}}
                 </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Logo Design
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Mobile App Design
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   UI Design
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   React Developer
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Wordpress
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Sketch
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Figma
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Prototyping
-                </li>
-                <li class="bg-gradient-to-br from-green-500 to-green-700 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2">
-                   Database
-                </li>
+                
              </ul>
           </div>
        </div>
@@ -121,30 +103,10 @@
           <div class="flow-root">
              <h3 class="text-xl font-bold text-secondary-100">Hobbies</h3>
              <ul class="flex flex-wrap mt-4">
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Football
+                <li *ngFor="let hobby of hobbies" class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
+                  {{hobby}}
                 </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Dogs
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Gaming
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Movies
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Travelling
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Surf
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2 mr-2">
-                   Ice Skating
-                </li>
-                <li class="bg-gradient-to-br from-sky-400 to-sky-600 text-xs font-bold uppercase text-white px-3 py-1.5 rounded-md mb-2">
-                   The Witcher
-                </li>
+               
              </ul>
           </div>
        </div>
@@ -156,20 +118,7 @@
              <div class="sm:col-span-2">
                 <dt class="text-lg font-semibold text-secondary-100 text-start">About me</dt>
                 <dd class="mt-1 space-y-3 max-w-prose text-sm text-white text-start">
-                   <p>
-                      Dedicated, passionate, and accomplished Full Stack
-                      Developer with 9+ years of progressive experience
-                      working as an Independent Contractor for Google and
-                      developing and growing my educational social network
-                      that helps others learn programming, web design, game
-                      development, networking.
-                   </p>
-                   <p>
-                      Aside from my job, I like to create and contribute to
-                      open source projects. That helps me to learn a ton of
-                      new stuff, grow as a developer and support other open
-                      source projects.
-                   </p>
+                   {{aboutMe}}
                 </dd>
              </div>
              <div>
@@ -178,52 +127,26 @@
                    Thomas Jeff High School, Stanford University
                 </dd>
              </div>
-             <div>
-                <dt class="text-sm font-semibold text-secondary-100">
-                   Work History
-                </dt>
-                <dd class="text-sm font-semibold text-white">
-                   Twitch, Google, Apple
-                </dd>
-             </div>
+             
              <div>
                 <dt class="text-sm font-semibold text-secondary-100">Join Date</dt>
                 <dd class="text-sm font-semibold text-white">
-                   12-09-2021
+                  {{ joinDate | date: 'medium' }}
+
                 </dd>
              </div>
              <div>
                 <dt class="text-sm font-semibold text-secondary-100">Languages</dt>
                 <dd class="text-sm font-semibold text-white">
-                   English, German, Italian, Spanish
+                   {{languages}}
                 </dd>
              </div>
-             <div>
-                <dt class="text-sm font-semibold text-secondary-100">
-                   Organization
-                </dt>
-                <dd class="text-sm font-semibold text-white">
-                   Bergside Inc.
-                </dd>
-             </div>
-             <div>
-                <dt class="text-sm font-semibold text-secondary-100">Role</dt>
-                <dd class="text-sm font-semibold text-white">
-                   Graphic Designer
-                </dd>
-             </div>
-             <div>
-                <dt class="text-sm font-semibold text-secondary-100">
-                   Department
-                </dt>
-                <dd class="text-sm font-semibold text-white">
-                   Marketing
-                </dd>
-             </div>
+           
+             
              <div>
                 <dt class="text-sm font-semibold text-secondary-100">Birthday</dt>
                 <dd class="text-sm font-semibold text-white">
-                   15-08-1990
+                   {{birthday | date :"short"}}
                 </dd>
              </div>
           </dl>

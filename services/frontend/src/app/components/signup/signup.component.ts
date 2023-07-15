@@ -12,6 +12,5 @@ export class SignupComponent {
   constructor(private userService: UserService) { }
 
   signup(): void {
-    this.userService.register(this.email, this.password);
   }
 }
