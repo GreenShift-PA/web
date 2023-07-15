@@ -12,7 +12,7 @@ export interface UserResponse {
   tree: string;
   posts: any[];
   todoTask: any[];
-  adress: string;
+  address: string;
   phone: string;
   skills: string[];
   hobbies: string[];
@@ -21,7 +21,7 @@ export interface UserResponse {
   workHistory: string[];
   joinDate: Date;
   organization: string;
-  dirthday: Date;
+  birthday: Date;
   languages: string[];
 }
 
