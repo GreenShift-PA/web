@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as THREE from "three"
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
@@ -10,7 +10,7 @@ selector: 'app-virtual-forest',
 templateUrl: './virtual-forest.component.html',
 styleUrls: ['./virtual-forest.component.css']
 })
-export class VirtualForestComponent implements OnInit{
+export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	constructor(private treeService: TreeService) {}
 
@@ -53,6 +53,8 @@ export class VirtualForestComponent implements OnInit{
 	dirst2Geo:any = new THREE.BoxGeometry(0,0,0)
 	sandGeo:any = new THREE.BoxGeometry(0,0,0)
 	grassGeo:any = new THREE.BoxGeometry(0,0,0)
+
+	scene:any = new THREE.Scene()
 	
 
 
@@ -162,11 +164,10 @@ export class VirtualForestComponent implements OnInit{
 		}
 		
 		// Set up Scene
-		const scene = new THREE.Scene()
-		scene.background = new THREE.Color(parameters_scene.bg_color)
+		this.scene.background = new THREE.Color(parameters_scene.bg_color)
 		gui_scene.addColor(parameters_scene, "bg_color").onChange((value: THREE.Color) => {
 			// TODO: Maybe need to change
-			scene.background = new THREE.Color(parameters_scene.bg_color)
+			this.scene.background = new THREE.Color(parameters_scene.bg_color)
 		})
 
 		const noise2D = createNoise2D();
@@ -190,7 +191,7 @@ export class VirtualForestComponent implements OnInit{
 		const dirst2Mesh = this.treeService.hexMesh(this.dirst2Geo, textures.dirt2)
 		const dirstMesh = this.treeService.hexMesh(this.dirstGeo, textures.dirt)
 		const sandMesh = this.treeService.hexMesh(this.sandGeo, textures.sand)
-		scene.add(stoneMesh, grassMesh, dirst2Mesh, dirstMesh, sandMesh)
+		this.scene.add(stoneMesh, grassMesh, dirst2Mesh, dirstMesh, sandMesh)
 
 
 		// Make the hitBox
@@ -207,7 +208,7 @@ export class VirtualForestComponent implements OnInit{
 			this.tree_params.hit_box.push(hitBox)
 			this.metadata[hitBox.uuid] = this.metaCounter
 			this.metaCounter ++
-			scene.add(hitBox)
+			this.scene.add(hitBox)
 		}
 
 
@@ -229,7 +230,7 @@ export class VirtualForestComponent implements OnInit{
 		)
 		seaMesh.receiveShadow = true
 		seaMesh.position.set(0, parameters_scene.position_water, 0)
-		scene.add(seaMesh)
+		this.scene.add(seaMesh)
 
 		// Add map container 
 		// const mapContainer = new THREE.Mesh(
@@ -258,14 +259,14 @@ export class VirtualForestComponent implements OnInit{
 
 		// Add clouds 
 		const clouds = this.treeService.makeclouds(this.SIZE)
-		scene.add(clouds)
+		this.scene.add(clouds)
 
 
 		// Ambient light
 		const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.15)
 		gui_anbiant_light.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 		gui_anbiant_light.addColor(ambientLight, 'color')
-		scene.add(ambientLight)
+		this.scene.add(ambientLight)
 		
 		// Directional light
 		const directionalLight = new THREE.DirectionalLight('#ffcb8e', 0.5)
@@ -286,7 +287,7 @@ export class VirtualForestComponent implements OnInit{
 		
 		const directionalLightCameraHelper = new THREE.DirectionalLightHelper(directionalLight)
 		directionalLightCameraHelper.visible = false
-		scene.add(directionalLightCameraHelper)
+		this.scene.add(directionalLightCameraHelper)
 
 		gui_directional_light.add(directionalLightCameraHelper, "visible")
 		gui_directional_light.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
@@ -294,7 +295,7 @@ export class VirtualForestComponent implements OnInit{
 		gui_directional_light.add(directionalLight.position, 'y').min(-50).max(50).step(0.001)
 		gui_directional_light.add(directionalLight.position, 'z').min(-50).max(50).step(0.001)
 		gui_directional_light.addColor(directionalLight, "color")
-		scene.add(directionalLight)
+		this.scene.add(directionalLight)
 
 
 		const sizes = {
@@ -325,11 +326,11 @@ export class VirtualForestComponent implements OnInit{
 		gui_camera.add(camera.position, "x").min(-50).max(50).step(1)
 		gui_camera.add(camera.position, "y").min(-20).max(50).step(1)
 		gui_camera.add(camera.position, "z").min(-50).max(50).step(1)
-		scene.add(camera)
+		this.scene.add(camera)
 		
 		var arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), 1, 0xffff00)
 		arrowHelper.visible = false
-		scene.add(arrowHelper)
+		this.scene.add(arrowHelper)
 		gui_helper.add(arrowHelper, 'visible')
 		
 		// Controls
@@ -421,7 +422,7 @@ export class VirtualForestComponent implements OnInit{
 			controls.update()
 
 			// Render
-			renderer.render(scene, camera)
+			renderer.render(this.scene, camera)
 		
 			// Call tick again on the next frame
 			window.requestAnimationFrame(tick)
@@ -429,6 +430,32 @@ export class VirtualForestComponent implements OnInit{
 		}
 
 		tick()
+	}
+
+
+	clear(){
+		this.scene.traverse((object:any) => {
+		  if (!object.isMesh) return
+		  
+		  this.deleteObject(object)
+		})
+	  }
+	
+ 	deleteObject(object: any){
+		object.geometry.dispose()
+	
+		if (object.material instanceof Array) {
+		  object.material.forEach((material:any) => material.dispose());
+		} else {
+			object.material.dispose();
+		}
+		object.removeFromParent()
+		this.scene.remove(object)
+	  }
+
+	ngOnDestroy(): void {
+		alert("c'est la fin");
+		this.clear()
 	}
 
 
