@@ -20,12 +20,16 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	trees:any = []
 	
 	ngOnInit(): void {
-		this.treeService.getTreeData().subscribe(response => {
-		  this.trees = response;
-		  this.tree_params.max_nbr = this.trees.length,
-		  this.SIZE = this.chooseSize(this.tree_params.max_nbr)
-		  this.createThreeJsBox();
-		});
+		// this.treeService.getTreeData().subscribe(response => {
+		//   this.trees = response;
+		//   this.tree_params.max_nbr = this.trees.length,
+		//   this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+		//   this.createThreeJsBox();
+		// });
+		this.trees = this.treeService.getTreeFakeData()
+		this.tree_params.max_nbr = this.trees.length,
+		this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+		this.createThreeJsBox();
 	  }
 
 	tileToPosition(tileX:number, tileY:number){
