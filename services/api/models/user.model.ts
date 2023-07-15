@@ -49,7 +49,7 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
-    adress: {
+    address: {
         type: Schema.Types.String,
         required: true
     },
@@ -93,7 +93,7 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
-    dirthday : {
+    birthday : {
         type: Schema.Types.Date,
         required: true
     },
@@ -125,7 +125,7 @@ export interface User{
 
     // User personal infos
     image: string
-    adress: string
+    address: string
     city: string
     country: string
     phone: string
@@ -136,7 +136,7 @@ export interface User{
     workHistory: string[]
     joinDate: Date
     organization: string
-    dirthday: Date
+    birthday: Date
     languages: string []
 
     // Online

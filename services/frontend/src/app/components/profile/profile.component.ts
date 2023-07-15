@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
     this.userService.getMe().subscribe(
       (response) => {
         this.email = response.login;
-        this.address = response.adress;
+        this.address = response.address;
         this.phone = response.phone;
         this.roles = response.roles;
         this.skills = response.skills;
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
         this.workHistory = response.workHistory;
         this.joinDate = new Date(response.joinDate);
         this.organization = response.organization;
-        this.birthday = new Date(response.dirthday);
+        this.birthday = new Date(response.birthday);
         this.languages = response.languages;
         console.log(response);
       },
