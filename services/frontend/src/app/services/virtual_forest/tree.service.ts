@@ -25,7 +25,6 @@ export class TreeService {
 			posts: [],
 			todoTask: [],
 			adress: "C'est un tutilisateur de test",
-			phone: "C'est un tutilisateur de test",
 			skills: [
 				"C'est un tutilisateur de test"
 			],
@@ -39,10 +38,7 @@ export class TreeService {
 			],
 			joinDate: "2023-07-14T10:42:30.235Z",
 			organization: "C'est un tutilisateur de test",
-			dirthday: "2023-07-14T10:42:30.235Z",
-			languages: [
-				"C'est un tutilisateur de test"
-			]
+			dirthday: "2023-07-14T10:42:30.235Z"
 		},
 		{
 			follow: [],
@@ -58,7 +54,6 @@ export class TreeService {
 			posts: [],
 			todoTask: [],
 			adress: "C'est un tutilisateur de test",
-			phone: "C'est un tutilisateur de test",
 			skills: [
 				"C'est un tutilisateur de test"
 			],
@@ -73,9 +68,6 @@ export class TreeService {
 			joinDate: "2023-07-14T10:42:30.240Z",
 			organization: "C'est un tutilisateur de test",
 			dirthday: "2023-07-14T10:42:30.240Z",
-			languages: [
-				"C'est un tutilisateur de test"
-			]
 		},
 		{
 			follow: [],
@@ -91,7 +83,6 @@ export class TreeService {
 			posts: [],
 			todoTask: [],
 			adress: "68842 Jan Road",
-			phone: "760-597-7117",
 			skills: [
 				"Robust monitor synergize Sleek",
 				"monitor Legacy Strategist Accounts Implementation",
@@ -113,11 +104,6 @@ export class TreeService {
 			joinDate: "2022-08-28T11:49:45.000Z",
 			organization: "Durgan Inc",
 			dirthday: "2022-07-27T02:08:27.000Z",
-			languages: [
-				"Guinea",
-				"Barbados",
-				"Lesotho"
-			]
 		},
 		{
 			_id: "64b185b52216de8857edede7",
@@ -133,7 +119,6 @@ export class TreeService {
 			todoTask: [],
 			image: "http://placeimg.com/640/480/people",
 			adress: "0740 Conn Island",
-			phone: "277-405-6864",
 			skills: [
 				"Generic Utah blue",
 				"Loan payment white",
@@ -154,11 +139,6 @@ export class TreeService {
 			joinDate: "2023-07-10T12:29:46.000Z",
 			organization: "Kub LLC",
 			dirthday: "2022-10-13T20:47:40.000Z",
-			languages: [
-				"Estonia",
-				"Tokelau",
-				"Japan"
-			],
 			follow: [
 				"64b185b52216de8857edede7"
 			]

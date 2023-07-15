@@ -13,7 +13,6 @@ export interface UserResponse {
   posts: any[];
   todoTask: any[];
   adress: string;
-  phone: string;
   skills: string[];
   hobbies: string[];
   job: string;
@@ -22,7 +21,6 @@ export interface UserResponse {
   joinDate: Date;
   organization: string;
   dirthday: Date;
-  languages: string[];
 }
 
 @Injectable({
@@ -35,6 +33,16 @@ export class UserService {
 
 
   getMe(): Observable<UserResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<UserResponse>("http://localhost:3000/user/me", { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+
+  getUser(): Observable<UserResponse> {
     const token = this.token.getItemWithExpiry("token");
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService,  } from 'src/app/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,6 @@ import { UserService,  } from 'src/app/services/user.service';
 export class ProfileComponent implements OnInit {
   email: string = "";
   address: string = "";
-  phone: string = "";
   tasks: string = "";
   skills: string[] = [];
   hobbies: string[] = [];
@@ -17,37 +17,37 @@ export class ProfileComponent implements OnInit {
   posts: string = "";
   job: string = "";
   aboutMe: string = "";
-  workHistory: string[] = [];
   joinDate: Date = new Date();
-  organization: string = "";
   birthday: Date = new Date();
-  languages: string[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.userService.getMe().subscribe(
-      (response) => {
-        this.email = response.login;
-        this.address = response.adress;
-        this.phone = response.phone;
-        this.roles = response.roles;
-        this.skills = response.skills;
-        this.hobbies = response.hobbies;
-        this.job = response.job;
-        this.tasks = response.todoTask.length.toString();
-        this.posts = response.posts.length.toString();
-        this.aboutMe = response.aboutMe;
-        this.workHistory = response.workHistory;
-        this.joinDate = new Date(response.joinDate);
-        this.organization = response.organization;
-        this.birthday = new Date(response.dirthday);
-        this.languages = response.languages;
-        console.log(response);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
+    const userid = this.route.snapshot.queryParamMap.get('userid');
+
+    if(userid){
+      console.log("userid")
+    }else{
+      this.userService.getMe().subscribe(
+        (response) => {
+          this.email = response.login;
+          this.address = response.adress;
+          this.roles = response.roles;
+          this.skills = response.skills;
+          this.hobbies = response.hobbies;
+          this.job = response.job;
+          this.tasks = response.todoTask.length.toString();
+          this.posts = response.posts.length.toString();
+          this.aboutMe = response.aboutMe;
+          this.joinDate = new Date(response.joinDate);
+          this.birthday = new Date(response.dirthday);
+          console.log(response);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+    }
+    
 }

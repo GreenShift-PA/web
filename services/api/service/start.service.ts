@@ -58,7 +58,6 @@ export class StartService{
                 todoTask: [],
                 image: "IMAGE",
                 adress : "C'est un utilisateur de test",
-                phone : "C'est un utilisateur de test",
                 skills : "C'est un utilisateur de test",
                 hobbies : "C'est un utilisateur de test",
                 job : "C'est un utilisateur de test",
@@ -67,7 +66,6 @@ export class StartService{
                 joinDate : new Date(),
                 organization : "C'est un utilisateur de test",
                 dirthday : new Date(),
-                languages : "C'est un utilisateur de test",
                 follow: []
             })
         })
