@@ -112,42 +112,66 @@ export class UserController {
         "aboutMe" : "string | undefined",
     }
 
-    updateUser = async (req:Request, res:Response) => {
-
-        let updated_user
-        let password
-        if(req.body.password){
-            password = SecurityUtils.toSHA512(req.body.password)
-        }
-
-
-        try{
-            updated_user = await UserModel.findByIdAndUpdate(req.user?._id,{
-                password,
+    updateUser = async (req: Request, res: Response) => {
+        const { currentPassword, password } = req.body;
+      
+        try {
+          const user = await UserModel.findById(req.user?._id);
+      
+          if (!user) {
+            res.status(404).end();
+            return;
+          }
+      
+          // Compare hashed currentPassword with the user's password
+          const isCurrentPasswordValid = SecurityUtils.verifySHA512(currentPassword, user.password);
+      
+          if (!isCurrentPasswordValid) {
+            res.status(400).json({ message: "Current password is incorrect" });
+            return;
+          }
+      
+          let updated_user;
+      
+          // Update the user document with the new information
+          try {
+            updated_user = await UserModel.findByIdAndUpdate(
+              req.user?._id,
+              {
+                password: SecurityUtils.toSHA512(password),
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                country: req.body.country,
+                city: req.body.city,
                 image: req.body.image,
-                address : req.body.address,
-                skills : req.body.skills,
-                hobbies : req.body.hobbies,
-                job : req.body.job,
-                aboutMe : req.body.aboutMe,
-            }, 
-            { new: true})
-
-            if(!updated_user){
-                res.status(404).end()
-                return 
+                address: req.body.address,
+                skills: req.body.skills,
+                hobbies: req.body.hobbies,
+                job: req.body.job,
+                aboutMe: req.body.aboutMe,
+              },
+              { new: true }
+            );
+      
+            if (!updated_user) {
+              res.status(404).end();
+              return;
             }
-
-        }catch(e){
-            console.log(e)
-            res.status(500).json({"message" : "we were unable to update the user."})
-            return
+          } catch (e) {
+            console.log(e);
+            res.status(500).json({ message: "We were unable to update the user." });
+            return;
+          }
+      
+          res.status(200).json(updated_user);
+          return;
+        } catch (e) {
+          console.log(e);
+          res.status(500).json({ message: "We were unable to find the user." });
+          return;
         }
-
-
-        res.status(200).json(updated_user)
-        return 
-    }
+      };
+      
 
     
 

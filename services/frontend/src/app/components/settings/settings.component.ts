@@ -15,11 +15,18 @@ export class SettingsComponent implements OnInit{
     birthday: new Date(),
     password:""
   };
- 
- 
-  
- 
 
+  password:any={
+    password:""
+  }
+ 
+  newPassword:string="";
+  confirmPassword:string="";
+  currentPassword:string="";
+  city:string="";
+  country:string="";
+  firstname:string="";
+  lastname:string="";
   email: string = "";
   address: string = "";
   tasks: string = "";
@@ -37,6 +44,10 @@ export class SettingsComponent implements OnInit{
   ngOnInit() {
     this.userService.getMe().subscribe(
       (response) => {
+        this.city=response.city;
+        this.country= response.country;
+        this.firstname = response.firstname;
+        this.lastname = response.lastname;
         this.email = response.login;
         this.address = response.address;
         this.roles = response.roles;
@@ -57,11 +68,32 @@ export class SettingsComponent implements OnInit{
 
   
   onSubmit(user: any) {
-    console.log(user);
     this.userService.patchUser(user).subscribe(
       (response) => {
         // Handle success response
         console.log(response);
+              // Refresh the page
+      location.reload();
+      },
+      (error) => {
+        // Handle error response
+        console.error(error);
+      }
+    );
+  }
+
+  onSubmitPassword(password: any) {
+    console.log(password)
+    if (password.password !== password.confirmPassword) {
+      // Passwords do not match, handle error
+      console.error('Passwords do not match');
+      return;
+    }
+    this.userService.patchUser(password).subscribe(
+      (response) => {
+        // Handle success response
+        console.log(response);
+              // Refresh the page
       },
       (error) => {
         // Handle error response

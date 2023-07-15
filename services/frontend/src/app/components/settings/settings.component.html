@@ -5,7 +5,7 @@
              <img class="mb-4 ml-5 w-28 h-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" src="https://demos.creative-tim.com/soft-ui-flowbite-pro/images/users/jese-leos-2x.png" alt="Jese picture">
              <div class="">
                 <h3 class="flex mb-1 text-2xl font-bold text-secondary-100">
-                   Alec Thompson
+                   {{firstname}} {{lastname}}
                 </h3>
                 <div class="mb-4 text-base font-normal text-white flex justify-start">
                    {{job}}
@@ -313,33 +313,29 @@
           <form action="#" #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
             <div class="grid grid-cols-6 gap-6">
               <div class="col-span-6 sm:col-span-3">
-                <label for="first-name" class="text-secondary-100 flex mb-2 text-sm font-bold">First Name</label>
-                <input type="text" name="first-name" id="first-name" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="Bonnie" required>
+                <label for="firstname" class="text-secondary-100 flex mb-2 text-sm font-bold">First Name</label>
+                <input [ngModel]="firstname"  [(ngModel)]="user.firstname" type="text" name="firstname" id="firstname" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="Bonnie" required>
               </div>
               <div class="col-span-6 sm:col-span-3">
                <!--[(ngModel)]="lastName"
                   [(ngModel)]="country"
                   [(ngModel)]="city"!-->
-                <label for="last-name" class="text-secondary-100 flex mb-2 text-sm font-bold">Last Name</label>
-                <input type="text" name="last-name" id="last-name"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="Green" required>
+                <label for="lastname" class="text-secondary-100 flex mb-2 text-sm font-bold">Last Name</label>
+                <input [ngModel]="lastname"  [(ngModel)]="user.lastname" type="text" name="lastname" id="lastname"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="Green" required>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label for="country" class="text-secondary-100 flex mb-2 text-sm font-bold">Country</label>
-                <input type="text" name="country" id="country"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="United States" required>
+                <input [ngModel]="country"  [(ngModel)]="user.country" type="text" name="country" id="country"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="United States" required>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label for="city" class="text-secondary-100 flex mb-2 text-sm font-bold">City</label>
-                <input type="text" name="city" id="city"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="e.g. San Francisco" required>
+                <input [ngModel]="city"  [(ngModel)]="user.city" type="text" name="city" id="city"  class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="e.g. San Francisco" required>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label for="address" class="text-secondary-100 flex mb-2 text-sm font-bold">Address</label>
-                <input [ngModel]="address" type="text" name="address" id="address" [(ngModel)]="user.address" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="e.g. California" required>
+                <input [ngModel]="address"  [(ngModel)]="user.address" type="text" name="address" id="address" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="e.g. California" required>
               </div>
-              
-              <div class="col-span-6 sm:col-span-3">
-                <label for="birthday" class="text-secondary-100 flex mb-2 text-sm font-bold">Birthday</label>
-                <input [(ngModel)]="birthday" name="birthday" type="date" [(ngModel)]="user.birthday"  required class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" title="Provide a date in the format yyyy-mm-dd">
-              </div>
+           
               <div class="col-span-6 sm:col-span-3">
                 <label for="role" class="text-secondary-100 flex mb-2 text-sm font-bold">Job</label>
                 <input [ngModel]="job" type="text" name="job" id="job" [(ngModel)]="user.job" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="React Developer" required>
@@ -359,19 +355,19 @@
        </div>
        <div class="bg-primary-50 shadow-xl  rounded-lg p-8 mb-6">
           <h3 class="text-secondary-100 mb-4 text-xl font-bold">Password information</h3>
-          <form action="#" #passwordForm="ngForm" (ngSubmit)="onSubmit(passwordForm.value)" autocomplete="off" suggestion="off">
+          <form action="#" #passwordForm="ngForm" (ngSubmit)="onSubmitPassword(passwordForm.value)" autocomplete="off" suggestion="off">
              <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
-                   <label for="current-password" class="text-secondary-100 flex mb-2 text-sm font-bold ">Current password</label>
-                   <input [(ngModel)]="user.password" type="password" name="current-password" id="current-password" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold  sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••"   required="">
+                   <label for="currentPassword" class="text-secondary-100 flex mb-2 text-sm font-bold ">Current password</label>
+                   <input [ngModel]="currentPassword" type="password" name="currentPassword" id="currentPassword" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold  sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••"   required="">
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                   <label for="new-password" class="text-secondary-100 flex mb-2 text-sm font-bold ">New password</label>
-                   <input type="password" name="new-password" id="new-password" class="bg-secondary-50 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••" required="">
+                   <label for="newPassword" class="text-secondary-100 flex mb-2 text-sm font-bold ">New password</label>
+                   <input [ngModel]="newPassword" [(ngModel)]="user.password" type="password" name="password" id="password" class="bg-secondary-50 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••" required="">
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                   <label for="confirm-password" class="text-secondary-100 flex mb-2 text-sm font-bold ">Confirm password</label>
-                   <input type="password" name="confirm-password" id="confirm-password" class="bg-secondary-50 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••" required="">
+                   <label for="confirmPassword" class="text-secondary-100 flex mb-2 text-sm font-bold ">Confirm password</label>
+                   <input [ngModel]="confirmPassword" type="password" name="confirmPassword" id="confirmPassword" class="bg-secondary-50 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••" required="">
                 </div>
                 
                 <div class="col-span-6 sm:col-full">
