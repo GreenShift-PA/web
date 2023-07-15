@@ -38,7 +38,6 @@ export class UserController {
         "tree_name" : "string",
         "image" : "string",
         "adress" : "string",
-        "phone" : "string",
         "skills" : "object",
         "hobbies" : "object",
         "job" : "string",
@@ -47,7 +46,6 @@ export class UserController {
         "joinDate" : "string",
         "organization" : "string",
         "dirthday" : "string",
-        "languages" : "object",
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -77,7 +75,6 @@ export class UserController {
                 todoTask: [],
                 image: req.body.image,
                 adress : req.body.adress,
-                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,
@@ -86,7 +83,6 @@ export class UserController {
                 joinDate : req.body.joinDate,
                 organization : req.body.organization,
                 dirthday : req.body.dirthday,
-                languages : req.body.languages,
                 follow: []
             })
             res.json(user)
@@ -111,13 +107,11 @@ export class UserController {
         "password" : "string | undefined",
         "image": "string | undefined",
         "adress" : "string | undefined",
-        "phone" : "string | undefined",
         "skills" : "object | undefined",
         "hobbies" : "object | undefined",
         "job" : "string | undefined",
         "aboutMe" : "string | undefined",
         "organization" : "string | undefined",
-        "languages" : "object | undefined",
     }
 
     updateUser = async (req:Request, res:Response) => {
@@ -139,14 +133,12 @@ export class UserController {
                 password,
                 image: req.body.image,
                 adress : req.body.adress,
-                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,
                 aboutMe : req.body.aboutMe,
                 workHistory : workHistory,
                 organization : req.body.organization,
-                languages : req.body.languages,
             }, 
             { new: true})
 
