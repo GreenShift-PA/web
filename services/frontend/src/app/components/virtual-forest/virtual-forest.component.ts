@@ -382,13 +382,16 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 				n.transformDirection(intersects[0].object.matrixWorld)
 				arrowHelper.setDirection(n)
 				arrowHelper.position.copy(intersects[0].point)
-
+				
 				if(this.currentIntersect === null){
 					display_box?.classList.toggle("no_visible")
 					intersects[0].object.material.color.set("#00ff00")
 					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
 					this.treeService.show_info_html(tree_info)
-
+					
+					window.addEventListener("click", () => {
+						console.log("click on object")
+					})
 				}
 				this.currentIntersect = intersects[0]
 				
