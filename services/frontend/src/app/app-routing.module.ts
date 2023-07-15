@@ -21,15 +21,17 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path:'forgot-password', component:ForgotPasswordComponent  },
   { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},
+  { path: 'profile/:iduser', component: ProfileComponent , canActivate: [AuthGuard]},
+
   { path: 'virtualforest', component: VirtualForestComponent, canActivate: [AuthGuard] },
   { path: 'blog', component: BlogComponent , canActivate: [AuthGuard]},
   { path: 'calculator', component: CalculatorComponent , canActivate: [AuthGuard]},
   { path: 'todolist', component: TodosComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent , canActivate: [AuthGuard]},
   // { path: 'disconnect', component: SettingsComponent , canActivate: [AuthGuard]},
-  { path: 'not-found', redirectTo: '' } ,// Default route for unknown paths
+  { path: 'not-found', component:PageNotFoundComponent } ,// Default route for unknown paths
 
-  { path: '**', component:PageNotFoundComponent } // Default route for unknown paths
+  { path: '**', redirectTo:'not-found'} // Default route for unknown paths
 
 ];
 @NgModule({

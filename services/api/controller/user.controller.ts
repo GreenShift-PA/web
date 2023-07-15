@@ -447,6 +447,7 @@ export class UserController {
           res.status(500).json({ error: 'Internal Server Error' });
         }
       };
+
     deleteOneUser = async (req: Request, res: Response): Promise<void> => {
         if(!req.query.id || typeof req.query.id !== "string"){
             res.status(400).end()
@@ -485,7 +486,7 @@ export class UserController {
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))
         router.put('/follow', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
         router.delete('/me', checkUserToken(), this.deleteMe.bind(this))
-        router.delete('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.deleteOneUser.bind(this))
+        router.delete('/one', checkUserToken(), checkUserRole(RolesEnums.admin), this.deleteOneUser.bind(this))
         return router
     }
 }

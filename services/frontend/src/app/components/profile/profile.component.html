@@ -4,7 +4,7 @@
           <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-10">
              <img class="mb-2 w-20 h-20 rounded-2xl " src="https://demos.creative-tim.com/soft-ui-flowbite-pro/images/users/jese-leos-2x.png" alt="Jese portrait">
              <div>
-                <h2 class="flex text-xl font-bold  text-secondary-100">Alec Thompson</h2>
+                <h2 class="flex text-xl font-bold  text-secondary-100">{{firstname}} {{lastname}}</h2>
                 <ul class="mt-2 space-y-1">
                    <li class="flex items-center text-sm font-semibold  text-secondary-100">
                       <svg class="mr-2 w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@
                       <svg class="mr-2 w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                       </svg>
-                      San Francisco, USA
+                      {{city}} {{country}}
                    </li>
                 </ul>
              </div>
@@ -30,7 +30,7 @@
                    <div class="mt-4">Home address</div>
                    <div class="mb-2 text-sm font-semibold  text-white">
                       {{address}}
-                      <br>United States of America
+                      <br>
                    </div>
                    <div class="mt-4">Posts</div>
                    <div class="mb-2 text-sm font-semibold  text-white">
@@ -119,12 +119,6 @@
                 <dt class="text-lg font-semibold text-secondary-100 text-start">About me</dt>
                 <dd class="mt-1 space-y-3 max-w-prose text-sm text-white text-start">
                    {{aboutMe}}
-                </dd>
-             </div>
-             <div>
-                <dt class="text-sm font-semibold text-secondary-100">Education</dt>
-                <dd class="text-sm font-semibold text-white">
-                   Thomas Jeff High School, Stanford University
                 </dd>
              </div>
              
