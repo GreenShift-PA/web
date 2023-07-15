@@ -359,11 +359,11 @@
        </div>
        <div class="bg-primary-50 shadow-xl  rounded-lg p-8 mb-6">
           <h3 class="text-secondary-100 mb-4 text-xl font-bold">Password information</h3>
-          <form action="#">
+          <form action="#" #passwordForm="ngForm" (ngSubmit)="onSubmit(passwordForm.value)" autocomplete="off" suggestion="off">
              <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
                    <label for="current-password" class="text-secondary-100 flex mb-2 text-sm font-bold ">Current password</label>
-                   <input type="password" name="current-password" id="current-password" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold  sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••" required="">
+                   <input [(ngModel)]="user.password" type="password" name="current-password" id="current-password" class="bg-secondary-50 shadow-lg-sm border border-gray-300 font-semibold  sm:text-sm rounded-lg focus:ring-2 focus:ring-fuchsia-50 focus:border-fuchsia-300 block w-full p-2.5" placeholder="••••••••"   required="">
                 </div>
                 <div class="col-span-6 sm:col-span-3">
                    <label for="new-password" class="text-secondary-100 flex mb-2 text-sm font-bold ">New password</label>

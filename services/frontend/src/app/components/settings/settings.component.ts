@@ -15,6 +15,7 @@ export class SettingsComponent implements OnInit{
     organization: '',
     dirthday: new Date(),
     languages: [],
+    password:""
   };
  
  
