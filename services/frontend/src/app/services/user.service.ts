@@ -4,6 +4,10 @@ import { TokenService } from './token.service';
 import { Observable } from 'rxjs';
 
 export interface UserResponse {
+  firstname:string;
+  lastname: string;
+  city:string;
+  country:string;
   follow: any[];
   _id: string;
   login: string;

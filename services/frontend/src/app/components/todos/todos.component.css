@@ -114,12 +114,12 @@ h1{
 	box-shadow: 0 0 0 1px #000;
   }
   .content {
-	font-family: var(--font-family-todolist);
+	font-family: var(--font-family);
 	
 }
 
 .category{
-	font-family: var(--font-family-todolist);
+	font-family: var(--font-family-big);
 	text-align: start;
 }
 .tasks{

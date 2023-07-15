@@ -6,4 +6,12 @@ export class SecurityUtils {
         hash.update(str)
         return hash.digest('hex')
     }
+    public static verifySHA512(input: string, hashedPassword: string): boolean {
+        const hash = crypto.createHash('sha512');
+        hash.update(input);
+      
+        const hashedInput = hash.digest('hex');
+      
+        return hashedInput === hashedPassword;
+      }
 }
