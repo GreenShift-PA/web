@@ -16,15 +16,21 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	constructor(private treeService: TreeService) {}
 
+	trees:any = []
+	
 	ngOnInit(): void {
-		this.createThreeJsBox();
-	}
+		console.log("c'est la partie une");
+		this.treeService.getTreeData().subscribe(response => {
+		  this.trees = response;
+		  this.tree_params.max_nbr = this.trees.length,
+		  this.createThreeJsBox();
+		});
+	  }
 
 	tileToPosition(tileX:number, tileY:number){
 		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
 	}
 
-	trees:any[] = this.treeService.getTreeData()
 
 	metadata:any = {}
 	metaCounter = 0
@@ -32,7 +38,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	currentIntersect:any = null
 
 	tree_params:any = {
-		max_nbr : this.trees.length,
+		max_nbr : 0,
 		counter : 0,
 		position : [],
 		hit_box: []
