@@ -472,7 +472,6 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	  }
 
 	ngOnDestroy(): void {
-		alert("c'est la fin");
 		this.clear()
 	}
 

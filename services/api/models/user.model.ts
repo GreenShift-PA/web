@@ -61,10 +61,6 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
-    phone: {
-        type: Schema.Types.String,
-        required: true
-    },
     skills: [{
         type: Schema.Types.String,
         required: true
@@ -81,26 +77,14 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
-    workHistory : [{
-        type: Schema.Types.String,
-        required: true
-    }],
     joinDate : {
         type: Schema.Types.Date,
-        required: true
-    },
-    organization : {
-        type: Schema.Types.String,
         required: true
     },
     birthday : {
         type: Schema.Types.Date,
         required: true
     },
-    languages : [{
-        type: Schema.Types.String,
-        required: true
-    }],
     follow: [{
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -128,16 +112,12 @@ export interface User{
     address: string
     city: string
     country: string
-    phone: string
     skills: string[]
     hobbies: string[]
     job: string
     aboutMe: string
-    workHistory: string[]
     joinDate: Date
-    organization: string
     birthday: Date
-    languages: string []
 
     // Online
     follow: User[]

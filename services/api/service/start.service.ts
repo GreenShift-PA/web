@@ -60,16 +60,12 @@ export class StartService{
                 address : "C'est un utilisateur de test",
                 city : "C'est la ville",
                 country : "C'est le pays",
-                phone : "C'est un utilisateur de test",
                 skills : "C'est un utilisateur de test",
                 hobbies : "C'est un utilisateur de test",
                 job : "C'est un utilisateur de test",
                 aboutMe : "C'est un utilisateur de test",
-                workHistory :"C'est un utilisateur de test",
                 joinDate : new Date(),
-                organization : "C'est un utilisateur de test",
                 birthday : new Date(),
-                languages : "C'est un utilisateur de test",
                 follow: []
             })
         })
