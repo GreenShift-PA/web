@@ -53,6 +53,14 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
+    city: {
+        type: Schema.Types.String,
+        required: true
+    },
+    country: {
+        type: Schema.Types.String,
+        required: true
+    },
     phone: {
         type: Schema.Types.String,
         required: true
@@ -118,6 +126,8 @@ export interface User{
     // User personal infos
     image: string
     adress: string
+    city: string
+    country: string
     phone: string
     skills: string[]
     hobbies: string[]

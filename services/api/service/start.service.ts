@@ -58,6 +58,8 @@ export class StartService{
                 todoTask: [],
                 image: "IMAGE",
                 adress : "C'est un utilisateur de test",
+                city : "C'est la ville",
+                country : "C'est le pays",
                 phone : "C'est un utilisateur de test",
                 skills : "C'est un utilisateur de test",
                 hobbies : "C'est un utilisateur de test",
