@@ -23,12 +23,13 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		this.treeService.getTreeData().subscribe(response => {
 		  this.trees = response;
 		  this.tree_params.max_nbr = this.trees.length,
+		  this.SIZE = this.chooseSize(this.tree_params.max_nbr)
 		  this.createThreeJsBox();
 		});
 	  }
 
 	tileToPosition(tileX:number, tileY:number){
-		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535)
+		return new THREE.Vector2((tileX + (tileY % 2) * 0.5) * 1.77, tileY * 1.535) 
 	}
 
 
@@ -64,6 +65,20 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	scene:any = new THREE.Scene()
 	
+
+	chooseSize = (nbr_trees: number):number => {
+
+		if(nbr_trees < 10){
+			return 1
+		}else if ( nbr_trees < 50){
+			return 2
+		}else if ( nbr_trees < 100){
+			return 3
+		}else{
+			return 4
+		}
+
+	}
 
 
 	makeHex = (height:number, position:THREE.Vector2) => {
