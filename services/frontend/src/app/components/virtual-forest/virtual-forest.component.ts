@@ -37,6 +37,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	metaCounter = 0
 
 	currentIntersect:any = null
+	currentTree_info:any = null
 
 	tree_params:any = {
 		max_nbr : 0,
@@ -383,20 +384,20 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 		const mouse = new THREE.Vector2()
 		let intersects = new Array()
-
+		
 		window.addEventListener('mousemove', (_event) => {
-
+			
 			mouse.x = (_event.clientX / renderer.domElement.clientWidth) * 2 - 1,
 			mouse.y = -(_event.clientY / renderer.domElement.clientHeight) * 2 + 1,
-
+			
 			raycaster.setFromCamera(
 				mouse,
 				camera
 			)
-
+			
 			intersects = raycaster.intersectObjects(this.tree_params.hit_box, false)
 			const display_box = document.querySelector('.description')
-
+			
 			if (intersects.length > 0) {
 				let n = new THREE.Vector3()
 				n.copy(intersects[0].face.normal)
@@ -410,33 +411,37 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
 					this.treeService.show_info_html(tree_info)
 					
-					window.addEventListener("click", () => {
-						this.router.navigate(['/profile', tree_info._id])
-					})
 				}
 				this.currentIntersect = intersects[0]
+				this.currentTree_info = this.trees[this.metadata[intersects[0].object.uuid]]
 				
-				// When hover hitbox 
-				// TODO: Crée tout les elements ici
-
+				
 			}else{
 				if(this.currentIntersect){
 					display_box?.classList.toggle("no_visible")
 					this.currentIntersect.object.material.color.set("#0000ff")
 				}
-				this.currentIntersect = null
 
+				this.currentIntersect = null
+				this.currentTree_info = null
+				
+			}
+			
+		})
+		window.addEventListener("click", () => {
+			if (this.currentIntersect){
+				this.router.navigate(['/profile', this.currentTree_info._id])
 			}
 
 		})
-
+		
 		const raycaster = new THREE.Raycaster()
-
+		
 		raycaster.setFromCamera(mouse, camera)
-
-
+		
+		
 		/**
- 		* Animate
+		 * Animate
 		*/
 		const clock = new THREE.Clock()
 
@@ -466,28 +471,8 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	}
 
 
-	clear(){
-		this.scene.traverse((object:any) => {
-		  if (!object.isMesh) return
-		  
-		  this.deleteObject(object)
-		})
-	  }
-	
- 	deleteObject(object: any){
-		object.geometry.dispose()
-	
-		if (object.material instanceof Array) {
-		  object.material.forEach((material:any) => material.dispose());
-		} else {
-			object.material.dispose();
-		}
-		object.removeFromParent()
-		this.scene.remove(object)
-	  }
-
 	ngOnDestroy(): void {
-		this.clear()
+		
 	}
 
 
