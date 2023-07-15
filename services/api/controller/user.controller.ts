@@ -37,7 +37,10 @@ export class UserController {
         "lastname" : "string",
         "tree_name" : "string",
         "image" : "string",
-        "adress" : "string",
+        "address" : "string",
+        "city" : "string",
+        "country" : "string",
+        "phone" : "string",
         "skills" : "object",
         "hobbies" : "object",
         "job" : "string",
@@ -45,7 +48,8 @@ export class UserController {
         "workHistory" : "object",
         "joinDate" : "string",
         "organization" : "string",
-        "dirthday" : "string",
+        "birthday" : "string",
+        "languages" : "object",
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -74,7 +78,10 @@ export class UserController {
                 posts: [],
                 todoTask: [],
                 image: req.body.image,
-                adress : req.body.adress,
+                address : req.body.address,
+                city : req.body.city,
+                country : req.body.country,
+                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,
@@ -82,7 +89,8 @@ export class UserController {
                 workHistory : req.body.workHistory,
                 joinDate : req.body.joinDate,
                 organization : req.body.organization,
-                dirthday : req.body.dirthday,
+                birthday : req.body.birthday,
+                languages : req.body.languages,
                 follow: []
             })
             res.json(user)
@@ -106,7 +114,8 @@ export class UserController {
     readonly paramsUpdateUser = {
         "password" : "string | undefined",
         "image": "string | undefined",
-        "adress" : "string | undefined",
+        "address" : "string | undefined",
+        "phone" : "string | undefined",
         "skills" : "object | undefined",
         "hobbies" : "object | undefined",
         "job" : "string | undefined",
@@ -132,7 +141,8 @@ export class UserController {
             updated_user = await UserModel.findByIdAndUpdate(req.user?._id,{
                 password,
                 image: req.body.image,
-                adress : req.body.adress,
+                address : req.body.address,
+                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,

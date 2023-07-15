@@ -23,31 +23,24 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService,private route: ActivatedRoute) {}
 
   ngOnInit() {
-    const userid = this.route.snapshot.queryParamMap.get('userid');
-
-    if(userid){
-      console.log("userid")
-    }else{
-      this.userService.getMe().subscribe(
-        (response) => {
-          this.email = response.login;
-          this.address = response.adress;
-          this.roles = response.roles;
-          this.skills = response.skills;
-          this.hobbies = response.hobbies;
-          this.job = response.job;
-          this.tasks = response.todoTask.length.toString();
-          this.posts = response.posts.length.toString();
-          this.aboutMe = response.aboutMe;
-          this.joinDate = new Date(response.joinDate);
-          this.birthday = new Date(response.dirthday);
-          console.log(response);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
-    }
-    
+    this.userService.getMe().subscribe(
+      (response) => {
+        this.email = response.login;
+        this.address = response.address;
+        this.roles = response.roles;
+        this.skills = response.skills;
+        this.hobbies = response.hobbies;
+        this.job = response.job;
+        this.tasks = response.todoTask.length.toString();
+        this.posts = response.posts.length.toString();
+        this.aboutMe = response.aboutMe;
+        this.joinDate = new Date(response.joinDate);
+        this.birthday = new Date(response.birthday);
+        console.log(response);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 }
