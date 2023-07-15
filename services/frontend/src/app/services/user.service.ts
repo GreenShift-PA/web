@@ -13,16 +13,12 @@ export interface UserResponse {
   posts: any[];
   todoTask: any[];
   address: string;
-  phone: string;
   skills: string[];
   hobbies: string[];
   job: string;
   aboutMe: string;
-  workHistory: string[];
   joinDate: Date;
-  organization: string;
   birthday: Date;
-  languages: string[];
 }
 
 @Injectable({

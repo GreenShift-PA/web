@@ -77,16 +77,8 @@ const userShemma = new Schema<User>({
         type: Schema.Types.String,
         required: true
     },
-    workHistory : [{
-        type: Schema.Types.String,
-        required: true
-    }],
     joinDate : {
         type: Schema.Types.Date,
-        required: true
-    },
-    organization : {
-        type: Schema.Types.String,
         required: true
     },
     birthday : {
@@ -120,16 +112,12 @@ export interface User{
     address: string
     city: string
     country: string
-    phone: string
     skills: string[]
     hobbies: string[]
     job: string
     aboutMe: string
-    workHistory: string[]
     joinDate: Date
-    organization: string
     birthday: Date
-    languages: string []
 
     // Online
     follow: User[]

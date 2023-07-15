@@ -12,9 +12,7 @@ export class SettingsComponent implements OnInit{
     address: '',
     job: '',
     aboutMe: '',
-    organization: '',
     birthday: new Date(),
-    languages: [],
     password:""
   };
  
@@ -31,9 +29,7 @@ export class SettingsComponent implements OnInit{
   posts: string = "";
   job: string = "";
   aboutMe: string = "";
-  workHistory: string[] = [];
   joinDate: Date = new Date();
-  organization: string = "";
   birthday: Date = new Date();
 
   constructor(private userService: UserService) {}
@@ -50,9 +46,7 @@ export class SettingsComponent implements OnInit{
         this.tasks = response.todoTask.length.toString();
         this.posts = response.posts.length.toString();
         this.aboutMe = response.aboutMe;
-        this.workHistory = response.workHistory;
         this.joinDate = new Date(response.joinDate);
-        this.organization = response.organization;
         this.birthday = new Date(response.birthday);
       },
       (error) => {

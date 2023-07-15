@@ -40,16 +40,12 @@ export class UserController {
         "address" : "string",
         "city" : "string",
         "country" : "string",
-        "phone" : "string",
         "skills" : "object",
         "hobbies" : "object",
         "job" : "string",
         "aboutMe" : "string",
-        "workHistory" : "object",
         "joinDate" : "string",
-        "organization" : "string",
         "birthday" : "string",
-        "languages" : "object",
     }
 
     subscribe = async (req: Request, res: Response):Promise<void> => {
@@ -58,7 +54,6 @@ export class UserController {
         const password: string  = req.body.password
         let tree
 
-        console.log(req.body.workHistory)
 
         try{
 
@@ -81,16 +76,12 @@ export class UserController {
                 address : req.body.address,
                 city : req.body.city,
                 country : req.body.country,
-                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,
                 aboutMe : req.body.aboutMe,
-                workHistory : req.body.workHistory,
                 joinDate : req.body.joinDate,
-                organization : req.body.organization,
                 birthday : req.body.birthday,
-                languages : req.body.languages,
                 follow: []
             })
             res.json(user)
@@ -115,23 +106,16 @@ export class UserController {
         "password" : "string | undefined",
         "image": "string | undefined",
         "address" : "string | undefined",
-        "phone" : "string | undefined",
         "skills" : "object | undefined",
         "hobbies" : "object | undefined",
         "job" : "string | undefined",
         "aboutMe" : "string | undefined",
-        "organization" : "string | undefined",
     }
 
     updateUser = async (req:Request, res:Response) => {
 
-        let workHistory:any
         let updated_user
         let password
-        if(req.body.organization !== req.user?.organization){
-            workHistory = req.user?.workHistory
-            workHistory?.push(req.body.organization)
-        }
         if(req.body.password){
             password = SecurityUtils.toSHA512(req.body.password)
         }
@@ -142,13 +126,10 @@ export class UserController {
                 password,
                 image: req.body.image,
                 address : req.body.address,
-                phone : req.body.phone,
                 skills : req.body.skills,
                 hobbies : req.body.hobbies,
                 job : req.body.job,
                 aboutMe : req.body.aboutMe,
-                workHistory : workHistory,
-                organization : req.body.organization,
             }, 
             { new: true})
 
@@ -424,6 +405,43 @@ export class UserController {
             return 
         }
     }
+     deleteMe = async (req: Request, res: Response) => {
+        try {
+          const user = req.user;
+      
+          if (!user) {
+            throw new Error('User not found'); // or handle it differently based on your requirements
+          }
+      
+          // Delete the user document from MongoDB
+          await UserModel.findByIdAndDelete(user._id);
+      
+          // Respond with the deleted user information
+          res.json(user);
+        } catch (error) {
+          // Handle any errors that may occur during the deletion process
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      };
+    deleteOneUser = async (req: Request, res: Response): Promise<void> => {
+        if(!req.query.id || typeof req.query.id !== "string"){
+            res.status(400).end()
+            return
+        }
+
+        let user
+        try{
+            user = await UserModel.findById(req.query.id).populate("roles").populate("tree")
+            if(user){
+                user.password = ""
+                user.roles = []
+            }
+        }catch(e){
+            res.status(404).json("User not found")
+        }
+
+        res.status(200).json(user)
+    }
 
     buildRouter = (): Router => {
         
@@ -442,7 +460,8 @@ export class UserController {
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))
         router.put('/follow', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
- 
+        router.delete('/me', checkUserToken(), this.deleteMe.bind(this))
+        router.delete('/one', checkUserToken(), checkUserRole(RolesEnums.guest), this.deleteOneUser.bind(this))
         return router
     }
 }
