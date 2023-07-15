@@ -69,6 +69,8 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	grassGeo:any = new THREE.BoxGeometry(0,0,0)
 
 	scene:any = new THREE.Scene()
+
+	first_tree = true
 	
 
 	chooseSize = (nbr_trees: number):number => {
@@ -194,7 +196,8 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 			sand: textureLoader.load("/assets/map/1/sand.jpg"),
 			water: textureLoader.load("/assets/map/1/water.jpg"),
 			stone: textureLoader.load("/assets/map/1/stone.png"),
-			target: textureLoader.load("/assets/target.png")
+			target: textureLoader.load("/assets/target.png"),
+			target_self: textureLoader.load("/assets/target_self.png")
 		}
 		
 		// Set up Scene
@@ -227,15 +230,22 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		const sandMesh = this.treeService.hexMesh(this.sandGeo, textures.sand)
 		this.scene.add(stoneMesh, grassMesh, dirst2Mesh, dirstMesh, sandMesh)
 
-
+		let target_color
 		// Make the hitBox
 		for (let box of this.tree_params.position){
+			if(this.first_tree){
+				target_color = textures.target_self
+				this.first_tree = false
+			}else{
+				target_color = textures.target
+			}
+			
 			const hitBox = new THREE.Mesh(
 				new THREE.BoxGeometry( 2, box.size * 2, 2 ),
 				new THREE.MeshBasicMaterial( {
-					color: 0x0000ff,
+					color: 0xffffff,
 					transparent: true,
-					map: textures.target
+					map: target_color
 				} )
 			)
 			hitBox.position.set(box.x, box.z + box.size , box.y)
@@ -414,7 +424,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 				if (this.currentIntersect && this.currentIntersect.object !== intersects[0].object){
 					if(this.currentIntersect){
 						display_box?.classList.toggle("no_visible")
-						this.currentIntersect.object.material.color.set("#0000ff")
+						this.currentIntersect.object.material.color.set("#ffffff")
 					}
 	
 					this.currentIntersect = null
@@ -424,7 +434,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 				
 				if(this.currentIntersect === null){
 					display_box?.classList.toggle("no_visible")
-					intersects[0].object.material.color.set("#00ff00")
+					intersects[0].object.material.color.set("#000000")
 					const tree_info = this.trees[this.metadata[intersects[0].object.uuid]]
 					this.treeService.show_info_html(tree_info)
 					
@@ -437,7 +447,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 			}else{
 				if(this.currentIntersect){
 					display_box?.classList.toggle("no_visible")
-					this.currentIntersect.object.material.color.set("#0000ff")
+					this.currentIntersect.object.material.color.set("#ffffff")
 				}
 
 				this.currentIntersect = null
