@@ -1,5 +1,5 @@
 import { Model } from "mongoose"
-import { PostModel, Role, RoleModel, TreeModel, User, UserModel } from "../models"
+import { PostModel, Role, RoleModel, SessionModel, TreeModel, User, UserModel } from "../models"
 import { Router, Response, Request} from "express"
 import * as express from 'express'
 import { SecurityUtils } from "../utils"
@@ -468,6 +468,23 @@ export class UserController {
         res.status(200).json(user)
     }
 
+    getAllSession = async (req:Request, res:Response) => {
+        try{
+            const sessions = await SessionModel.find({
+                user: req.user?._id
+            })
+            if (!sessions){
+                res.status(404).json({"message": "Liar, how there is no session ?"})
+                return
+            }
+
+            res.status(200).json(sessions)
+        }catch(e){
+            res.status(500).end()
+            return 
+        }
+    }
+
     buildRouter = (): Router => {
         
         const router = express.Router()
@@ -480,6 +497,7 @@ export class UserController {
         router.get('/tree', checkUserToken(), checkQuery(this.queryUsersTree), this.getUserTree.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
+        router.get('/sessions', checkUserToken(), this.getAllSession.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateUser), this.updateUser.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))

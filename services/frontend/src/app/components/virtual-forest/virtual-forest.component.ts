@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Router} from "@angular/router"
 import * as THREE from "three"
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
@@ -14,12 +15,11 @@ styleUrls: ['./virtual-forest.component.css']
 })
 export class VirtualForestComponent implements OnInit, OnDestroy{
 
-	constructor(private treeService: TreeService) {}
+	constructor(private treeService: TreeService, private router: Router) {}
 
 	trees:any = []
 	
 	ngOnInit(): void {
-		console.log("c'est la partie une");
 		this.treeService.getTreeData().subscribe(response => {
 		  this.trees = response;
 		  this.tree_params.max_nbr = this.trees.length,
@@ -411,7 +411,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 					this.treeService.show_info_html(tree_info)
 					
 					window.addEventListener("click", () => {
-						console.log("click on object")
+						this.router.navigate(['/profile', tree_info._id])
 					})
 				}
 				this.currentIntersect = intersects[0]
