@@ -318,11 +318,39 @@ export class TodoController {
         return         
     }
 
+    readonly queryGetPost = {
+        'todo_id' : "string"
+    }
+
+    getPost = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const todo = await TodoModel.findById(req.query.todo_id)
+            if (!todo){
+                res.status(404).json({'message': "There is no task with this ID"})
+                return 
+            }
+
+            const post = await PostModel.findById(todo.postLinked)
+            if (!post){
+                res.status(404).json({"message": "This Todo Task do not have post"})
+                return 
+            }
+            
+            res.status(200).json(post)
+            return 
+
+        }catch(e){
+            res.status(401).json({'message' : "This is not a good ID"})
+            return 
+        }
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkQuery(this.queryGetOneTask), this.getTask.bind(this))
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
+        router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getPost.bind(this))
         router.post('/', express.json(), checkUserToken(), checkBody(this.paramsCreateTask), this.createTask.bind(this))
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))
         router.post('/post',express.json(), checkUserToken(), checkBody(this.paramsNewPost), this.createPostInTask.bind(this))
