@@ -4,7 +4,7 @@ import { Document, Model } from "mongoose"
 import { Todo, TodoModel } from "../models/todo.model"
 import { Router, Request, Response } from "express"
 import { checkBody, checkUserToken } from "../middleware"
-import { SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
+import { PostModel, SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
 import { checkQuery } from "../middleware/query.middleware"
 
 export class TodoController {
@@ -279,6 +279,45 @@ export class TodoController {
         return
     }
 
+    readonly  paramsNewPost = {
+        "todo_id": "string",
+        "title" : "string",
+        "description" : "string",
+    }
+
+    createPostInTask = async (req:Request, res:Response): Promise<void> => {
+
+        let todo
+        try{
+            todo = await TodoModel.findById(req.body.todo_id)
+            if (!todo){
+                res.status(404).end()
+                return 
+            }
+        }catch(e){
+            res.status(401).json({"message" : "This is not a good ID"})
+            return
+        }
+
+        const newPost = await PostModel.create({
+            title: req.body.title,
+            description: req.body.description,
+            like: [],
+            comments: [],
+            whoValidates: [],
+            treeLinked: req.user?.tree
+        })
+
+        req.user?.posts.push(newPost)
+        req.user?.save()
+
+        todo.postLinked = newPost
+        todo.save()
+
+        res.status(200).json(newPost)
+        return         
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
@@ -286,6 +325,7 @@ export class TodoController {
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
         router.post('/', express.json(), checkUserToken(), checkBody(this.paramsCreateTask), this.createTask.bind(this))
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))
+        router.post('/post',express.json(), checkUserToken(), checkBody(this.paramsNewPost), this.createPostInTask.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusTask), this.updateStatusTask.bind(this))
         router.patch('/subtask', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusSubtask), this.updateStatusSubtask.bind(this))
         router.patch('/status', express.json(), checkUserToken(), checkBody(this.paramsSwitchStatusTask), this.switchStatusTask.bind(this))
