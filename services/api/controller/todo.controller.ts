@@ -314,7 +314,9 @@ export class TodoController {
             like: [],
             comments: [],
             whoValidates: [],
-            treeLinked: req.user?.tree
+            treeLinked: req.user?.tree,
+            creationDate: new Date(),
+            userId: req.user?._id
         })
 
         req.user?.posts.push(newPost)
