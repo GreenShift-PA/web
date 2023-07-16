@@ -11,16 +11,25 @@ import { UserResponse } from '../user.service';
 export class TreeService {
   constructor(private http: HttpClient, private token: TokenService) {}
 
-  getTreeData = () => {
+  getTreeDataFollow = () => {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<UserResponse>("http://localhost:3000/user/follow", { headers })
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
 
-	const token = this.token.getItemWithExpiry("token");
-	if (token) {
-		const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-		return this.http.get<UserResponse>("http://localhost:3000/user/all", { headers })
-	} else {
-		throw new Error("Token not found in local storage");
-	}
-}
+  getTreeDataWorld = () => {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<UserResponse>("http://localhost:3000/user/all", { headers })
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
 
   hexGeometry = (height: number, position: THREE.Vector2) => {
     let geo = new THREE.CylinderGeometry(1, 1, height, 6, 1, false);

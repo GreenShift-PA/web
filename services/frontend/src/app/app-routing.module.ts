@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent , canActivate: [AuthGuard]},
   { path: 'profile/:iduser', component: ProfileComponent , canActivate: [AuthGuard]},
 
-  { path: 'virtualforest', component: VirtualForestComponent, canActivate: [AuthGuard] },
+  { path: 'virtualforest/:world', component: VirtualForestComponent, canActivate: [AuthGuard] },
   { path: 'blog', component: BlogComponent , canActivate: [AuthGuard]},
   { path: 'calculator', component: CalculatorComponent , canActivate: [AuthGuard]},
   { path: 'todolist', component: KanbanComponent, canActivate: [AuthGuard] },

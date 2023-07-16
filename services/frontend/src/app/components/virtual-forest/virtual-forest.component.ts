@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {Router} from "@angular/router"
+import {ActivatedRoute, Router} from "@angular/router"
 import * as THREE from "three"
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
@@ -15,17 +15,38 @@ styleUrls: ['./virtual-forest.component.css']
 })
 export class VirtualForestComponent implements OnInit, OnDestroy{
 
-	constructor(private treeService: TreeService, private router: Router) {}
+	constructor(private treeService: TreeService, private router: Router, private route: ActivatedRoute) {}
 
 	trees:any = []
+
+	goOnPage = (pageName: string) => {
+		this.router.navigate([`${pageName}`]);
+	} 
 	
 	ngOnInit(): void {
-		this.treeService.getTreeData().subscribe(response => {
-		  this.trees = response;
-		  this.tree_params.max_nbr = this.trees.length,
-		  this.SIZE = this.chooseSize(this.tree_params.max_nbr)
-		  this.createThreeJsBox();
-		});
+		this.route.queryParams.subscribe((params) => {
+			const world = this.route.snapshot.paramMap.get('world');
+
+			if (world && world=='follow'){
+				this.treeService.getTreeDataFollow().subscribe(response => {
+					this.trees = response;
+					this.tree_params.max_nbr = this.trees.length,
+					this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+					this.createThreeJsBox();
+				  });
+			}else if( world && world=="world"){
+				this.treeService.getTreeDataWorld().subscribe(response => {
+					this.trees = response;
+					this.tree_params.max_nbr = this.trees.length,
+					this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+					this.createThreeJsBox();
+				  });
+			}else{
+				this.router.navigate(['/not-found'])
+			}
+
+		})
+		
 		// this.trees = this.treeService.getTreeFakeData()
 		// this.tree_params.max_nbr = this.trees.length,
 		// this.SIZE = this.chooseSize(this.tree_params.max_nbr)
