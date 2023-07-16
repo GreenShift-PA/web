@@ -44,16 +44,23 @@ export class TodoController {
         "title": "string",
         "description": "string",
         "deadline": "string",
+        "difficulty" : "number"
     }
 
     createTask = async (req: Request, res: Response): Promise<void> => {
+
+        let diff:number = req.body.difficulty
+        if(req.body.difficulty < 0){diff = 0}
+        if(req.body.difficulty > 3){diff = 3}
 
         const newTask = await TodoModel.create({
             isDone: false,
             title: req.body.title,
             description: req.body.description,
             deadline: req.body.deadline,
-            subtask: []
+            subtask: [],
+            isReview: false,
+            difficulty: diff
         })
 
         req.user?.todoTask.push(newTask)
@@ -61,6 +68,34 @@ export class TodoController {
 
         res.status(201).json(newTask)
         return
+    }
+
+    readonly paramsSwitchStatusTask = {
+        "todo_id" : "string",
+        "isDone" : "boolean | undefined",
+        "isReviewed" : "boolean | undefined"
+    }
+
+    switchStatusTask = async (req:Request, res:Response): Promise<void> => {
+        
+        if (!req.user) { res.status(500).end(); return }
+
+        const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id)
+
+        if (!todo_task || typeof todo_task === "boolean") {
+            res.status(401).json({ "message": "You can't do this" })
+            return
+        }
+
+        const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
+            isDone: req.body.isDone,
+            isReview : req.body.isReviewed
+        },
+        { new: true })
+
+        res.status(200).json(updated_todo_task)
+        return
+
     }
 
     readonly paramsUpdateStatusTask = {
@@ -235,6 +270,7 @@ export class TodoController {
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusTask), this.updateStatusTask.bind(this))
         router.patch('/subtask', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusSubtask), this.updateStatusSubtask.bind(this))
+        router.patch('/status', express.json(), checkUserToken(), checkBody(this.paramsSwitchStatusTask), this.switchStatusTask.bind(this))
         router.delete('/', checkUserToken(), checkQuery(this.queryDeleteTask), this.deleteTask.bind(this))
         return router
     }

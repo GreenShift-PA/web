@@ -22,7 +22,15 @@ const todoShemma = new Schema<Todo>({
         type: Schema.Types.ObjectId,
         ref: "Subtask",
         required: true
-    }]
+    }],
+    isReview: {
+        type: Schema.Types.Boolean,
+        required: true
+    },
+    difficulty: {
+        type: Schema.Types.Number,
+        required: true
+    }
 }, {
     versionKey: false,
     collection: "Todos"
@@ -34,7 +42,9 @@ export interface Todo {
     title: string,
     description: string,
     deadline: Date,
-    subtask: Subtask[]
+    subtask: Subtask[],
+    isReview: boolean,
+    difficulty: number
 }
 
 export const TodoModel: Model<Todo> = mongoose.model("Todo", todoShemma)
