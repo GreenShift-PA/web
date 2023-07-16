@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   country:string="";
   firstname:string="";
   lastname:string="";
-
+image:string="";
   constructor(private userService: UserService,private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
@@ -59,6 +59,7 @@ export class ProfileComponent implements OnInit {
             this.aboutMe = response.aboutMe;
             this.joinDate = new Date(response.joinDate);
             this.birthday = new Date(response.birthday);
+            this.image=response.image;
           },(error)=>{
             this.router.navigate(['/not-found']);
             console.error(error);
@@ -82,7 +83,8 @@ export class ProfileComponent implements OnInit {
             this.aboutMe = response.aboutMe;
             this.joinDate = new Date(response.joinDate);
             this.birthday = new Date(response.birthday);
-            
+            this.image=response.image;
+
           },
     
           (error) => {

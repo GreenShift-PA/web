@@ -410,6 +410,7 @@ export class UserController {
 
     }
 
+    
     getFollower = async (req:Request, res:Response):Promise<void> => {
         const user_tree:any[] = []
         try{

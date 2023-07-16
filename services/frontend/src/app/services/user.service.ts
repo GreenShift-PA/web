@@ -4,6 +4,7 @@ import { TokenService } from './token.service';
 import { Observable } from 'rxjs';
 
 export interface UserResponse {
+  profile: any;
   firstname:string;
   lastname: string;
   city:string;
@@ -23,6 +24,7 @@ export interface UserResponse {
   aboutMe: string;
   joinDate: Date;
   birthday: Date;
+  image:string;
 }
 
 @Injectable({

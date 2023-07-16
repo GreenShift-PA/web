@@ -36,6 +36,7 @@ export class BlogComponent {
               console.log(userResponse);
               post.firstname = userResponse.firstname;
               post.lastname = userResponse.lastname;
+              post.profile= userResponse.profile;
             }
             
             ,

@@ -39,6 +39,7 @@ export class SettingsComponent implements OnInit{
   aboutMe: string = "";
   joinDate: Date = new Date();
   birthday: Date = new Date();
+  image:string="";
 
   constructor(private userService: UserService, private toastr:ToastrService) {}
 
@@ -60,6 +61,7 @@ export class SettingsComponent implements OnInit{
         this.aboutMe = response.aboutMe;
         this.joinDate = new Date(response.joinDate);
         this.birthday = new Date(response.birthday);
+        this.image=response.image;
       },
       (error) => {
         console.error(error);
