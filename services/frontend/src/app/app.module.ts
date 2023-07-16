@@ -29,6 +29,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ToastrModule } from 'ngx-toastr';
 import { KanbanComponent } from './components/kanban/kanban.component';
+import { DetailTaskComponent } from './modals/detail-task/detail-task.component';
+import { SuggestTaskComponent } from './modals/suggest-task/suggest-task.component';
+import { ShareTaskComponent } from './modals/share-task/share-task.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +55,9 @@ import { KanbanComponent } from './components/kanban/kanban.component';
     ProfileComponent,
     ToastComponent,
     KanbanComponent,
+    DetailTaskComponent,
+    SuggestTaskComponent,
+    ShareTaskComponent,
       ],
   imports: [
     BrowserModule,

@@ -35,6 +35,14 @@ const todoShemma = new Schema<Todo>({
     postLinked : {
         type: Schema.Types.ObjectId,
         ref: "Subtask"
+    },
+    isAccepted:{
+        type: Schema.Types.Boolean,
+        required: true
+    },
+    creationDate: {
+        type: Schema.Types.Date,
+        required: true
     }
 
 }, {
@@ -52,6 +60,8 @@ export interface Todo {
     isReview: boolean,
     difficulty: number,
     postLinked : Post
+    isAccepted:boolean,
+    creationDate: Date
 }
 
 export const TodoModel: Model<Todo> = mongoose.model("Todo", todoShemma)
