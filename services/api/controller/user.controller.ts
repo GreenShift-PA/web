@@ -437,9 +437,9 @@ export class UserController {
             throw new Error('User not found'); // or handle it differently based on your requirements
           }
       
+          await TreeModel.findByIdAndDelete(user.tree._id);
           // Delete the user document from MongoDB
           await UserModel.findByIdAndDelete(user._id);
-      
           // Respond with the deleted user information
           res.json(user);
         } catch (error) {

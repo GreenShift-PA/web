@@ -51,10 +51,12 @@ input::placeholder{
 	cursor: pointer;
 }
 
+*{
 
+	font-family: var(--font-family);
+}
 h1{
 	color: var(--color-secondary);
-	font-family: var(--font-family-big);
 	margin-bottom: 3rem;
 	margin-top: 3rem;
 }
@@ -113,14 +115,7 @@ h1{
 	background: var(--color-secondary);
 	box-shadow: 0 0 0 1px #000;
   }
-  .content {
-	font-family: var(--font-family);
-	
-}
 
 .category{
-	font-family: var(--font-family-big);
 	text-align: start;
-}
-.tasks{
 }
