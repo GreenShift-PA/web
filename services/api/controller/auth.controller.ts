@@ -44,17 +44,10 @@ export class AuthController {
         const platform = req.headers['user-agent']
 
         try{
-            const is_user_last_session = await SessionModel.findOne({
+            const is_user_last_session = await SessionModel.findOneAndDelete({
                 user: user?._id,
                 platform: platform
             })
-
-            console.log(is_user_last_session, platform)
-
-            if (is_user_last_session){
-                res.status(409).json({"message" : "A session for this device already exists"})
-                return
-            }
         }catch(e){
             res.status(500).end()
             return 

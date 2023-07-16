@@ -20,7 +20,6 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	trees:any = []
 
 	goOnPage = (pageName: string) => {
-		console.log("passe par la ")
 		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
 		this.router.navigate([pageName]));
 	} 
