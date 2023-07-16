@@ -1,0 +1,8 @@
+<div id="toast-simple" class="toast-container fixed bottom-4 right-4 flex items-center w-full max-w-xs p-4 space-x-4  bg-secondary-100 divide-x divide-gray-200 rounded-lg shadow" [ngClass]="{ 'toast-visible': show }" role="alert">
+    
+    <span class="material-symbols-outlined ">
+        {{toastIcon}}
+        </span>
+    <div class="pl-4 text-sm font-normal">{{ toastText }}</div>
+  </div>
+  

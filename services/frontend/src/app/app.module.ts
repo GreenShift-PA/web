@@ -24,6 +24,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { LoginErrorComponent } from './components/toasts/login-error/login-error.component';
+import { ToastComponent } from './components/toast/toast.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +46,9 @@ import { ProfileComponent } from './components/profile/profile.component';
     SettingsComponent,
     ForgotPasswordComponent,
     PageNotFoundComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginErrorComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

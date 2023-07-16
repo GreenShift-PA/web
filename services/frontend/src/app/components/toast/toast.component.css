@@ -1,0 +1,11 @@
+.toast-container {
+    /* Set initial opacity to 0 */
+    opacity: 0;
+    /* Add transition for opacity with desired duration */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .toast-visible {
+    /* Set opacity to 1 when the toast is visible */
+    opacity: 1;
+  }

@@ -20,9 +20,10 @@ export class LoginComponent {
     email: null,
     password: null
   };
+  toastText: string = "Failed to authenticate";
+  toastIcon: string =  "cancel";
 
-
-
+  loginFail:boolean=false;
   constructor(private http: HttpClient, private router: Router, private token:TokenService) {
  }
  ngOnInit() {
@@ -65,7 +66,11 @@ export class LoginComponent {
         },
         (error) => {
           console.error(error);
-        }
+          this.loginFail=true;
+          setTimeout(() => {
+            this.loginFail=false;
+          }, 2000); // Adjust the delay duration as needed
+        }        
       );
     }
 
