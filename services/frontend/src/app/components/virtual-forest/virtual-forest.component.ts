@@ -132,22 +132,22 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		// To change the height of the tree
 		const treeHeight = Math.random() * 1 + 1.25
 		const tree_size = this.trees[this.tree_params.counter].tree.size
-		const new_tree_size = ((tree_size - 0) / (100 - 0)) * (10 - 1) + 1;
+		const new_tree_size = ((tree_size - 0) / (100 - 0)) * (4 - 1) + 1;
 
-		const geo = new THREE.CylinderGeometry(0, 1.5, treeHeight, 3)
-		geo.translate(position.x, height + treeHeight * 0 + 1, position.y)
+		const geo = new THREE.CylinderGeometry(0, 1.5, new_tree_size, 3)
+		geo.translate(position.x, height + new_tree_size * 0 + 1, position.y)
 
-		const geo2 = new THREE.CylinderGeometry(0, 1.15, treeHeight, 3)
-		geo2.translate(position.x, height + treeHeight * 0.6 + 1, position.y)
+		const geo2 = new THREE.CylinderGeometry(0, 1.15, new_tree_size, 3)
+		geo2.translate(position.x, height + new_tree_size * 0.6 + 1, position.y)
 
-		const geo3 = new THREE.CylinderGeometry(0, 0.8, treeHeight, 3)
-		geo3.translate(position.x, height + treeHeight * 1.25 + 1, position.y)
+		const geo3 = new THREE.CylinderGeometry(0, 0.8, new_tree_size, 3)
+		geo3.translate(position.x, height + new_tree_size * 1.25 + 1, position.y)
 
 		this.tree_params.position.push({
 			x: position.x,
 			y: position.y,
 			z: height,
-			size: treeHeight
+			size: new_tree_size
 		})
 		this.tree_params.counter ++
 

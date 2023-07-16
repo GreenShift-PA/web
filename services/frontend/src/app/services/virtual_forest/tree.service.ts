@@ -100,7 +100,7 @@ export class TreeService {
       return;
     }
 
-    tree_name.innerHTML = tree_info.tree.name;
+    tree_name.innerHTML = `${tree_info.tree.name} : ${tree_info.tree.size}`;
     username.innerHTML = `${tree_info.login}`;
   };
 
