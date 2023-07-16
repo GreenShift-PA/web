@@ -241,7 +241,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 			}
 			
 			const hitBox = new THREE.Mesh(
-				new THREE.BoxGeometry( 2, box.size * 2, 2 ),
+				new THREE.BoxGeometry( 2, 2, 2, 2 ),
 				new THREE.MeshBasicMaterial( {
 					color: 0xffffff,
 					transparent: true,
