@@ -52,7 +52,7 @@ export class TodoController {
         "title": "string",
         "description": "string",
         "deadline": "string",
-        "difficulty" : "number"
+        "difficulty" : "number" 
     }
 
     createTask = async (req: Request, res: Response): Promise<void> => {
@@ -335,7 +335,7 @@ export class TodoController {
                 res.status(404).json({"message": "This Todo Task do not have post"})
                 return 
             }
-            
+
             res.status(200).json(post)
             return 
 
