@@ -113,7 +113,7 @@ export class UserController {
     }
 
     updateUser = async (req: Request, res: Response) => {
-        const { currentPassword, password } = req.body;
+        const { currentPassword, password, ...userInfo } = req.body;
       
         try {
           const user = await UserModel.findById(req.user?._id);
@@ -123,33 +123,32 @@ export class UserController {
             return;
           }
       
-          // Compare hashed currentPassword with the user's password
-          const isCurrentPasswordValid = SecurityUtils.verifySHA512(currentPassword, user.password);
+          // Compare hashed currentPassword with the user's password, if provided
+          if (currentPassword) {
+            const isCurrentPasswordValid = SecurityUtils.verifySHA512(
+              currentPassword,
+              user.password
+            );
       
-          if (!isCurrentPasswordValid) {
-            res.status(400).json({ message: "Current password is incorrect" });
-            return;
+            if (!isCurrentPasswordValid) {
+              res.status(400).json({ message: "Current password is incorrect" });
+              return;
+            }
           }
       
           let updated_user;
+      
+          // Create an update object with the new information, excluding password if not provided
+          const updateData: any = {
+            ...(password && { password: SecurityUtils.toSHA512(password) }),
+            ...userInfo,
+          };
       
           // Update the user document with the new information
           try {
             updated_user = await UserModel.findByIdAndUpdate(
               req.user?._id,
-              {
-                password: SecurityUtils.toSHA512(password),
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                country: req.body.country,
-                city: req.body.city,
-                image: req.body.image,
-                address: req.body.address,
-                skills: req.body.skills,
-                hobbies: req.body.hobbies,
-                job: req.body.job,
-                aboutMe: req.body.aboutMe,
-              },
+              updateData,
               { new: true }
             );
       
@@ -437,7 +436,7 @@ export class UserController {
             throw new Error('User not found'); // or handle it differently based on your requirements
           }
       
-          await TreeModel.findByIdAndDelete(user.tree._id);
+          await TreeModel.findByIdAndDelete(user.tree._id)
           // Delete the user document from MongoDB
           await UserModel.findByIdAndDelete(user._id);
           // Respond with the deleted user information

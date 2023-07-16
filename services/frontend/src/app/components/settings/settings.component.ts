@@ -75,10 +75,15 @@ export class SettingsComponent implements OnInit{
         // Handle success response
         console.log(response);
               // Refresh the page
-              this.toastr.success("User information updated successfully.");
 
 
-      location.reload();
+              this.toastr.success("User information updated successfully.","",{
+                timeOut: 1000,
+              });
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+
       },
       (error) => {
         // Handle error response

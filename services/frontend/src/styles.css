@@ -49,3 +49,5 @@
 /* 100: "#213b37",
 200: "#195148", */
   }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

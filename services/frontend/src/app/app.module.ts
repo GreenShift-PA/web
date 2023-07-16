@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog'
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -27,6 +28,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { ProfileComponent } from './components/profile/profile.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ToastrModule } from 'ngx-toastr';
+import { KanbanComponent } from './components/kanban/kanban.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,8 +50,9 @@ import { ToastrModule } from 'ngx-toastr';
     ForgotPasswordComponent,
     PageNotFoundComponent,
     ProfileComponent,
-    ToastComponent
-  ],
+    ToastComponent,
+    KanbanComponent,
+      ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -65,6 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
       progressAnimation:"increasing",
     }),
     BrowserAnimationsModule, 
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

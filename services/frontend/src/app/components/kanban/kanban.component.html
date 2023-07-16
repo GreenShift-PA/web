@@ -1,0 +1,143 @@
+<main class="p-3 h-full inline-flex">
+    <div class="ml-4 flex-shrink-0 flex flex-col w-80 bg-primary-25 rounded-md">
+       <h3 class="flex-shrink-0 pt-3 pb-1 px-3 text-xl font-medium text-secondary-100">To Do</h3>
+       <div class="flex-1 min-h-0 overflow-y-auto">
+          <ul class="pt-1 pb-3 px-3">
+             <li class="mt-3">
+                <a href="#" class="block p-5 bg-white rounded-md shadow">
+                   <div class="flex justify-between">
+                      <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
+                      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
+                   </div>
+                   <div class="flex justify-between mt-5">
+                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                      <div>
+                         <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                            <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                               <circle cx="4" cy="4" r="3"></circle>
+                            </svg>
+                            <span class="text-sm font-medium text-teal-500 rounded-full ml-1">Feature Request</span>
+                         </span>
+                      </div>
+                   </div>
+                </a>
+             </li>
+             <button (click)="openModal()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
+                Ajouter une tâche
+              </button>
+
+<!-- Main modal -->
+<div id="myModal" tabindex="-1" aria-hidden="true" class="modal fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full" [style.display]="modalOpen ? 'block' : 'none'">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Terms of Service
+                </h3>
+                <button (click)="closeModal()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-6">
+                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                </p>
+                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+                </p>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+          </ul>
+       </div>
+    </div>
+    <!-- Main modal -->
+
+    <div class="ml-4 flex-shrink-0 flex flex-col w-80 bg-primary-25 rounded-md">
+       <h3 class="flex-shrink-0 pt-3 pb-1 px-3 text-xl font-medium text-secondary-100">Pending Review</h3>
+       <div class="flex-1 min-h-0 overflow-y-auto">
+          <ul class="pt-1 pb-3 px-3">
+             <li class="mt-3">
+                <a href="#" class="block p-5 bg-white rounded-md shadow">
+                   <div class="flex justify-between">
+                      <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
+                      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
+                   </div>
+                   <div class="flex justify-between mt-5">
+                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                      <div>
+                         <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                            <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                               <circle cx="4" cy="4" r="3"></circle>
+                            </svg>
+                            <span class="text-sm font-medium text-teal-500 rounded-full ml-1">Feature Request</span>
+                         </span>
+                      </div>
+                   </div>
+                </a>
+             </li>
+             
+          </ul>
+       </div>
+    </div>
+    <div class="ml-4 flex-shrink-0 flex flex-col w-80 bg-primary-25 rounded-md">
+       <h3 class="flex-shrink-0 pt-3 pb-1 px-3 text-xl font-medium text-secondary-100">Finalized</h3>
+       <div class="flex-1 min-h-0 overflow-y-auto">
+          <ul class="pt-1 pb-3 px-3">
+             <li class="mt-3">
+                <a href="#" class="block p-5 bg-white rounded-md shadow">
+                   <div class="flex justify-between">
+                      <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
+                      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
+                   </div>
+                   <div class="flex justify-between mt-5">
+                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                      <div>
+                         <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                            <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                               <circle cx="4" cy="4" r="3"></circle>
+                            </svg>
+                            <span class="text-sm font-medium text-teal-500 rounded-full ml-1">Feature Request</span>
+                         </span>
+                      </div>
+                   </div>
+                </a>
+             </li>
+             <li class="mt-3">
+                <a href="#" class="block p-5 bg-white rounded-md shadow">
+                   <div class="flex justify-between">
+                      <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
+                      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
+                   </div>
+                   <div class="flex justify-between mt-5">
+                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                      <div>
+                         <span class="inline-flex items-center leading-tight bg-purple-100 px-2 py-1 rounded-full">
+                            <svg viewBox="0 0 8 8" fill="#040404" class="h-2 w-2">
+                               <circle cx="4" cy="4" r="3"></circle>
+                            </svg>
+                            <span class="text-sm font-medium text-purple-500 rounded-full ml-1">Design</span>
+                         </span>
+                      </div>
+                   </div>
+                </a>
+             </li>
+             
+          </ul>
+       </div>
+    </div>
+   
+ </main>

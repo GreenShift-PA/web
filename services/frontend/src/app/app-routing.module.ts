@@ -13,6 +13,7 @@ import { TodosComponent } from './components/todos/todos.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { AuthGuard } from './auth/auth-guard';
+import { KanbanComponent } from './components/kanban/kanban.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 const routes: Routes = [
   
@@ -26,7 +27,7 @@ const routes: Routes = [
   { path: 'virtualforest', component: VirtualForestComponent, canActivate: [AuthGuard] },
   { path: 'blog', component: BlogComponent , canActivate: [AuthGuard]},
   { path: 'calculator', component: CalculatorComponent , canActivate: [AuthGuard]},
-  { path: 'todolist', component: TodosComponent, canActivate: [AuthGuard] },
+  { path: 'todolist', component: KanbanComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent , canActivate: [AuthGuard]},
   // { path: 'disconnect', component: SettingsComponent , canActivate: [AuthGuard]},
   { path: 'not-found', component:PageNotFoundComponent } ,// Default route for unknown paths
