@@ -63,4 +63,15 @@ export class UserService {
       throw new Error('Token not found in local storage');
     }
   }
+
+  createUser(user: any): Observable<UserResponse> {
+    try {   
+    return this.http.post<UserResponse>('http://localhost:3000/user/subscribe', user);
+
+    } catch (error) {
+      throw new Error('bug');
+
+    }
+   
+  }
 }

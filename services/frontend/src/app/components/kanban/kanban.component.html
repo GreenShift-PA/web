@@ -10,28 +10,28 @@
                       <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
                    </div>
                    <div class="flex justify-between mt-5">
-                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                      <div class="text-sm text-gray-600"><time datetime="2020-10-12">{{task.creationDate | date:"short"}}</time></div>
                       <div>
-                         <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
-                            <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
-                               <circle cx="4" cy="4" r="3"></circle>
-                            </svg>
-                            <span class="text-sm font-medium text-teal-500 rounded-full ml-1">test</span>
-                         </span>
+                        <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                           <svg viewBox="0 0 8 8" fill="blue" class="h-2 w-2">
+                              <circle cx="4" cy="4" r="3"></circle>
+                           </svg>
+                           <span class="text-sm font-medium text-blue-500 rounded-full ml-1">{{task.difficulty}}</span>
+                        </span>
                       </div>
                    </div>
                 </a>
                 
              </li>
              <button (click)="openModalAddTask()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
-                Add a task
+                Add tasks
               </button>
-              <button (click)="openModalFeed()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
-               Post a task
-             </button>
-              <button (click)="openModalSuggestTask()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
-               Suggest a task
-             </button>
+              <!-- <button (click)="openModalFeed()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
+               Post tasks
+             </button> -->
+              <!-- <button (click)="openModalSuggestTask()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
+               Suggest tasks
+             </button> -->
 
 
           </ul>
@@ -44,21 +44,23 @@
        <div class="flex-1 min-h-0 overflow-y-auto">
           <ul class="pt-1 pb-3 px-3">
             <li class="mt-3" *ngFor="let task of tasks">
-                  <a *ngIf="task.isReview" (click)="openModalDetailTask(task._id, task.description)" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
+                  <a *ngIf="task.isReview" (click)="openModalPendingTask(task._id, task.description)" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
                      <div class="flex justify-between">
                         <p class="text-sm font-medium leading-snug text-gray-900">{{task.description}}</p>
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
                      </div>
                      <div class="flex justify-between mt-5">
-                        <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                        <div class="text-sm text-gray-600"><time datetime="2020-10-12">{{task.creationDate | date:"short"}}</time></div>
                         <div>
+                          
                            <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
-                              <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                              <svg viewBox="0 0 8 8" fill="blue" class="h-2 w-2">
                                  <circle cx="4" cy="4" r="3"></circle>
                               </svg>
-                              <span class="text-sm font-medium text-teal-500 rounded-full ml-1">test</span>
-                              
+                              <span class="text-sm font-medium text-blue-500 rounded-full ml-1">{{task.difficulty}}</span>
                            </span>
+
+
                         </div>
                      </div>
                   </a>
@@ -79,13 +81,13 @@
                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
                  </div>
                  <div class="flex justify-between mt-5">
-                   <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
-                   <div>
+                  <div class="text-sm text-gray-600"><time datetime="2020-10-12">{{task.creationDate | date:"short"}}</time></div>
+                  <div>
                      <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
-                       <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
-                         <circle cx="4" cy="4" r="3"></circle>
-                       </svg>
-                       <span class="text-sm font-medium text-teal-500 rounded-full ml-1">test</span>
+                        <svg viewBox="0 0 8 8" fill="blue" class="h-2 w-2">
+                           <circle cx="4" cy="4" r="3"></circle>
+                        </svg>
+                        <span class="text-sm font-medium text-blue-500 rounded-full ml-1">{{task.difficulty}}</span>
                      </span>
                      <span [ngClass]="{'inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full': true, 'bg-green-100 text-green-500': task.isAccepted, 'bg-red-100 text-red-500': !task.isAccepted}">
                         <svg [ngStyle]="{'fill': task.isAccepted ? 'currentColor' : 'currentColor'}" class="h-2 w-2">
@@ -125,123 +127,14 @@
    
  </main>
 
- <div  id="addTaskdefaultModal" tabindex="-1" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full backdrop-blur-sm bg-black bg-opacity-50" [style.display]="modalOpenAddTask ? 'block' : 'none'">
-   <div class="flex items-center justify-center relative p-4mx-auto h-full md:h-auto">
-       <!-- Modal content -->
-       <div class="relative p-4 bg-white rounded-lg shadow w-1/3 dark:bg-gray-800 sm:p-5">
-           <!-- Modal header -->
-           <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                   Add a task
-               </h3>
-               <button (click)="closeModalAddTask()"  type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="createUserdefaultModal">
-                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                   <span class="sr-only">Close modal</span>
-               </button>
-           </div>
-           <!-- Modal body -->
-           <form action="#">
-               <div class="grid gap-4 mb-4 sm:grid-cols-2">
 
-                   <div class="md:col-span-2">
-                       <label for="last-name" class="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">Title</label>
-                       <input type="text" name="last-name" id="last-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 outline-none " placeholder="Write a title here" required="">
-                   </div>
-    
-                   <div class="sm:col-span-2">
-                       <label for="Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                       <div class="w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 ">
-                           <div class="flex justify-between items-center py-2 px-3 border-b dark:border-gray-600">
-                            <div class="flex items-center space-x-1 sm:pr-4">
-                               
-                           </div>
-                           <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Upload image</span>
-                        </button>
-                        <!-- <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Add emoji</span>
-                        </button> -->
-                           </div>
-                           <div class="py-2 px-4 bg-white rounded-b-lg dark:bg-gray-700 dark:border-gray-600">
-                               <textarea id="biography" rows="8" class="block px-0 w-full text-sm text-gray-800 bg-white border-0 dark:bg-gray-700 dark:border-gray-600 focus:ring-0 dark:text-white dark:placeholder-gray-400 outline-none " placeholder="Write a message here" required=""></textarea>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               <div class="flex items-center space-x-4">
-                   <button type="submit" class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                       <svg class="-ml-1 w-5 h-5 sm:mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                       Send to moderators for review
-                   </button>
-                   
-               </div>
-           </form>
-       </div>
-   </div>
-</div>
  
- <!-- Main modal -->
- <div  id="shareTaskdefaultModal" tabindex="-1" aria-hidden="true" class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full backdrop-blur-sm bg-black bg-opacity-50" [style.display]="modalOpenFeed ? 'block' : 'none'">
-   <div class="flex items-center justify-center relative p-4mx-auto h-full md:h-auto">
-       <!-- Modal content -->
-       <div class="relative p-4 bg-white rounded-lg shadow w-1/3 dark:bg-gray-800 sm:p-5">
-           <!-- Modal header -->
-           <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                   Share a task
-               </h3>
-               <button (click)="closeModalFeed()"  type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="createUserdefaultModal">
-                   <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                   <span class="sr-only">Close modal</span>
-               </button>
-           </div>
-           <!-- Modal body -->
-           <form action="#">
-               <div class="grid gap-4 mb-4 sm:grid-cols-2">
 
-                   <div class="md:col-span-2">
-                       <label for="last-name" class="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">Title</label>
-                       <input type="text" name="last-name" id="last-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 outline-none " placeholder="Write a title here" required="">
-                   </div>
-    
-                   <div class="sm:col-span-2">
-                       <label for="Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                       <div class="w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 ">
-                           <div class="flex justify-between items-center py-2 px-3 border-b dark:border-gray-600">
-                            <div class="flex items-center space-x-1 sm:pr-4">
-                               
-                           </div>
-                           <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Upload image</span>
-                        </button>
-                        <!-- <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Add emoji</span>
-                        </button> -->
-                           </div>
-                           <div class="py-2 px-4 bg-white rounded-b-lg dark:bg-gray-700 dark:border-gray-600">
-                               <textarea id="biography" rows="8" class="block px-0 w-full text-sm text-gray-800 bg-white border-0 dark:bg-gray-700 dark:border-gray-600 focus:ring-0 dark:text-white dark:placeholder-gray-400 outline-none " placeholder="Write a message here" required=""></textarea>
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               <div class="flex items-center space-x-4">
-                   <button type="submit" class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                       <svg class="-ml-1 w-5 h-5 sm:mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                       Post task completion to your feed
-                   </button>
-                   
-               </div>
-           </form>
-       </div>
-   </div>
-</div>
-
+ <app-add-task [modalOpen]="modalOpenAddTask" (closeModal)="closeModalAddTask()" [verifiedTasks]="verifiedTasks"></app-add-task>
 
 <app-share-task [modalOpen]="modalOpenFeed" (closeModal)="closeModalFeed()"></app-share-task>
 <app-suggest-task [modalOpen]="modalOpenSuggestTask" (closeModal)="closeModalSuggestTask()"></app-suggest-task>
 
 <app-detail-task [modalOpen]="modalOpenDetailTask" (closeModal)="closeModalDetailTask()" [description]="description" [id]="id" ></app-detail-task>
+
+<app-pending-task [modalOpen]="modalOpenPendingTask" (closeModal)="closeModalPendingTask()" [description]="description" [id]="id" ></app-pending-task>

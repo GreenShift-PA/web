@@ -33,6 +33,7 @@ import { DetailTaskComponent } from './modals/detail-task/detail-task.component'
 import { SuggestTaskComponent } from './modals/suggest-task/suggest-task.component';
 import { ShareTaskComponent } from './modals/share-task/share-task.component';
 import { AddTaskComponent } from './modals/add-task/add-task.component';
+import { PendingTaskComponent } from './modals/pending-task/pending-task.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +61,7 @@ import { AddTaskComponent } from './modals/add-task/add-task.component';
     SuggestTaskComponent,
     ShareTaskComponent,
     AddTaskComponent,
+    PendingTaskComponent,
       ],
   imports: [
     BrowserModule,

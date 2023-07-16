@@ -105,14 +105,18 @@ export class SettingsComponent implements OnInit{
       (response) => {
         // Handle success response
         console.log(response);
-        this.toastr.success("User password updated successfully.");
+        this.toastr.success("User password updated successfully.","",{
+          timeOut: 1000,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
 
       },
       (error) => {
         // Handle error response
-        this.toastr.warning("Something went wrong");
-
         console.error(error);
+        this.toastr.warning("Wrong current password");
       }
     );
   }

@@ -11,7 +11,8 @@ export interface TaskResponse {
     deadline: Date,
     subtask: any[],
     isReview: boolean,
-    difficulty: number
+    difficulty: number,
+    creationDate:Date
 }
 
 @Injectable({
@@ -21,6 +22,25 @@ export class TaskService {
   constructor(private http: HttpClient, private token: TokenService) {}
 
 
+  getVerifiedTasks(): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<TaskResponse>("http://localhost:3000/todo/default", { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+  
+  addToMyTasks(todoId:string): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.post<TaskResponse>(`http://localhost:3000/todo/default?todo_id=${todoId}`, { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
 
 
   getMyTasks(): Observable<TaskResponse> {
