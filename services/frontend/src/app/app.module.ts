@@ -32,6 +32,7 @@ import { KanbanComponent } from './components/kanban/kanban.component';
 import { DetailTaskComponent } from './modals/detail-task/detail-task.component';
 import { SuggestTaskComponent } from './modals/suggest-task/suggest-task.component';
 import { ShareTaskComponent } from './modals/share-task/share-task.component';
+import { AddTaskComponent } from './modals/add-task/add-task.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,6 +59,7 @@ import { ShareTaskComponent } from './modals/share-task/share-task.component';
     DetailTaskComponent,
     SuggestTaskComponent,
     ShareTaskComponent,
+    AddTaskComponent,
       ],
   imports: [
     BrowserModule,
