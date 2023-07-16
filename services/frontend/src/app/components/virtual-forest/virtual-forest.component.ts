@@ -20,7 +20,9 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 	trees:any = []
 
 	goOnPage = (pageName: string) => {
-		this.router.navigate([`${pageName}`]);
+		console.log("passe par la ")
+		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+		this.router.navigate([pageName]));
 	} 
 	
 	ngOnInit(): void {
@@ -96,9 +98,9 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	chooseSize = (nbr_trees: number):number => {
 
-		if(nbr_trees < 10){
+		if(nbr_trees < 7){
 			return 1
-		}else if ( nbr_trees < 50){
+		}else if ( nbr_trees < 40){
 			return 2
 		}else if ( nbr_trees < 100){
 			return 3
@@ -121,13 +123,13 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		}else if (height > this.DIRT_HEIGHT) {
 			this.dirstGeo = mergeGeometries([this.dirstGeo, geo])
 
-			if(Math.random() > 0.7 && this.tree_params.counter < this.tree_params.max_nbr){
+			if(Math.random() > 0.9 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 
 		}else if (height > this.GRASS_HEIGHT) {
 			this.grassGeo = mergeGeometries([this.grassGeo, geo])
-			if(Math.random() > 0.8 && this.tree_params.counter < this.tree_params.max_nbr){
+			if(Math.random() > 0.85 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 			if(Math.random() > 0.9 && this.stoneGeo){
