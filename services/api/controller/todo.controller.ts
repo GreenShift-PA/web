@@ -68,7 +68,8 @@ export class TodoController {
             deadline: req.body.deadline,
             subtask: [],
             isReview: false,
-            difficulty: diff
+            difficulty: diff,
+            creationDate: new Date
         })
 
         req.user?.todoTask.push(newTask)
