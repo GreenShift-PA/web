@@ -179,8 +179,10 @@ export class UserController {
     }
 
     getAllUsersInfo = async (req:Request, res:Response): Promise<void> => {
+        const return_list = []
+        return_list.push(await req.user?.populate("tree"))
 
-        const users = await UserModel.find({}).populate("tree")
+        const users = await UserModel.find({"_id": {"$ne": req.user?._id}}).populate("tree")
         if(!users){
             res.status(404).json({"message" : "No users"})
             return
@@ -188,9 +190,10 @@ export class UserController {
         users.forEach(user => {
             user.password = ""
             user.roles = []
+            return_list.push(user)
         })
 
-        res.status(200).json(users)
+        res.status(200).json(return_list)
         return 
     }
 
@@ -410,6 +413,7 @@ export class UserController {
     getFollower = async (req:Request, res:Response):Promise<void> => {
         const user_tree:any[] = []
         try{
+            user_tree.push(req.user)
             const list_followers = req.user?.follow
             if(!list_followers){
                 res.status(204).json({"message" : "you are following no one"})
