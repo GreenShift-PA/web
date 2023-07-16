@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,8 +25,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { LoginErrorComponent } from './components/toasts/login-error/login-error.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,6 @@ import { ToastComponent } from './components/toast/toast.component';
     ForgotPasswordComponent,
     PageNotFoundComponent,
     ProfileComponent,
-    LoginErrorComponent,
     ToastComponent
   ],
   imports: [
@@ -56,7 +56,15 @@ import { ToastComponent } from './components/toast/toast.component';
     FormsModule ,
     HttpClientModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      easeTime:300,
+      positionClass: 'toast-bottom-right',
+      progressBar:true,
+      progressAnimation:"increasing",
+    }),
+    BrowserAnimationsModule, 
   ],
   providers: [],
   bootstrap: [AppComponent]
