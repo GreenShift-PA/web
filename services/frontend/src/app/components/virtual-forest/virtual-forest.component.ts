@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {Router} from "@angular/router"
+import {ActivatedRoute, Router} from "@angular/router"
 import * as THREE from "three"
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
@@ -15,17 +15,40 @@ styleUrls: ['./virtual-forest.component.css']
 })
 export class VirtualForestComponent implements OnInit, OnDestroy{
 
-	constructor(private treeService: TreeService, private router: Router) {}
+	constructor(private treeService: TreeService, private router: Router, private route: ActivatedRoute) {}
 
 	trees:any = []
+
+	goOnPage = (pageName: string) => {
+		console.log("passe par la ")
+		this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+		this.router.navigate([pageName]));
+	} 
 	
 	ngOnInit(): void {
-		this.treeService.getTreeData().subscribe(response => {
-		  this.trees = response;
-		  this.tree_params.max_nbr = this.trees.length,
-		  this.SIZE = this.chooseSize(this.tree_params.max_nbr)
-		  this.createThreeJsBox();
-		});
+		this.route.queryParams.subscribe((params) => {
+			const world = this.route.snapshot.paramMap.get('world');
+
+			if (world && world=='follow'){
+				this.treeService.getTreeDataFollow().subscribe(response => {
+					this.trees = response;
+					this.tree_params.max_nbr = this.trees.length,
+					this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+					this.createThreeJsBox();
+				  });
+			}else if( world && world=="world"){
+				this.treeService.getTreeDataWorld().subscribe(response => {
+					this.trees = response;
+					this.tree_params.max_nbr = this.trees.length,
+					this.SIZE = this.chooseSize(this.tree_params.max_nbr)
+					this.createThreeJsBox();
+				  });
+			}else{
+				this.router.navigate(['/not-found'])
+			}
+
+		})
+		
 		// this.trees = this.treeService.getTreeFakeData()
 		// this.tree_params.max_nbr = this.trees.length,
 		// this.SIZE = this.chooseSize(this.tree_params.max_nbr)
@@ -75,9 +98,9 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 
 	chooseSize = (nbr_trees: number):number => {
 
-		if(nbr_trees < 10){
+		if(nbr_trees < 7){
 			return 1
-		}else if ( nbr_trees < 50){
+		}else if ( nbr_trees < 40){
 			return 2
 		}else if ( nbr_trees < 100){
 			return 3
@@ -100,13 +123,13 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		}else if (height > this.DIRT_HEIGHT) {
 			this.dirstGeo = mergeGeometries([this.dirstGeo, geo])
 
-			if(Math.random() > 0.7 && this.tree_params.counter < this.tree_params.max_nbr){
+			if(Math.random() > 0.9 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 
 		}else if (height > this.GRASS_HEIGHT) {
 			this.grassGeo = mergeGeometries([this.grassGeo, geo])
-			if(Math.random() > 0.8 && this.tree_params.counter < this.tree_params.max_nbr){
+			if(Math.random() > 0.85 && this.tree_params.counter < this.tree_params.max_nbr){
 				this.grassGeo = mergeGeometries([this.grassGeo, this.makeTree(height, position)])
 			}
 			if(Math.random() > 0.9 && this.stoneGeo){

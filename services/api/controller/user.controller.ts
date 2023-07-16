@@ -413,7 +413,7 @@ export class UserController {
     getFollower = async (req:Request, res:Response):Promise<void> => {
         const user_tree:any[] = []
         try{
-            user_tree.push(req.user)
+            user_tree.push(await req.user?.populate("tree"))
             const list_followers = req.user?.follow
             if(!list_followers){
                 res.status(204).json({"message" : "you are following no one"})
