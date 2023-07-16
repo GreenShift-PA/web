@@ -25,10 +25,12 @@ export class AuthController {
 
         let user 
         try{
+
             user = await UserModel.findOne({
                 login: req.body.login,
                 password: SecurityUtils.toSHA512(req.body.password)
             })
+            
         }catch(err){
             res.status(400).end()
             return
@@ -37,9 +39,27 @@ export class AuthController {
             res.status(401).end()
             return
         }
-        
+
         // Platform
         const platform = req.headers['user-agent']
+
+        try{
+            const is_user_last_session = await SessionModel.findOne({
+                user: user?._id,
+                platform: platform
+            })
+
+            console.log(is_user_last_session, platform)
+
+            if (is_user_last_session){
+                res.status(409).json({"message" : "A session for this device already exists"})
+                return
+            }
+        }catch(e){
+            res.status(500).end()
+            return 
+        }
+
 
         // Token
         const session = await SessionModel.create({
