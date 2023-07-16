@@ -32,7 +32,8 @@ export class PostController {
             comments: [],
             whoValidates: [],
             treeLinked: req.user?.tree,
-            creationDate: new Date()
+            creationDate: new Date(),
+            userId : req.user?._id
         })
 
         try{

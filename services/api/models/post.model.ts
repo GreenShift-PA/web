@@ -35,6 +35,10 @@ const postShemma = new Schema<Post>({
     creationDate: {
         type: Schema.Types.Date,
         required: true
+    },
+    userId: {
+        type: Schema.Types.String,
+        required: true
     }
 }, {
     versionKey: false,
@@ -50,6 +54,7 @@ export interface Post{
     whoValidates: User[]
     treeLinked : Tree
     creationDate : Date
+    userId: string
 }
 
 
