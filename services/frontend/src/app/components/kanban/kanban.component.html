@@ -21,6 +21,7 @@
                       </div>
                    </div>
                 </a>
+                
              </li>
              <button (click)="openModalAddTask()"  class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-full rounded-lg h-8" type="button">
                 Add a task
@@ -43,23 +44,25 @@
        <div class="flex-1 min-h-0 overflow-y-auto">
           <ul class="pt-1 pb-3 px-3">
             <li class="mt-3" *ngFor="let task of tasks">
-               <a *ngIf="task.isReview" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
-                  <div class="flex justify-between">
-                     <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
-                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
-                  </div>
-                  <div class="flex justify-between mt-5">
-                     <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
-                     <div>
-                        <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
-                           <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
-                              <circle cx="4" cy="4" r="3"></circle>
-                           </svg>
-                           <span class="text-sm font-medium text-teal-500 rounded-full ml-1">Feature Request</span>
-                        </span>
+                  <a *ngIf="task.isReview" (click)="openModalDetailTask(task._id, task.description)" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
+                     <div class="flex justify-between">
+                        <p class="text-sm font-medium leading-snug text-gray-900">{{task.description}}</p>
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
                      </div>
-                  </div>
-               </a>
+                     <div class="flex justify-between mt-5">
+                        <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                        <div>
+                           <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                              <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                                 <circle cx="4" cy="4" r="3"></circle>
+                              </svg>
+                              <span class="text-sm font-medium text-teal-500 rounded-full ml-1">test</span>
+                              
+                           </span>
+                        </div>
+                     </div>
+                  </a>
+
             </li>
              
           </ul>
@@ -71,23 +74,31 @@
           <ul class="pt-1 pb-3 px-3">
             <li class="mt-3" *ngFor="let task of tasks">
                <a *ngIf="task.isDone" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
-                  <div class="flex justify-between">
-                     <p class="text-sm font-medium leading-snug text-gray-900">Add discount code to checkout page.</p>
-                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
-                  </div>
-                  <div class="flex justify-between mt-5">
-                     <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
-                     <div>
-                        <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
-                           <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
-                              <circle cx="4" cy="4" r="3"></circle>
-                           </svg>
-                           <span class="text-sm font-medium text-teal-500 rounded-full ml-1">Feature Request</span>
-                        </span>
-                     </div>
-                  </div>
+                 <div class="flex justify-between">
+                   <p class="text-sm font-medium leading-snug text-gray-900">{{task.description}}</p>
+                   <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
+                 </div>
+                 <div class="flex justify-between mt-5">
+                   <div class="text-sm text-gray-600"><time datetime="2020-10-12">Sep 15</time></div>
+                   <div>
+                     <span class="inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full">
+                       <svg viewBox="0 0 8 8" fill="#00bfa5" class="h-2 w-2">
+                         <circle cx="4" cy="4" r="3"></circle>
+                       </svg>
+                       <span class="text-sm font-medium text-teal-500 rounded-full ml-1">test</span>
+                     </span>
+                     <span [ngClass]="{'inline-flex items-center leading-tight bg-teal-100 px-2 py-1 rounded-full': true, 'bg-green-100 text-green-500': task.isAccepted, 'bg-red-100 text-red-500': !task.isAccepted}">
+                        <svg [ngStyle]="{'fill': task.isAccepted ? 'currentColor' : 'currentColor'}" class="h-2 w-2">
+                           <circle cx="4" cy="4" r="3"></circle>
+                         </svg>
+                       <span class="text-sm font-medium rounded-full ml-1">
+                         {{ task.isAccepted ? 'Accepted' : 'Refused' }}
+                       </span>
+                     </span>
+                   </div>
+                 </div>
                </a>
-            </li>
+             </li>
              <!-- <li class="mt-3">
                 <a class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
                    <div class="flex justify-between">

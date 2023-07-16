@@ -15,17 +15,51 @@ export class DetailTaskComponent {
   @Input() id:string="";
   @Output() closeModal = new EventEmitter<void>();
 
+  descriptionFeed:string='';
+
+  post:any={
+    title:"",
+    description:"",  
+  }
+
   user: any = {
     todo_id:this.id,
-    description: this.description,
   };
+
+  taskReview:any={
+    todo_id:this.id,
+    isReviewed:true
+  }
 
   close() {
     this.closeModal.emit();
   }
 
+  
+
+
   sendForReview(){
-    this.user.todo_id=this.id;
+    this.taskReview.todo_id=this.id;
+    this.task.sendForReview(this.taskReview).subscribe( (response) => {
+      // Handle the response if needed
+      console.log('Sent for review successfully');
+
+      this.toastr.success("Sent for review successfully.","",{
+        timeOut: 1000,
+      });
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+
+    },
+    (error) => {
+      // Handle the error if needed
+      console.error('Error updating task:', error);
+      this.toastr.error('Error updating task:');
+
+    }
+  );
+  
   }
 
 

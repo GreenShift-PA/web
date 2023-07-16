@@ -68,7 +68,8 @@ export class TodoController {
             deadline: req.body.deadline,
             subtask: [],
             isReview: false,
-            difficulty: diff
+            difficulty: diff,
+            isAccepted:false
         })
 
         req.user?.todoTask.push(newTask)
@@ -102,7 +103,8 @@ export class TodoController {
 
         const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
             isDone: req.body.isDone,
-            isReview : req.body.isReviewed
+            isReview : req.body.isReviewed,
+            isAccepted: req.body.isAccepted,
         },
         { new: true })
 

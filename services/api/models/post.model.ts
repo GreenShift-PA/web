@@ -39,7 +39,7 @@ const postShemma = new Schema<Post>({
 
 export interface Post{
     _id: string
-    title: string 
+    title: string |undefined
     description: string
     like: User[]
     comments: Comment[]
