@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter ,OnInit} from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/services/user.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-detail-task',
@@ -9,13 +11,17 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./detail-task.component.css']
 })
 export class DetailTaskComponent {
-  constructor(private task:TaskService,private toastr:ToastrService) {}
+  constructor(private postService: PostService,private userService: UserService,private task:TaskService,private toastr:ToastrService) {}
   @Input() modalOpen: boolean=false;
   @Input() description:string=""; 
   @Input() id:string="";
   @Output() closeModal = new EventEmitter<void>();
 
   descriptionFeed:string='';
+  commentText: string = '';
+  
+  commentLink: string = '';
+  posts:any=[];
 
   post:any={
     title:"",
@@ -35,7 +41,33 @@ export class DetailTaskComponent {
     this.closeModal.emit();
   }
 
-  
+  submitComment() {
+    // Check if the comment text is not empty
+    if (this.commentText.trim() !== '') {
+      // Send the request to the service
+      this.postService.sendPost(this.commentText).subscribe(
+        (response) => {
+          // Handle the response if needed
+          console.log('Comment posted successfully');
+          // Reset the comment text after successful submission
+
+          this.commentText = '';
+          this.toastr.success("Message posted successfully.","",{
+            timeOut: 1000,
+          });
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        },
+        (error) => {
+          // Handle the error if needed
+          console.error('Error posting comment:', error);
+          this.toastr.warning("Something went wrong");
+
+        }
+      );
+    }
+  }
 
 
   sendForReview(){
@@ -89,3 +121,9 @@ export class DetailTaskComponent {
   }
   
 }
+
+
+
+
+
+

@@ -23,25 +23,41 @@
                     <h2 class="text-start text-lg font-semibold text-gray-900 dark:text-white">Write a post to get your task reviewed !</h2>
                     <div class="sm:col-span-2">
                         <label for="Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post body</label>
-                        <div class="w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600 ">
-                            <div class="flex justify-between items-center py-2 px-3 border-b dark:border-gray-600">
-                             <div class="flex items-center space-x-1 sm:pr-4">
+                        <form class="mb-6" (submit)="submitComment()">
+                            <div
+                                class="mb-4 w-full bg-primary-50 rounded-lg  ">
+                                <div class="py-2 px-4 bg-secondary-100  rounded-t-lg ">
+                                    <label for="comment" class="sr-only">Your comment</label>
+                                    <textarea id="comment" rows="6" [(ngModel)]="commentText" name="commentText"
+                                        class="px-0 w-full text-sm text-gray-900 bg-secondary-100 outline-none "
+                                        placeholder="Write a comment..." required></textarea>
+                                </div>
+                                <div class="flex justify-between items-center py-2 px-3 border-t ">
+        
+                                   
                                 
+                                    <div class="flex pl-0 space-x-1 sm:pl-2">
+                                        
+                                        
+        
+        
+                                        <form >
+                                            <button type="button"
+                                            class="inline-flex justify-center p-2 text-black rounded cursor-pointer hover:text-primary-50 ">
+                                            <svg aria-hidden="true" class="w-5 h-5 mr-5 text-secondary-100" fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <span class="sr-only">Upload image</span>
+                                              <input [(ngModel)]="commentLink" name="commentLink" placeholder="Enter an image link" class="focus:outline-none rounded-md bg-secondary-100" type="text" id="myFile" name="filename" >
+                                            </button>
+                                          </form>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
-                             <span class="sr-only">Upload image</span>
-                         </button>
-                         <!-- <button type="button" class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path></svg>
-                             <span class="sr-only">Add emoji</span>
-                         </button> -->
-                            </div>
-                            <div class="py-2 px-4 bg-white rounded-b-lg dark:bg-gray-700 dark:border-gray-600">
-                                <textarea disabled="true" [ngModel]="descriptionFeed" name="descriptionFeed" id="descriptionFeed" [(ngModel)]="user.description" id="biography" rows="8" class="block px-0 w-full text-sm text-gray-800 bg-white border-0 dark:bg-gray-700 dark:border-gray-600 focus:ring-0 dark:text-white dark:placeholder-gray-400 outline-none" placeholder="Write a message here" required=""></textarea>
-                              </div>
-                          
-                        </div>
+                        </form>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="Description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Task Description</label>
@@ -67,11 +83,13 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button type="submit" class="w-full text-white inline-flex items-center justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        <svg class="-ml-1 w-5 h-5 sm:mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                        Send to moderators for review
-                      </button>
                     
+                      <button type="submit" class="w-full flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center"  [disabled]="!commentText"
+                      [ngClass]="{'opacity-50': !commentText || !commentLink}">
+              
+                          Post comment and send to moderators for review
+
+                          </button>
                 </div>
             </form>
         </div>
