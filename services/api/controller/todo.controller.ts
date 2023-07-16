@@ -4,7 +4,7 @@ import { Document, Model } from "mongoose"
 import { Todo, TodoModel } from "../models/todo.model"
 import { Router, Request, Response } from "express"
 import { checkBody, checkUserToken } from "../middleware"
-import { SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
+import { AdminTodoModel, PostModel, SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
 import { checkQuery } from "../middleware/query.middleware"
 
 export class TodoController {
@@ -52,7 +52,7 @@ export class TodoController {
         "title": "string",
         "description": "string",
         "deadline": "string",
-        "difficulty" : "number"
+        "difficulty" : "number" 
     }
 
     createTask = async (req: Request, res: Response): Promise<void> => {
@@ -138,17 +138,23 @@ export class TodoController {
             await this.addPoints(req.user.tree._id, (todo_task.difficulty + 1) * 2)
         }
 
-        const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
+        try{
+
+            const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
             isDone: req.body.isDone,
             title: req.body.title,
             description: req.body.description,
-            deadline: req.body.deadline,
-        },
-            { new: true })
-
-
-        res.status(200).json(updated_todo_task)
-        return
+                deadline: req.body.deadline,
+            },
+                { new: true })
+    
+    
+            res.status(200).json(updated_todo_task)
+            return
+        }catch(e){ 
+            res.status(403).json({"message": "This is not a good Id"})
+            return 
+        }
     }
 
     readonly paramsCreateSubtask = {
@@ -282,13 +288,120 @@ export class TodoController {
         return
     }
 
+    readonly  paramsNewPost = {
+        "todo_id": "string",
+        "title" : "string",
+        "description" : "string",
+    }
+
+    createPostInTask = async (req:Request, res:Response): Promise<void> => {
+
+        let todo
+        try{
+            todo = await TodoModel.findById(req.body.todo_id)
+            if (!todo){
+                res.status(404).end()
+                return 
+            }
+        }catch(e){
+            res.status(401).json({"message" : "This is not a good ID"})
+            return
+        }
+
+        const newPost = await PostModel.create({
+            title: req.body.title,
+            description: req.body.description,
+            like: [],
+            comments: [],
+            whoValidates: [],
+            treeLinked: req.user?.tree
+        })
+
+        req.user?.posts.push(newPost)
+        req.user?.save()
+
+        todo.postLinked = newPost
+        todo.save()
+
+        res.status(200).json(newPost)
+        return         
+    }
+
+    readonly queryGetPost = {
+        'todo_id' : "string"
+    }
+
+    getPost = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const todo = await TodoModel.findById(req.query.todo_id)
+            if (!todo){
+                res.status(404).json({'message': "There is no task with this ID"})
+                return 
+            }
+
+            const post = await PostModel.findById(todo.postLinked)
+            if (!post){
+                res.status(404).json({"message": "This Todo Task do not have post"})
+                return 
+            }
+
+            res.status(200).json(post)
+            return 
+
+        }catch(e){
+            res.status(401).json({'message' : "This is not a good ID"})
+            return 
+        }
+    }
+
+    readonly queryUseAdminTodo = {
+        "todo_id" : "string"
+    }
+
+    useAdminTodo = async (req:Request, res:Response): Promise<void> => {
+        try{
+            const admin_todo = await AdminTodoModel.findById(req.query.todo_id)
+            if(!admin_todo){
+                res.status(404).json({"message" : "We can't find this proposed task"})
+                return
+            }
+            const newTask = await TodoModel.create({
+                isDone: false,
+                title: admin_todo.title,
+                description: admin_todo.description,
+                deadline: admin_todo.deadline,
+                subtask: [],
+                isReview: false,
+                difficulty: admin_todo.difficulty
+            })
+    
+            req.user?.todoTask.push(newTask)
+            req.user?.save()
+    
+            res.status(201).json(newTask)
+            return
+        }catch(e){
+            res.status(401).json({"message": "This is not a good ID"})
+        }
+    }
+
+    getAllAdminTask = async (req:Request, res:Response): Promise<void> => {
+        const list_defautl_task = await AdminTodoModel.find()
+
+        res.status(200).json(list_defautl_task)
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkQuery(this.queryGetOneTask), this.getTask.bind(this))
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
+        router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getPost.bind(this))
+        router.get('/default', checkUserToken(), this.getAllAdminTask.bind(this))
         router.post('/', express.json(), checkUserToken(), checkBody(this.paramsCreateTask), this.createTask.bind(this))
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))
+        router.post('/post',express.json(), checkUserToken(), checkBody(this.paramsNewPost), this.createPostInTask.bind(this))
+        router.post('/default', checkUserToken(), checkQuery(this.queryUseAdminTodo), this.useAdminTodo.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusTask), this.updateStatusTask.bind(this))
         router.patch('/subtask', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusSubtask), this.updateStatusSubtask.bind(this))
         router.patch('/status', express.json(), checkUserToken(), checkBody(this.paramsSwitchStatusTask), this.switchStatusTask.bind(this))

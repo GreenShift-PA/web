@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from "mongoose";
 import { Subtask } from "./subtask.model";
+import { Post } from "./post.model";
 
 const todoShemma = new Schema<Todo>({
     isDone: {
@@ -31,13 +32,19 @@ const todoShemma = new Schema<Todo>({
         type: Schema.Types.Number,
         required: true
     },
+    postLinked : {
+        type: Schema.Types.ObjectId,
+        ref: "Subtask"
+    },
     isAccepted:{
         type: Schema.Types.Boolean,
+        required: true
     },
     creationDate: {
         type: Schema.Types.Date,
         required: true
     }
+
 }, {
     versionKey: false,
     collection: "Todos"
@@ -52,6 +59,7 @@ export interface Todo {
     subtask: Subtask[],
     isReview: boolean,
     difficulty: number,
+    postLinked : Post
     isAccepted:boolean,
     creationDate: Date
 }

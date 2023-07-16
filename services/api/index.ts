@@ -10,6 +10,7 @@ import { TreeController } from './controller/tree.controller'
 import { PostController } from './controller/post.controller'
 import { MessageController } from './controller/message.controller'
 import { TodoController } from './controller/todo.controller'
+import { AdminTodoController } from './controller/adminTodo.controller'
 const cors = require('cors');
 
 const startServer = async (): Promise<void> => {
@@ -45,6 +46,7 @@ const startServer = async (): Promise<void> => {
     const postController = new PostController()
     const messageController = new MessageController()
     const todoController = new TodoController()
+    const adminTodoController = new AdminTodoController()
     
     // This call to the function is out of place because if we put StartService.createUsers() after StartService.userRoles(), 
     //      then the creation doesn't work because the program is trying to create a user while the creation role is not finished.
@@ -56,6 +58,7 @@ const startServer = async (): Promise<void> => {
     app.use(postController.path, postController.buildRouter())
     app.use(messageController.path, messageController.buildRouter())
     app.use(todoController.path, todoController.buildRouter())
+    app.use(adminTodoController.path, adminTodoController.buildRouter())
 
     app.listen(process.env.PORT, () => {
         console.log(`Server up on PORT : ${process.env.PORT}`)
