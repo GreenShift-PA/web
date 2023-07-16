@@ -4,7 +4,7 @@ import { Document, Model } from "mongoose"
 import { Todo, TodoModel } from "../models/todo.model"
 import { Router, Request, Response } from "express"
 import { checkBody, checkUserToken } from "../middleware"
-import { SubtaskModel, UserModel } from "../models"
+import { SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
 import { checkQuery } from "../middleware/query.middleware"
 
 export class TodoController {
@@ -15,6 +15,14 @@ export class TodoController {
     constructor() {
         this.path = "/todo"
         this.model = TodoModel
+    }
+
+    private addPoints = async (tree:string , score:number) => {
+
+        const tree_info = await TreeModel.findById(tree)
+        if (!tree_info){return}
+        tree_info.size = tree_info.size + score
+        tree_info.save()
     }
 
     ifYourtask = async (user_id: string, task_id: string): Promise<(Document<unknown, {}, Todo> & Omit<Todo & Required<{ _id: string; }>, never>) | boolean> => {
@@ -87,6 +95,11 @@ export class TodoController {
             return
         }
 
+        if(todo_task.isDone === false && req.body.isDone === true){
+            console.log("il passe par la")
+            await this.addPoints(req.user.tree._id, (todo_task.difficulty + 1) * 2)
+        }
+
         const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
             isDone: req.body.isDone,
             isReview : req.body.isReviewed
@@ -115,6 +128,11 @@ export class TodoController {
         if (!todo_task || typeof todo_task === "boolean") {
             res.status(401).json({ "message": "You can't do this" })
             return
+        }
+
+        if(todo_task.isDone === false && req.body.isDone === true){
+            console.log("il passe par la")
+            await this.addPoints(req.user.tree._id, (todo_task.difficulty + 1) * 2)
         }
 
         const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
