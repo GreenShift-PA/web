@@ -12,6 +12,8 @@ export interface PostResponse {
   comments: any[],
   whoValidates: number
   treeLinked: boolean,
+  userId:string,
+  creationDate:Date
 }
 @Injectable({
   providedIn: 'root'
