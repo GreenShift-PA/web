@@ -60,6 +60,7 @@
       </div>             
     </div>
 
+    <app-toast *ngIf="loginFail"  [toastText]="toastText" [toastIcon]="toastIcon" class="text-red-600" ></app-toast>
 
   </section>
   

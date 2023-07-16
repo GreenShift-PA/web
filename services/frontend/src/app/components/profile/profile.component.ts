@@ -9,6 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
+
+  toastText: string = "Logged in successfully.";
+  toastIcon: string =  "check_circle";
+  
   email: string = "";
   address: string = "";
   tasks: string = "";

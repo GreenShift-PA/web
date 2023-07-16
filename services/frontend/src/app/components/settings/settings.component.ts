@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, UserResponse } from 'src/app/services/user.service';
 
+import { ToastrService } from "ngx-toastr";
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -39,7 +40,7 @@ export class SettingsComponent implements OnInit{
   joinDate: Date = new Date();
   birthday: Date = new Date();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private toastr:ToastrService) {}
 
   ngOnInit() {
     this.userService.getMe().subscribe(
@@ -68,15 +69,25 @@ export class SettingsComponent implements OnInit{
 
   
   onSubmit(user: any) {
+    console.log(user)
     this.userService.patchUser(user).subscribe(
       (response) => {
         // Handle success response
         console.log(response);
               // Refresh the page
-      location.reload();
+
+
+              this.toastr.success("User information updated successfully.","",{
+                timeOut: 1000,
+              });
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+
       },
       (error) => {
         // Handle error response
+        this.toastr.warning("Something went wrong");
         console.error(error);
       }
     );
@@ -86,17 +97,21 @@ export class SettingsComponent implements OnInit{
     console.log(password)
     if (password.password !== password.confirmPassword) {
       // Passwords do not match, handle error
-      console.error('Passwords do not match');
+      this.toastr.warning("Passwords do not match");
+
       return;
     }
     this.userService.patchUser(password).subscribe(
       (response) => {
         // Handle success response
         console.log(response);
-              // Refresh the page
+        this.toastr.success("User password updated successfully.");
+
       },
       (error) => {
         // Handle error response
+        this.toastr.warning("Something went wrong");
+
         console.error(error);
       }
     );
