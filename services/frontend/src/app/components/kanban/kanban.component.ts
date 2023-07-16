@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog'
-import { AddTaskComponent } from '../modals/add-task/add-task.component';
 @Component({
   selector: 'app-kanban',
   templateUrl: './kanban.component.html',
