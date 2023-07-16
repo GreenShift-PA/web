@@ -33,6 +33,9 @@ const todoShemma = new Schema<Todo>({
     },
     isAccepted:{
         type: Schema.Types.Boolean,
+    },
+    creationDate: {
+        type: Schema.Types.Date,
         required: true
     }
 }, {
@@ -49,7 +52,8 @@ export interface Todo {
     subtask: Subtask[],
     isReview: boolean,
     difficulty: number,
-    isAccepted:boolean
+    isAccepted:boolean,
+    creationDate: Date
 }
 
 export const TodoModel: Model<Todo> = mongoose.model("Todo", todoShemma)
