@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 
@@ -56,7 +57,7 @@ export class SignupComponent {
 
 
 
-  constructor(private userService: UserService,private toastr:ToastrService) {}
+  constructor(private userService: UserService,private toastr:ToastrService, private router: Router) {}
 
   signup(user:any): void {
     for (const key in user) {
@@ -72,6 +73,7 @@ export class SignupComponent {
       (response) => {
         console.log(response);
         this.toastr.success("You're now registered !")
+        this.router.navigate(['/login']);
       },
       (error) => {
         console.error(error);
