@@ -1,11 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
    setItemWithExpiry(key: string, value: any, expiryInDays: number): void {
     const now = new Date();
@@ -29,6 +31,11 @@ export class TokenService {
       }
     }
     return null; // Item not found or expired
+  }
+
+  isValid(token:string):Observable<any> {
+      console.log(token)
+      return this.http.get<any>(`http://localhost:3000/auth/check?token=${token}`)
   }
 
 }

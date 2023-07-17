@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, UserResponse } from 'src/app/services/user.service';
 
 import { ToastrService } from "ngx-toastr";
+import { TokenService } from 'src/app/services/token.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -43,7 +46,7 @@ export class SettingsComponent implements OnInit{
   birthday: Date = new Date();
   image:string="";
 
-  constructor(protected userService: UserService, private toastr:ToastrService) {}
+  constructor(protected userService: UserService, private toastr:ToastrService, private tokenService: TokenService, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.userService.getMe().subscribe(
@@ -145,14 +148,20 @@ export class SettingsComponent implements OnInit{
   }
 
   deleteSession = (token:string) => {
-    console.log(token)
+
+    const current_token = this.tokenService.getItemWithExpiry("token")
+
     this.userService.deleteSession(token).subscribe(
       (response) => {
         this.toastr.success("The session id deleted")
         for (let i in this.sessions){
           if (this.sessions[i][2] == token){
-            console.log(i, "cest l'index le l'element")
             this.sessions.splice(i, 1);
+          }
+          if (token === current_token){
+            // Logout 
+            this.authService.logout()
+            this.router.navigate(['/login']); // Redirect to login page if no token
           }
         }
       },
