@@ -100,5 +100,12 @@ export class UserService {
     }
   }
 
+  deleteSession(token:string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log(headers)
+    return this.http.delete<any>(`http://localhost:3000/auth/logout`, { headers })
+    
+  }
+
   
 }

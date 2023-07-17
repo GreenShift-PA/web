@@ -43,7 +43,7 @@ export class SettingsComponent implements OnInit{
   birthday: Date = new Date();
   image:string="";
 
-  constructor(private userService: UserService, private toastr:ToastrService) {}
+  constructor(protected userService: UserService, private toastr:ToastrService) {}
 
   ngOnInit() {
     this.userService.getMe().subscribe(
@@ -75,14 +75,13 @@ export class SettingsComponent implements OnInit{
           const slice = rep.platform.split(" ")
           let platform = slice[3]
           let version = slice[11]
+          let id = rep._id
 
           if(!platform){platform = slice[1]}
           if(!version){version = slice[0]}
-          console.log(slice)
           this.sessions.push(
-            [platform, version]
+            [platform, version, id]
             )
-          // console.log(rep)
         }
       },
       (error) => {
@@ -143,6 +142,25 @@ export class SettingsComponent implements OnInit{
         this.toastr.warning("Wrong current password");
       }
     );
+  }
+
+  deleteSession = (token:string) => {
+    console.log(token)
+    this.userService.deleteSession(token).subscribe(
+      (response) => {
+        this.toastr.success("The session id deleted")
+        for (let i in this.sessions){
+          if (this.sessions[i][2] == token){
+            console.log(i, "cest l'index le l'element")
+            this.sessions.splice(i, 1);
+          }
+        }
+      },
+      (error) => {
+        console.error(error)
+        this.toastr.error("Error: " + error.message)
+      }
+    )
   }
 }
 
