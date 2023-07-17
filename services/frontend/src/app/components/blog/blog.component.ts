@@ -30,15 +30,13 @@ export class BlogComponent {
       })
       .catch(() => false);
   }
-  validateImageURL() {
-    this.isImgUrl(this.commentLink).then(isValid => {
+  validateImageURL(): Promise<boolean> {
+    return this.isImgUrl(this.commentLink).then(isValid => {
       if (isValid) {
-        this.toastr.success("its an image !")
-        return
+        this.toastr.success("It's an image!");
+        return true;
       } else {
- 
-        this.toastr.error("Not an image ! ");
-        return
+        return false;
       }
     });
   }
@@ -83,30 +81,35 @@ export class BlogComponent {
 
   submitComment() {
     // Check if the comment text is not empty
-    this.validateImageURL()
-    // if (this.commentText.trim() !== '') {
-    //   // Send the request to the service
-    //   this.post.sendPost(this.commentText).subscribe(
-    //     (response) => {
-    //       // Handle the response if needed
-    //       console.log('Comment posted successfully');
-    //       // Reset the comment text after successful submission
-
-    //       this.commentText = '';
-    //       this.toastr.success("Message posted successfully.","",{
-    //         timeOut: 1000,
-    //       });
-    //       setTimeout(() => {
-    //         location.reload();
-    //       }, 1000);
-    //     },
-    //     (error) => {
-    //       // Handle the error if needed
-    //       console.error('Error posting comment:', error);
-    //       this.toastr.warning("Something went wrong");
-
-    //     }
-    //   );
-    // }
+    if (this.commentText.trim() !== '') {
+      // Validate the image URL
+      this.validateImageURL().then(isValidImage => {
+        if (isValidImage) {
+          // Send the request to the service
+          this.post.sendPost(this.commentText).subscribe(
+            (response) => {
+              // Handle the response if needed
+              console.log('Comment posted successfully');
+              // Reset the comment text after successful submission
+              this.commentText = '';
+              this.toastr.success("Message posted successfully.", "", {
+                timeOut: 1000,
+              });
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            },
+            (error) => {
+              // Handle the error if needed
+              console.error('Error posting comment:', error);
+              this.toastr.warning("Something went wrong");
+            }
+          );
+        } else {
+          // Handle case where the URL is not an image
+          this.toastr.error("Not an image! Comment not posted.");
+        }
+      });
+    }
   }
 }

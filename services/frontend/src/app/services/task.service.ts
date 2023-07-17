@@ -9,10 +9,12 @@ export interface TaskResponse {
     title: string,
     description: string,
     deadline: Date,
+    like:any[],
     subtask: any[],
     isReview: boolean,
     difficulty: number,
-    creationDate:Date
+    creationDate:Date,
+    userId:string
 }
 
 @Injectable({
@@ -27,6 +29,16 @@ export class TaskService {
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.http.get<TaskResponse>("http://localhost:3000/todo/default", { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+
+  getLinkedPost(todoId:string): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<TaskResponse>(`http://localhost:3000/todo/post?todo_id=${todoId}`, { headers });
     } else {
       throw new Error("Token not found in local storage");
     }

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
 
+
+
 @Component({
   selector: 'app-pending-task',
   templateUrl: './pending-task.component.html',
@@ -15,18 +17,18 @@ export class PendingTaskComponent {
   @Input() modalOpen: boolean=false;
   @Input() description:string=""; 
   @Input() id:string="";
+  @Input() post:any={};
   @Output() closeModal = new EventEmitter<void>();
 
+
+  
   descriptionFeed:string='';
   commentText: string = '';
   
   commentLink: string = '';
   posts:any=[];
 
-  post:any={
-    title:"",
-    description:"",  
-  }
+  
 
   user: any = {
     todo_id:this.id,

@@ -56,4 +56,20 @@ sendPost(description:string): Observable<PostResponse> {
       throw new Error("Token not found in local storage");
     }
   }
+
+createPostInTask(taskId:string,description:string): Observable<PostResponse> {
+  const token = this.token.getItemWithExpiry("token");
+  const body={
+    todo_id: taskId,
+      title:"test",
+      description:description,
+  }
+  console.log(body)
+  if (token) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<PostResponse>("http://localhost:3000/todo/post",body, { headers });
+  } else {
+    throw new Error("Token not found in local storage");
+  }
+}
 }

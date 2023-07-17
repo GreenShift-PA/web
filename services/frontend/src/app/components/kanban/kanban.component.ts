@@ -1,6 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog'
+import { switchMap } from 'rxjs';
 import { TaskService,TaskResponse } from 'src/app/services/task.service';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-kanban',
   templateUrl: './kanban.component.html',
@@ -8,7 +10,7 @@ import { TaskService,TaskResponse } from 'src/app/services/task.service';
 })
 export class KanbanComponent {
 
-  constructor(private dialog:MatDialog,private task:TaskService){}
+  constructor(private dialog:MatDialog,private task:TaskService, private user:UserService){}
   tasks:any=[];
   verifiedTasks:any=[];
   modalOpenFeed = false;
@@ -16,6 +18,20 @@ export class KanbanComponent {
   modalOpenSuggestTask =false;
   modalOpenDetailTask =false;
   modalOpenPendingTask =false;
+  postLinked:any={};
+
+  post:any={
+    title:"",
+    description:"",
+    like:[],
+    comments:[],
+    whoValidates:[],
+    treeLinked:"",
+    creationDate:"",
+    image:"",
+    userId:"",
+  }
+
 
   id="";
   description="";
@@ -52,13 +68,49 @@ export class KanbanComponent {
   closeModalSuggestTask(){
     this.modalOpenSuggestTask = false;
   }
-  openModalPendingTask(id:string,description:string) {
-    this.description=description;
-    this.id=id;
+  openModalPendingTask(id: string, description: string) {
+    this.description = description;
+    this.id = id;
     this.modalOpenPendingTask = true;
-  } 
+    console.log("idTask", id);
+  
+    this.task.getLinkedPost(id).pipe(
+      switchMap(response => {
+        console.log(response);
+        this.post.title = response.title;
+        this.post.description = response.description;
+        this.post.like = response.like;
+        this.post.creationDate = response.creationDate;
+        this.post.userId = response.userId;
+  
+        return this.user.getUser(this.post.userId);
+      })
+    ).subscribe(
+      (response) => {
+        console.log("linked post");
+        console.log(response);
+        this.post.firstname = response.firstname;
+        this.post.lastname = response.lastname;
+        this.post.image = response.image;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
   closeModalPendingTask() {
     this.modalOpenPendingTask = false;
+this.post=  {
+  title:"",
+  description:"",
+  like:[],
+  comments:[],
+  whoValidates:[],
+  treeLinked:"",
+  creationDate:"",
+  image:"",
+  userId:"",
+}
   }
 
 
