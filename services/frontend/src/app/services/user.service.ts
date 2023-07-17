@@ -89,5 +89,16 @@ export class UserService {
     }
   }
 
+  getSessions(): Observable<any> {
+    const token = this.token.getItemWithExpiry("token")
+    if(token){
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      console.log(headers)
+      return this.http.get<any>(`http://localhost:3000/user/sessions`, { headers })
+    }else{
+      throw new Error("Token not found in local storage")
+    }
+  }
+
   
 }

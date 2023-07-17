@@ -20,6 +20,8 @@ export class SettingsComponent implements OnInit{
   password:any={
     password:""
   }
+
+  sessions: any = []
  
   newPassword:string="";
   confirmPassword:string="";
@@ -67,6 +69,26 @@ export class SettingsComponent implements OnInit{
         console.error(error);
       }
     );
+    this.userService.getSessions().subscribe(
+      (response) => {
+        for (let rep of response){
+          const slice = rep.platform.split(" ")
+          let platform = slice[3]
+          let version = slice[11]
+
+          if(!platform){platform = slice[1]}
+          if(!version){version = slice[0]}
+          console.log(slice)
+          this.sessions.push(
+            [platform, version]
+            )
+          // console.log(rep)
+        }
+      },
+      (error) => {
+        console.error(error)
+      }
+    )
   }
 
   
