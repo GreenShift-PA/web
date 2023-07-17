@@ -25,7 +25,7 @@ URL: https://flowbite.com/docs/components/typography/
                         </div>
                         <div class="flex justify-between items-center py-2 px-3 border-t ">
 
-                            <button type="submit" class=" flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center"  [disabled]="!commentText"
+                            <button type="submit" class=" flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center"  [disabled]="!commentText || !commentLink"
                             [ngClass]="{'opacity-50': !commentText || !commentLink}">
                     
                                 Post comment
@@ -62,8 +62,8 @@ URL: https://flowbite.com/docs/components/typography/
                                 
                             <p class="inline-flex items-center mr-3 text-sm text-gray-900 "><img
                                     class="mr-2 w-6 h-6 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                    alt="Michael Gough">{{post.firstname}} {{post.lastname}}</p>
+                                    src="{{post.image}}"
+                                    alt="Michael Gough">{{post.firstname}} {{post.lastname}} </p>
                                 </span>
                             <p class="text-sm text-gray-700 "><time pubdate datetime="2022-02-08"
                                     title="February 8th, 2022">{{post.creationDate | date: 'medium'}}</time></p>
