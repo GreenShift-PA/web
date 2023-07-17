@@ -506,7 +506,7 @@ export class UserController {
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))
-        router.put('/follow', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
+        router.get('/follows', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
         router.delete('/me', checkUserToken(), this.deleteMe.bind(this))
         router.delete('/one', checkUserToken(), checkUserRole(RolesEnums.admin), this.deleteOneUser.bind(this))
         return router

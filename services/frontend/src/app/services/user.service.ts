@@ -76,4 +76,18 @@ export class UserService {
     }
    
   }
+
+  followUser(idUser:string): Observable<any> {
+    console.log(idUser)
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      console.log(headers)
+      return this.http.get<any>(`http://localhost:3000/user/follows?user_id=${idUser}`, { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+
+  
 }

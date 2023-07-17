@@ -1,0 +1,7 @@
+.unfollow-button:hover:before {
+    content: "Unfollow"
+  }
+
+.unfollow-button:hover span {
+    display: none
+  }
