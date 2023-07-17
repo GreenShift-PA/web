@@ -121,16 +121,51 @@ image:string="";
 
   }
   follow(){
+    this.isFollowedByMe=true;
     this.userService.followUser(this.idUser).subscribe((response) => {
-      this.toastr.success("Followed user !");
-    },(error) => {
-      this.toastr.error("Error couldn't follow.");
 
+
+      this.toastr.success("Followed user !","",{
+        timeOut: 1000,
+      });
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 1000);
+    },(error) => {
+      this.toastr.error("Followed user !","",{
+        timeOut: 2000,
+      });
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 2000);
       console.error(error);
     }
   );
 
   }
- 
+  unfollow(){
+    this.isFollowedByMe=false;
+    this.userService.unfollowUser(this.idUser).subscribe((response) => {
+      
+      this.toastr.success("Unfollowed user !","",{
+        timeOut: 1000,
+      });
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 1000);
+    },(error) => {
+      this.toastr.error("Unfollowed user !","",{
+        timeOut: 2000,
+      });
+
+
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 2000);
+      console.error(error);
+    }
+  );
+
+  }
 
 }

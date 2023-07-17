@@ -120,7 +120,7 @@ export interface User{
     birthday: Date
 
     // Online
-    follow: User[]
+    follow: any[]
 
 }
 

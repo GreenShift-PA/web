@@ -1,22 +1,6 @@
 version: '3.9'
 
 services:
-
-  node-api-v2:
-    container_name: api_node_V2
-    build: ./services/api_V2
-    depends_on:
-      - mongo
-    ports:
-      - "3001:3000"
-    volumes:
-      - ./services/api_V2:/app
-    environment:
-      MONGODB_URI: mongodb://mongo:27017/Tree-api-web
-      MANGODB_USER: root
-      MANGODB_PASSWORD: passwordRoot
-      PORT: 3000
-
   mongo:
     image: mongo
     container_name: mongo_db
@@ -26,3 +10,29 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: passwordRoot
+
+  node-api:
+    container_name: api_node
+    build: ./services/api
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/api:/app
+    environment:
+      MONGODB_URI: mongodb+srv://root:passwordRoot@greenshift.vcpoh9u.mongodb.net/greenshift?retryWrites=true&w=majority
+      MANGODB_USER: root
+      MANGODB_PASSWORD: passwordRoot
+      PORT: 3000
+  angular-service:
+    container_name: angular
+    build: ./services/frontend
+    volumes:
+      - ./services/frontend:/app
+    ports: 
+      - '4200:4200'
+
+volumes:
+  db-data:
+  sql-data:

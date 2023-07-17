@@ -20,7 +20,7 @@
                       <svg class="mr-2 w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
                       </svg>
-                      {{city}} {{country}}
+                      {{city}}, {{country}}
                    </li>
                 </ul>
              </div>
@@ -52,7 +52,7 @@
                        Follow
                      </button>
                      
-                     <button *ngIf="!isMyProfile && isFollowedByMe" class="unfollow-button w-28 flex justify-center text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                     <button (click)="unfollow()" *ngIf="!isMyProfile && isFollowedByMe" class="unfollow-button w-28 flex justify-center text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
                         <span class="">Following</span>
                       </button>
                    </div>

@@ -10,6 +10,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: passwordRoot
+
   node-api:
     container_name: api_node
     build: ./services/api
@@ -20,7 +21,7 @@ services:
     volumes:
       - ./services/api:/app
     environment:
-      MONGODB_URI: mongodb://mongo:27017/Tree-api-web
+      MONGODB_URI: mongodb+srv://root:passwordRoot@greenshift.vcpoh9u.mongodb.net/greenshift?retryWrites=true&w=majority
       MANGODB_USER: root
       MANGODB_PASSWORD: passwordRoot
       PORT: 3000
@@ -30,7 +31,7 @@ services:
     volumes:
       - ./services/frontend:/app
     ports: 
-        - '4200:4200'
+      - '4200:4200'
 
 volumes:
   db-data:

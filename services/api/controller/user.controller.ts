@@ -396,6 +396,11 @@ export class UserController {
                 res.status(404).json({"message" : "We can't find this user"})
                 return 
             }
+
+            if (req.user.follow.includes(req.query.user_id)) {
+                res.status(400).json({ message: "You are already following this user" });
+                return;
+              }
             req.user?.follow.push(follow_user)
             req.user?.save()
 
@@ -410,7 +415,35 @@ export class UserController {
 
     }
 
-    
+    readonly queryUnfollow={
+        "user_id" : "string"
+    }
+
+    unfollow = async (req: Request, res: Response): Promise<void> => {
+        // Logic to unfollow a user
+      
+        // Assuming you have the user ID of the user to unfollow in req.body.userId
+        const userIdToUnfollow = req.query.user_id;
+      
+        console.log("id",userIdToUnfollow);
+        try {
+            if (req.user && req.user.follow) {
+                console.log("user:",req.user)
+
+                // Filter out the user with the specified ID from req.user.follow
+                req.user.follow = req.user.follow.filter((userId) => userId.toString() !== userIdToUnfollow);
+                console.log("follows;",req.user.follow)
+              } 
+              req.user?.save() // Send a success response if the unfollowing was successful
+          res.status(200).json({ message: 'Unfollowed user successfully' });
+        } catch (error) {
+          // Handle any errors that occurred during the unfollowing process
+          console.error('Error unfollowing user:', error);
+          res.status(500).json({ error: 'Failed to unfollow user' });
+        }
+      };
+      
+
     getFollower = async (req:Request, res:Response):Promise<void> => {
         const user_tree:any[] = []
         try{
@@ -502,11 +535,12 @@ export class UserController {
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
         router.get('/sessions', checkUserToken(), this.getAllSession.bind(this))
+        router.delete('/unfollow',checkUserToken(), checkQuery(this.queryUnfollow),this.unfollow.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateUser), this.updateUser.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))
         router.patch('/role', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsGiveRole), this.addRole.bind(this))
-        router.get('/follows', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
+        router.post('/follows', express.json(), checkUserToken(), checkQuery(this.queryFollow), this.follow.bind(this))
         router.delete('/me', checkUserToken(), this.deleteMe.bind(this))
         router.delete('/one', checkUserToken(), checkUserRole(RolesEnums.admin), this.deleteOneUser.bind(this))
         return router
