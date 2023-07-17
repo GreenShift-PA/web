@@ -104,13 +104,15 @@ export class TreeService {
     const tree_name = document.getElementById('tree_name');
     // const image = document.getElementById("profile_image")
     const username = document.getElementById('user_name');
+    const userImage = document.getElementById('user_image') as HTMLImageElement
 
-    if (!tree_name || !username) {
+    if (!tree_name || !username || !userImage) {
       return;
     }
 
     tree_name.innerHTML = `${tree_info.tree.name} : ${tree_info.tree.size}`;
     username.innerHTML = `${tree_info.login}`;
+    userImage.src = `${tree_info.image}`
   };
 
 
