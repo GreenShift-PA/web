@@ -39,6 +39,10 @@ const postShemma = new Schema<Post>({
     userId: {
         type: Schema.Types.String,
         required: true
+    },
+    image_proof: {
+        type: Schema.Types.String,
+        required: true
     }
 }, {
     versionKey: false,
@@ -55,6 +59,7 @@ export interface Post{
     treeLinked : Tree
     creationDate : Date
     userId: string
+    image_proof: string
 }
 
 

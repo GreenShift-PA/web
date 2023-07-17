@@ -92,7 +92,7 @@ export class DetailTaskComponent {
     // Check if the comment text is not empty
 
       // Send the request to the service
-      this.postService.sendPost(this.commentText).subscribe(
+      this.postService.sendPost(this.commentText, this.commentLink).subscribe(
         (response) => {
           // Handle the response if needed
           console.log('Comment posted successfully');

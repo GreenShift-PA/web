@@ -86,7 +86,7 @@ export class BlogComponent {
       this.validateImageURL().then(isValidImage => {
         if (isValidImage) {
           // Send the request to the service
-          this.post.sendPost(this.commentText).subscribe(
+          this.post.sendPost(this.commentText, this.commentLink).subscribe(
             (response) => {
               // Handle the response if needed
               console.log('Comment posted successfully');

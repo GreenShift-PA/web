@@ -36,17 +36,18 @@ getAllPosts(): Observable<PostResponse> {
   const token = this.token.getItemWithExpiry("token");
   if (token) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<PostResponse>("http://localhost:3000/user/post", { headers });
+    return this.http.get<PostResponse>("http://localhost:3000/post/all", { headers });
   } else {
     throw new Error("Token not found in local storage");
   }
 }
 
-sendPost(description:string): Observable<PostResponse> {
+sendPost(description:string, image: string): Observable<PostResponse> {
     const token = this.token.getItemWithExpiry("token");
     const body={
         title:"test",
-        description:description
+        description:description,
+        image_proof: image
     }
     console.log(body)
     if (token) {
