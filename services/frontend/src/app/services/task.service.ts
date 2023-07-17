@@ -24,15 +24,6 @@ export class TaskService {
   constructor(private http: HttpClient, private token: TokenService) {}
 
 
-  getVerifiedTasks(): Observable<TaskResponse> {
-    const token = this.token.getItemWithExpiry("token");
-    if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      return this.http.get<TaskResponse>("http://localhost:3000/todo/default", { headers });
-    } else {
-      throw new Error("Token not found in local storage");
-    }
-  }
 
   getLinkedPost(todoId:string): Observable<TaskResponse> {
     const token = this.token.getItemWithExpiry("token");
@@ -45,6 +36,7 @@ export class TaskService {
   }
   
   addToMyTasks(todoId:string): Observable<TaskResponse> {
+    
     const token = this.token.getItemWithExpiry("token");
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -64,7 +56,15 @@ export class TaskService {
       throw new Error("Token not found in local storage");
     }
   }
-  
+  getDefaultTasks(): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<TaskResponse>("http://localhost:3000/todo/default", { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
   updateTaskById(task:any): Observable<TaskResponse> {
     const token = this.token.getItemWithExpiry("token");
 

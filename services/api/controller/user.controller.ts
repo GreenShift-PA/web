@@ -535,7 +535,7 @@ export class UserController {
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getAllPost.bind(this))
         router.get('/all', checkUserToken(), this.getAllUsersInfo.bind(this))
         router.get('/sessions', checkUserToken(), this.getAllSession.bind(this))
-        router.delete('/unfollow',checkUserToken(), checkQuery(this.queryUnfollow),this.unfollow.bind(this))
+        router.post('/unfollow',checkUserToken(), checkQuery(this.queryUnfollow),this.unfollow.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateUser), this.updateUser.bind(this))
         router.patch('/tree', express.json(), checkUserToken(), checkBody(this.paramsUpdateTree), this.updateTree.bind(this))
         router.patch('/validate', express.json(), checkUserToken(), checkQuery(this.queryValidatePost), this.validatePost.bind(this))

@@ -12,6 +12,7 @@ export class KanbanComponent {
 
   constructor(private dialog:MatDialog,private task:TaskService, private user:UserService){}
   tasks:any=[];
+  
   verifiedTasks:any=[];
   modalOpenFeed = false;
   modalOpenAddTask =false;
@@ -57,6 +58,10 @@ export class KanbanComponent {
 
   openModalAddTask() {
     this.modalOpenAddTask = true;
+    
+    console.log(this.verifiedTasks)
+    console.log(this.tasks)
+
   } 
   closeModalAddTask(){
     this.modalOpenAddTask = false;
@@ -124,27 +129,24 @@ this.post=  {
   }
 
   ngOnInit() {
-    this.task.getMyTasks().subscribe(
+    this.task.getDefaultTasks().subscribe(
       (response) => {
-        this.tasks = response
-        console.log(response);
-        console.log(this.tasks);
+        this.verifiedTasks = response
+
       },
       (error) => {
         console.error(error);
       }
     );
 
-      this.task.getVerifiedTasks().subscribe(
-        (response) => {
-          console.log("verified tasks"+response);
-          console.log(response)
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-  
+    this.task.getMyTasks().subscribe(
+      (response) => {
+        this.tasks = response
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
 
   }
 

@@ -375,7 +375,8 @@ export class TodoController {
                 subtask: [],
                 isReview: false,
                 difficulty: admin_todo.difficulty,
-                creationDate: new Date
+                creationDate: new Date,
+                isAccepted: false,
             })
     
             req.user?.todoTask.push(newTask)

@@ -132,8 +132,8 @@ image:string="";
       //   location.reload();
       // }, 1000);
     },(error) => {
-      this.toastr.error("Followed user !","",{
-        timeOut: 2000,
+      this.toastr.success("Followed user !","",{
+        timeOut: 1000,
       });
       // setTimeout(() => {
       //   location.reload();
@@ -155,14 +155,10 @@ image:string="";
       // }, 1000);
     },(error) => {
       this.toastr.error("Unfollowed user !","",{
-        timeOut: 2000,
+        timeOut: 1000,
       });
 
 
-      // setTimeout(() => {
-      //   location.reload();
-      // }, 2000);
-      console.error(error);
     }
   );
 

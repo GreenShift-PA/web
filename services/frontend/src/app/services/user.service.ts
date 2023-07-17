@@ -83,7 +83,7 @@ export class UserService {
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       console.log(headers)
-      return this.http.post<any>(`http://localhost:3000/user/follows?user_id=${idUser}`, { headers });
+      return this.http.post<any>(`http://localhost:3000/user/follows?user_id=${idUser}`,null, { headers });
     } else {
       throw new Error("Token not found in local storage");
     }
@@ -95,7 +95,7 @@ export class UserService {
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       console.log(headers)
-      return this.http.delete<any>(`http://localhost:3000/user/unfollow?user_id=${idUser}`, { headers });
+      return this.http.post<any>(`http://localhost:3000/user/unfollow?user_id=${idUser}`,null, { headers });
     } else {
       throw new Error("Token not found in local storage");
     }
