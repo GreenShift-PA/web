@@ -21,6 +21,7 @@ export class PostController {
     readonly paramsNewPost = {
         "title" : "string",
         "description" : "string",
+        "image_proof" : "string"
     }
 
     newPost = async (req: Request, res: Response): Promise<void> => {
@@ -33,7 +34,8 @@ export class PostController {
             whoValidates: [],
             treeLinked: req.user?.tree,
             creationDate: new Date(),
-            userId : req.user?._id
+            userId : req.user?._id,
+            image_proof: req.body.image_proof
         })
 
         try{
@@ -191,10 +193,17 @@ export class PostController {
         }
     }
 
+    getAllPosts = async (req:Request, res:Response): Promise<void> => {
+        const all_post = await PostModel.find()
+        res.status(200).json(all_post)
+        return 
+    }
+
 
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkUserRole(RolesEnums.guest), checkQuery(this.queryPostId), this.getOnePost.bind(this))
+        router.get('/all', checkUserToken(), this.getAllPosts.bind(this))
         router.get('/like', checkUserToken(),checkQuery(this.queryPostId), this.nbrLike.bind(this))
         router.get('/validate', checkUserToken(), checkQuery(this.queryPostId), this.getValidator.bind(this))
         router.post('/', express.json(), checkUserToken(), checkUserRole(RolesEnums.guest), checkBody(this.paramsNewPost), this.newPost.bind(this))
