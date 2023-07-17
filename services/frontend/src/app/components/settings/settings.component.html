@@ -30,7 +30,7 @@
         <div class="flow-root">
            <h3 class=" flex justify-start  text-xl text-secondary-100 font-bold">Sessions</h3>
            <ul class="divide-y divide-secondary-100  " >
-              <li class="py-4">
+              <li class="py-4" *ngFor="let sess of sessions">
                  <div class="flex items-center space-x-4">
                     <div class="flex-shrink-0">
                        <svg class="w-6 h-6" fill="none" stroke="#F1EBCE" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -39,37 +39,18 @@
                     </div>
                     <div class="flex-1 min-w-0">
                        <p class="text-base font-semibold text-secondary-100 truncate">
-                          California 123.123.123.123
+                          {{sess[0]}}
                        </p>
                        <p class="text-sm font-normal text-white truncate">
-                          Chrome on macOS
+                          {{sess[1]}}
                        </p>
                     </div>
                     <div class="inline-flex items-center">
-                       <a href="#" class="w-full inline-flex items-center justify-center py-2.5 px-5 mr-2 mb-2 text-sm font-bold text-secondary-100 focus:outline-none  rounded-lg border border-secondary-100 hover:bg-secondary-100 hover:text-primary-50 focus:z-10 focus:ring-4 focus:ring-gray-200 bg-primary-50">Revoke</a>
+                       <a (click)="deleteSession(sess[2])" class="w-full inline-flex items-center justify-center py-2.5 px-5 mr-2 mb-2 text-sm font-bold text-secondary-100 focus:outline-none  rounded-lg border border-secondary-100 hover:bg-secondary-100 hover:text-primary-50 focus:z-10 focus:ring-4 focus:ring-gray-200 bg-primary-50">Revoke</a>
                     </div>
                  </div>
               </li>
-              <li class="pt-4 pb-6">
-                 <div class="flex items-center space-x-4">
-                    <div class="flex-shrink-0">
-                       <svg class="w-6 h-6" fill="none" stroke="#F1EBCE" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                       </svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                       <p class="text-base font-semibold text-secondary-100 truncate">
-                          Rome 24.456.355.98
-                       </p>
-                       <p class="text-sm font-normal text-white truncate">
-                          Safari on iPhone
-                       </p>
-                    </div>
-                    <div class="inline-flex items-center">
-                       <a href="#" class="w-full inline-flex items-center justify-center py-2.5 px-5 mr-2 mb-2 text-sm font-bold text-secondary-100 focus:outline-none  rounded-lg border border-secondary-100 hover:bg-secondary-100 hover:text-primary-50 focus:z-10 focus:ring-4 focus:ring-gray-200 bg-primary-50">Revoke</a>
-                    </div>
-                 </div>
-              </li>
+              
            </ul>
             <!-- <div>
                <button class=" flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center">

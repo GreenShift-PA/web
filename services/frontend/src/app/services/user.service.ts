@@ -100,4 +100,23 @@ export class UserService {
       throw new Error("Token not found in local storage");
     }
   }
+  getSessions(): Observable<any> {
+    const token = this.token.getItemWithExpiry("token")
+    if(token){
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      console.log(headers)
+      return this.http.get<any>(`http://localhost:3000/user/sessions`, { headers })
+    }else{
+      throw new Error("Token not found in local storage")
+    }
+  }
+
+  deleteSession(token:string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log(headers)
+    return this.http.delete<any>(`http://localhost:3000/auth/logout`, { headers })
+    
+  }
+
+  
 }
