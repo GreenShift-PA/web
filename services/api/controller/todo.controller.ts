@@ -70,7 +70,8 @@ export class TodoController {
             isReview: false,
             difficulty: diff,
             isAccepted:false,
-            creationDate: new Date
+            creationDate: new Date,
+            user: req.user,
         })
 
         req.user?.todoTask.push(newTask)
@@ -378,7 +379,7 @@ export class TodoController {
                 creationDate: new Date,
                 isAccepted: false,
             })
-    
+            
             req.user?.todoTask.push(newTask)
             req.user?.save()
     
@@ -395,10 +396,30 @@ export class TodoController {
         res.status(200).json(list_defautl_task)
     }
 
-
+    getAllPendingReviewTasks = async (req: Request, res: Response): Promise<void> => {
+        try {
+          const tasks = await TodoModel.find()
+          // Initialize an empty array to store the pending review tasks
+          const pendingReviewTasks: any[] = [];
+      
+          // Iterate over the tasks and add the pending review tasks to the array
+          tasks?.forEach((task: any) => {
+            if (task.isReview === true) {
+              pendingReviewTasks.push(task);
+            }
+          });
+      
+          // Return the pending review tasks
+          res.status(200).json(pendingReviewTasks);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Internal server error" });
+        }
+      };
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkQuery(this.queryGetOneTask), this.getTask.bind(this))
+        router.get('/pending', checkUserToken(),this.getAllPendingReviewTasks.bind(this))
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getPost.bind(this))
         router.get('/default', checkUserToken(), this.getAllAdminTask.bind(this))

@@ -23,7 +23,15 @@ export interface TaskResponse {
 export class TaskService {
   constructor(private http: HttpClient, private token: TokenService) {}
 
-
+  getAllReviewTAsks(): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<TaskResponse>("http://localhost:3000/todo/pending", { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
 
   getLinkedPost(todoId:string): Observable<TaskResponse> {
     const token = this.token.getItemWithExpiry("token");

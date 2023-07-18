@@ -10,9 +10,31 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class KanbanComponent {
 
-  constructor(private dialog:MatDialog,private task:TaskService, private user:UserService){}
+  constructor(private dialog:MatDialog,private task:TaskService, private user:UserService){
+    this.loadUserRoles();
+
+  }
+  roles: any[] = [];
+
+  private loadUserRoles(): void {
+    this.user.getMe().subscribe(
+      (response) => {
+        console.log(response._id);
+        this.roles = response.roles;
+        console.log("roles", this.roles);
+        console.log("roles", response.roles);
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+
+  isAdmin(): boolean {
+    return this.roles.some((role: any) => role.name === 'admin');
+  }
   tasks:any=[];
-  
+  toReviewTasks:any=[];
   verifiedTasks:any=[];
   modalOpenFeed = false;
   modalOpenAddTask =false;
@@ -129,6 +151,16 @@ this.post=  {
   }
 
   ngOnInit() {
+
+    this.task.getAllReviewTAsks().subscribe(
+      (response) => {
+        this.toReviewTasks = response
+
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
     this.task.getDefaultTasks().subscribe(
       (response) => {
         this.verifiedTasks = response
