@@ -185,6 +185,7 @@ export class VirtualForestComponent implements OnInit, OnDestroy{
 		//Setup debug 
 		const gui = new dat.GUI()
 		gui.close();
+		gui.hide()
 		const gui_scene = gui.addFolder("Scene")
 		const gui_light = gui_scene.addFolder("Lights")
 		const gui_directional_light = gui_light.addFolder("Directional light")
