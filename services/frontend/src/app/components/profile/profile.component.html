@@ -25,40 +25,47 @@
                 </ul>
              </div>
           </div>
-          <div class="mb-4 sm:flex xl:block text-start	">
-             <div class="sm:flex-1">
-                <address class="text-sm not-italic font-semibold   text-secondary-100">
-                   <div class="mt-4">Email address</div>
-                   <a class="text-sm font-semibold  text-white" href="mailto:webmaster@flowbite.com">{{email}}</a>
-                   <div class="mt-4">Home address</div>
-                   <div class="mb-2 text-sm font-semibold  text-white">
-                      {{address}}
-                      <br>
-                   </div>
-                   <div class="mt-4">Posts</div>
-                   <div class="mb-2 text-sm font-semibold  text-white">
-                      {{posts}}
-                   </div>
-                   <div class="mt-4">Tasks done</div>
-                   <div class="mb-2 text-sm font-semibold  text-white">
-                      {{tasks}}
-                   </div>
-                   <div class="mt-4">Roles</div>
-                   <div class="mb-2 flex space-x-2 text-sm font-semibold  text-white" *ngIf="roles && roles.length > 0">
-                      <span *ngFor="let role of roles">{{role.name.toUpperCase()}}</span>
-                   </div>
-                   <div class="col-span-6 mt-5 sm:col-full">
-                     <button (click)="follow()" *ngIf="!isMyProfile && !isFollowedByMe" class="flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                       Follow
-                     </button>
-                     
-                     <button (click)="unfollow()" *ngIf="!isMyProfile && isFollowedByMe" class="unfollow-button w-28 flex justify-center text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                        <span class="">Following</span>
-                      </button>
-                   </div>
-                </address>
-             </div>
+          <div class="mb-4 sm:flex xl:block text-start">
+            <div class="sm:flex-1 ">
+              <address class="text-sm not-italic font-semibold text-secondary-100 ">
+                <div class="grid grid-cols-2 gap-2 mt-4 pr-44">
+                  <div>Email address</div>
+                  <a class="text-sm font-semibold text-white" href="mailto:webmaster@flowbite.com">{{email}}</a>
+                  <div>Home address</div>
+                  <div class="mb-2 text-sm font-semibold text-white">
+                    {{address}}
+                    <br>
+                  </div>
+                  <div>Posts</div>
+                  <div class="mb-2 text-sm font-semibold text-white">
+                    {{posts}}
+                  </div>
+                  <div>Followers</div>
+                  <div class="mb-2 text-sm font-semibold text-white">
+                    {{myFollows.length}}
+                  </div>
+                  <div>Tasks created</div>
+                  <div class="mb-2 text-sm font-semibold text-white">
+                    {{tasks}}
+                  </div>
+                  <div>Roles</div>
+                  <div class="mb-2 flex space-x-2 text-sm font-semibold text-white" *ngIf="roles && roles.length > 0">
+                    <span *ngFor="let role of roles">{{role.name.toUpperCase()}}</span>
+                  </div>
+                </div>
+                <div class="col-span-6 mt-5 sm:col-full">
+                  <button (click)="follow()" *ngIf="!isMyProfile && !isFollowedByMe" class="flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                    Follow
+                  </button>
+                  <button (click)="unfollow()" *ngIf="!isMyProfile && isFollowedByMe" class="unfollow-button w-28 flex justify-center text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                    <span class="">Following</span>
+                  </button>
+                </div>
+              </address>
+            </div>
           </div>
+          
+          
          
        </div>
        <div class="bg-primary-50 shadow-xl rounded-lg p-8 mb-6">
