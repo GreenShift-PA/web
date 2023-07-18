@@ -25,9 +25,10 @@ export class KanbanComponent {
         this.toastr.success(`Post ${id} deleted successfully.`, "", {
           timeOut: 2000,
         });
-        setTimeout(() => {
-          location.reload();
-        }, 2000);
+        // Delete from list
+        console.log(this.tasks.length)
+        this.tasks = this.tasks.filter((task:any) => task._id !== id)
+        console.log(this.tasks.length)
       },
       (error) => {
         console.error(error);

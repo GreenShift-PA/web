@@ -66,9 +66,7 @@ export class BlogComponent {
         this.toastr.success(`Post ${idPost} deleted successfully.`, "", {
           timeOut: 2000,
         });
-        setTimeout(() => {
-          location.reload();
-        }, 2000);
+        this.posts = this.posts.filter((post:any) => post._id !== idPost)
       },
       (error) => {
         console.error(error);
