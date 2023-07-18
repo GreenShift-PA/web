@@ -129,9 +129,8 @@ export class BlogComponent {
               this.toastr.success("Message posted successfully.", "", {
                 timeOut: 1000,
               });
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
+              this.posts.unshift(response);
+              console.log(response)
             },
             (error) => {
               // Handle the error if needed
