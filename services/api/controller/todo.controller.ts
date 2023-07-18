@@ -292,6 +292,7 @@ export class TodoController {
         "todo_id": "string",
         "title" : "string",
         "description" : "string",
+        "image_proof" : "string"
     }
 
     createPostInTask = async (req:Request, res:Response): Promise<void> => {
@@ -316,7 +317,8 @@ export class TodoController {
             whoValidates: [],
             treeLinked: req.user?.tree,
             creationDate: new Date(),
-            userId: req.user?._id
+            userId: req.user?._id,
+            image_proof: req.body.image_proof
         })
 
         req.user?.posts.push(newPost)
@@ -396,12 +398,31 @@ export class TodoController {
     }
 
 
+    getNbrDoneTask = async (req:Request, res:Response): Promise<void> => {
+        try{
+            const list_user_task = (await req.user?.populate("todoTask"))?.todoTask
+
+            const filteredList = list_user_task?.filter((task) => {
+                return task.isDone === true;
+              });
+            
+              res.status(200).json(filteredList)
+              return 
+            
+        }catch(err){
+            console.error(err)
+            res.status(403).json({"message": "This is not a good Id"})
+        }
+    }
+
+
     buildRouter = (): Router => {
         const router = express.Router()
         router.get('/', checkUserToken(), checkQuery(this.queryGetOneTask), this.getTask.bind(this))
         router.get('/subtask', checkUserToken(), checkQuery(this.queryGetSubtask), this.getSubtask.bind(this))
         router.get('/post', checkUserToken(), checkQuery(this.queryGetPost), this.getPost.bind(this))
         router.get('/default', checkUserToken(), this.getAllAdminTask.bind(this))
+        router.get('/done', checkUserToken(), this.getNbrDoneTask.bind(this))
         router.post('/', express.json(), checkUserToken(), checkBody(this.paramsCreateTask), this.createTask.bind(this))
         router.post('/subtask', express.json(), checkUserToken(), checkBody(this.paramsCreateSubtask), this.createSubtask.bind(this))
         router.post('/post',express.json(), checkUserToken(), checkBody(this.paramsNewPost), this.createPostInTask.bind(this))
