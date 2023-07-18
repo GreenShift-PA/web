@@ -17,9 +17,23 @@ export class KanbanComponent {
   }
   roles: any[] = [];
 
-  delete(id:number, event: Event): void {
+  delete(id:string, event: Event): void {
     event.stopPropagation();
-    this.toastr.success("nice")
+    this.task.deleteTask(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.toastr.success(`Post ${id} deleted successfully.`, "", {
+          timeOut: 2000,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      },
+      (error) => {
+        console.error(error);
+        this.toastr.error("Failed to delete post. Please try again.");
+      }
+    );
   }
 
   private loadUserRoles(): void {
