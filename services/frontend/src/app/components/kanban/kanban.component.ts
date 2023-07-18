@@ -1,5 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog'
+import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs';
 import { TaskService,TaskResponse } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -10,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class KanbanComponent {
 
-  constructor(private dialog:MatDialog,private task:TaskService, private user:UserService){
+  constructor(private dialog:MatDialog,private task:TaskService, private user:UserService,private toastr:ToastrService){
     this.loadUserRoles();
 
   }
@@ -33,6 +34,7 @@ export class KanbanComponent {
   isAdmin(): boolean {
     return this.roles.some((role: any) => role.name === 'admin');
   }
+  difficulty:number=1;
   tasks:any=[];
   toReviewTasks:any=[];
   verifiedTasks:any=[];
@@ -158,9 +160,17 @@ this.post=  {
     this.task.acceptTask(taskId).subscribe(
       (response) => {
         console.log(response);
-        location.reload()
+        this.toastr.success("Task successfully accepted","",{
+          timeOut: 1000,
+        });        
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
 
       },(error)=>{
+        this.toastr.error("Task error, couldn't accept","",{
+          timeOut: 1000,
+        });
         console.error(error);
       }
     )
@@ -172,9 +182,17 @@ this.post=  {
     this.task.refuseTask(taskId).subscribe(
       (response) => {
         console.log(response);
-        location.reload()
+        this.toastr.success("Task successfully refused","",{
+          timeOut: 1000,
+        });        
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
 
       },(error)=>{
+        this.toastr.error("Task error, couldn't refus","",{
+          timeOut: 1000,
+        });
         console.error(error);
       }
     )

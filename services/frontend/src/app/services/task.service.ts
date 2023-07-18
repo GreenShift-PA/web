@@ -132,4 +132,16 @@ export class TaskService {
     }
   }
 
+  addTaskAdmin(task:any): Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+
+    task.difficulty=parseInt(task.difficulty)
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.post<TaskResponse>("http://localhost:3000/todo/admin",task, { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+
 }

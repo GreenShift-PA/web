@@ -130,10 +130,44 @@ export class TodoController {
         }
       };
     
+      findTreeIdByToDoTask = async (req: Request, res: Response): Promise<any> => {
+        try {
+          const todoTaskId = req.body.todo_id;
+      
+          // Find the task by ID
+          const todoTask = await this.everyoneTask(todoTaskId);
+      
+          if (!todoTask) {
+            return null;
+          }
+      
+          // Find the tree ID associated with the task
+          const postLinkedId = todoTask.postLinked;
+          const post = await PostModel.findById(postLinkedId);
+          
+          if (!post) {
+            return null;
+          }
+      
+          const treeLinkedId = post.treeLinked;
+          const tree = await TreeModel.findById(treeLinkedId);
+          
+          if (!tree) {
+            return null;
+          }
+      
+          return { treeLinked: tree._id };
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+      };
+      
       switchStatusTask = async (req: Request, res: Response): Promise<void> => {
         try {
           const todoTaskId = req.body.todo_id;
       
+          // Find the task by ID
           const todoTask = await this.everyoneTask(todoTaskId);
       
           if (!todoTask) {
@@ -141,10 +175,27 @@ export class TodoController {
             return;
           }
       
+          if (todoTask.isDone === false && req.body.isDone === true && req.body.isDone) {
+            console.log("il passe par la");
+      
+            // Find the tree ID associated with the task
+            const treeIdResponse = await this.findTreeIdByToDoTask(req, res);
+            if (!treeIdResponse || !("treeLinked" in treeIdResponse)) {
+              res.status(404).json({ message: "Tree not found" });
+              return;
+            }
+      
+            const treeId = treeIdResponse.treeLinked as string;
+      
+            // Add points to the tree
+            await this.addPoints(treeId, (todoTask.difficulty + 1) * 2);
+          }
+      
           todoTask.isDone = req.body.isDone !== undefined ? req.body.isDone : todoTask.isDone;
           todoTask.isReview = req.body.isReviewed !== undefined ? req.body.isReviewed : todoTask.isReview;
           todoTask.isAccepted = req.body.isAccepted !== undefined ? req.body.isAccepted : todoTask.isAccepted;
       
+          // Save the updated task
           const updatedTodoTask = await todoTask.save();
       
           res.status(200).json(updatedTodoTask);
@@ -153,6 +204,8 @@ export class TodoController {
           res.status(500).json({ message: "Internal server error" });
         }
       };
+      
+      
   
 
     updateStatusTask = async (req: Request, res: Response): Promise<void> => {

@@ -44,7 +44,7 @@
                       {{tasks}}
                    </div>
                    <div class="mt-4">Roles</div>
-                   <div class="mb-2 text-sm font-semibold  text-white" *ngIf="roles && roles.length > 0">
+                   <div class="mb-2 flex space-x-2 text-sm font-semibold  text-white" *ngIf="roles && roles.length > 0">
                       <span *ngFor="let role of roles">{{role.name.toUpperCase()}}</span>
                    </div>
                    <div class="col-span-6 mt-5 sm:col-full">

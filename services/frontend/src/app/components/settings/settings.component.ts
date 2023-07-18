@@ -95,21 +95,28 @@ export class SettingsComponent implements OnInit{
 
   
   onSubmit(user: any) {
-    console.log(user)
+    console.log(user);
+  
+    // Check if any key has an empty value
+    for (const key in user) {
+      if (!user[key]) {
+        console.error(`Error: Empty value for key "${key}"`);
+        this.toastr.warning(`You're missing a value for "${key}"! Try again`);
+        return;
+      }
+    }
+  
+    // If all values are present, proceed with the patchUser request
     this.userService.patchUser(user).subscribe(
       (response) => {
         // Handle success response
         console.log(response);
-              // Refresh the page
-
-
-              this.toastr.success("User information updated successfully.","",{
-                timeOut: 1000,
-              });
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
-
+        this.toastr.success("User information updated successfully.", "", {
+          timeOut: 1000,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       },
       (error) => {
         // Handle error response
