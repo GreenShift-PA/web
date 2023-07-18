@@ -3,10 +3,10 @@ import * as express from "express"
 import { Document, Model } from "mongoose"
 import { Todo, TodoModel } from "../models/todo.model"
 import { Router, Request, Response } from "express"
-import { checkBody, checkUserToken } from "../middleware"
+import { checkBody, checkUserToken ,checkUserRole} from "../middleware"
 import { AdminTodoModel, PostModel, SubtaskModel, Tree, TreeModel, User, UserModel } from "../models"
 import { checkQuery } from "../middleware/query.middleware"
-
+import { RolesEnums } from "../enums"
 export class TodoController {
 
     readonly path: string
@@ -87,8 +87,7 @@ export class TodoController {
         "isReviewed" : "boolean | undefined"
     }
 
-    switchStatusTask = async (req:Request, res:Response): Promise<void> => {
-        
+    switchStatusTaskGuest = async (req:Request, res:Response): Promise<void> => {
         if (!req.user) { res.status(500).end(); return }
 
         const todo_task = await this.ifYourtask(req.user._id, req.body.todo_id)
@@ -98,10 +97,10 @@ export class TodoController {
             return
         }
 
-        if(todo_task.isDone === false && req.body.isDone === true){
-            console.log("il passe par la")
-            await this.addPoints(req.user.tree._id, (todo_task.difficulty + 1) * 2)
-        }
+        // if(todo_task.isDone === false && req.body.isDone === true){
+        //     console.log("il passe par la")
+        //     await this.addPoints(req.user.tree._id, (todo_task.difficulty + 1) * 2)
+        // }
 
         const updated_todo_task = await TodoModel.findByIdAndUpdate(todo_task._id, {
             isDone: req.body.isDone,
@@ -122,6 +121,39 @@ export class TodoController {
         "description": "string | undefined",
         "deadline": "string | undefined",
     }
+    everyoneTask = async (task_id: string): Promise<(Document<unknown, {}, Todo> & Omit<Todo & Required<{ _id: string; }>, never>) | null> => {
+        try {
+          const todo_task = await TodoModel.findById(task_id);
+          return todo_task;
+        } catch (e) {
+          return null;
+        }
+      };
+    
+      switchStatusTask = async (req: Request, res: Response): Promise<void> => {
+        try {
+          const todoTaskId = req.body.todo_id;
+      
+          const todoTask = await this.everyoneTask(todoTaskId);
+      
+          if (!todoTask) {
+            res.status(404).json({ message: "Task not found" });
+            return;
+          }
+      
+          todoTask.isDone = req.body.isDone !== undefined ? req.body.isDone : todoTask.isDone;
+          todoTask.isReview = req.body.isReviewed !== undefined ? req.body.isReviewed : todoTask.isReview;
+          todoTask.isAccepted = req.body.isAccepted !== undefined ? req.body.isAccepted : todoTask.isAccepted;
+      
+          const updatedTodoTask = await todoTask.save();
+      
+          res.status(200).json(updatedTodoTask);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Internal server error" });
+        }
+      };
+  
 
     updateStatusTask = async (req: Request, res: Response): Promise<void> => {
 
@@ -451,7 +483,8 @@ export class TodoController {
         router.post('/default', checkUserToken(), checkQuery(this.queryUseAdminTodo), this.useAdminTodo.bind(this))
         router.patch('/', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusTask), this.updateStatusTask.bind(this))
         router.patch('/subtask', express.json(), checkUserToken(), checkBody(this.paramsUpdateStatusSubtask), this.updateStatusSubtask.bind(this))
-        router.patch('/status', express.json(), checkUserToken(), checkBody(this.paramsSwitchStatusTask), this.switchStatusTask.bind(this))
+        router.patch('/status', express.json(), checkUserToken(), checkUserRole(RolesEnums.admin), checkBody(this.paramsSwitchStatusTask), this.switchStatusTask.bind(this))
+        router.patch('/statusGuest', express.json(), checkUserToken(), checkBody(this.paramsSwitchStatusTask), this.switchStatusTaskGuest.bind(this))
         router.delete('/', checkUserToken(), checkQuery(this.queryDeleteTask), this.deleteTask.bind(this))
         return router
     }

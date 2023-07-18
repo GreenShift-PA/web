@@ -45,11 +45,6 @@ const todoShemma = new Schema<Todo>({
         type: Schema.Types.Date,
         required: true
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
 
 }, {
     versionKey: false,
@@ -68,7 +63,6 @@ export interface Todo {
     postLinked : Post
     isAccepted:boolean,
     creationDate: Date,
-    user: User,
 }
 
 export const TodoModel: Model<Todo> = mongoose.model("Todo", todoShemma)

@@ -14,7 +14,8 @@ export interface TaskResponse {
     isReview: boolean,
     difficulty: number,
     creationDate:Date,
-    userId:string
+    userId:string,
+    image_proof:string
 }
 
 @Injectable({
@@ -23,7 +24,41 @@ export interface TaskResponse {
 export class TaskService {
   constructor(private http: HttpClient, private token: TokenService) {}
 
-  getAllReviewTAsks(): Observable<TaskResponse> {
+
+  acceptTask(taskId:string):Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const body={
+        todo_id:taskId,
+        isDone : true,
+        isReviewed : false, 
+        isAccepted:true
+      }
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.patch<TaskResponse>("http://localhost:3000/todo/status",body , { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+  refuseTask(taskId:string):Observable<TaskResponse> {
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const body={
+        todo_id:taskId,
+        isDone : true,
+        isReviewed : false, 
+        isAccepted:false
+      }
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.patch<TaskResponse>("http://localhost:3000/todo/status",body , { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
+
+
+
+  getAllReviewTasks(): Observable<TaskResponse> {
     const token = this.token.getItemWithExpiry("token");
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -91,7 +126,7 @@ export class TaskService {
     console.log(task);
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      return this.http.patch<TaskResponse>("http://localhost:3000/todo/status",task, { headers });
+      return this.http.patch<TaskResponse>("http://localhost:3000/todo/statusGuest",task, { headers });
     } else {
       throw new Error("Token not found in local storage");
     }
