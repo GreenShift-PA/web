@@ -19,9 +19,26 @@ export class BlogComponent {
   posts:any=[];
 
 
+  roles: any[] = [];
 
-  constructor(private post: PostService,private user: UserService,private toastr:ToastrService,private http: HttpClient) {}
-
+  constructor(private post: PostService,private user: UserService,private toastr:ToastrService,private http: HttpClient) {   
+     this.loadUserRoles();}
+  private loadUserRoles(): void {
+    this.user.getMe().subscribe(
+      (response) => {
+        console.log(response._id);
+        this.roles = response.roles;
+        console.log("roles", this.roles);
+        console.log("roles", response.roles);
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+  isAdmin(): boolean {
+    return this.roles.some((role: any) => role.name === 'admin');
+  }
   isImgUrl(url: string): Promise<boolean> {
     return this.http.head(url, { observe: 'response' }).toPromise()
       .then(res => {
@@ -39,6 +56,25 @@ export class BlogComponent {
         return false;
       }
     });
+  }
+
+  delete(idPost:string){
+    console.log(idPost)
+    this.post.deletePost(idPost).subscribe(
+      (response) => {
+        console.log(response);
+        this.toastr.success(`Post ${idPost} deleted successfully.`, "", {
+          timeOut: 2000,
+        });
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      },
+      (error) => {
+        console.error(error);
+        this.toastr.error("Failed to delete post. Please try again.");
+      }
+    );
   }
 
   ngOnInit() {

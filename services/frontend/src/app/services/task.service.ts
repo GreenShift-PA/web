@@ -143,5 +143,15 @@ export class TaskService {
       throw new Error("Token not found in local storage");
     }
   }
-
+  deleteTask(id:string): Observable<any> {
+    console.log(id)
+    const token = this.token.getItemWithExpiry("token");
+    if (token) {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      console.log(headers);
+      return this.http.delete<any>(`http://localhost:3000/todo/?todo_id=${id}`, { headers });
+    } else {
+      throw new Error("Token not found in local storage");
+    }
+  }
 }

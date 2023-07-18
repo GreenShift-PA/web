@@ -76,4 +76,17 @@ createPostInTask(taskId:string,description:string): Observable<PostResponse> {
     throw new Error("Token not found in local storage");
   }
 }
+
+
+deletePost(idPost:string): Observable<any> {
+  console.log(idPost)
+  const token = this.token.getItemWithExpiry("token");
+  if (token) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log(headers);
+    return this.http.delete<any>(`http://localhost:3000/post/?id=${idPost}`, { headers });
+  } else {
+    throw new Error("Token not found in local storage");
+  }
+}
 }

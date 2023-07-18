@@ -17,6 +17,11 @@ export class KanbanComponent {
   }
   roles: any[] = [];
 
+  delete(id:number, event: Event): void {
+    event.stopPropagation();
+    this.toastr.success("nice")
+  }
+
   private loadUserRoles(): void {
     this.user.getMe().subscribe(
       (response) => {
