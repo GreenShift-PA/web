@@ -4,7 +4,6 @@
        <div class="flex-1 min-h-0 overflow-y-auto">
           <ul class="pt-1 pb-3 px-3">
             
-            <h1 *ngIf="isAdmin()">HGEZFEZF</h1>
              <li class="mt-3" *ngFor="let task of tasks">
                 <a *ngIf="!task.isDone && !task.isReview" (click)="openModalDetailTask(task._id, task.description)" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
                    <div class="flex justify-between">
@@ -76,7 +75,7 @@
        <div class="flex-1 min-h-0 overflow-y-auto">
           <ul class="pt-1 pb-3 px-3">
             <li class="mt-3" *ngFor="let task of tasks">
-               <a *ngIf="task.isDone" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
+               <a   (click)="openModalPendingTask(task._id, task.description)" *ngIf="task.isDone" class="block p-5 bg-white rounded-md shadow hover:bg-opacity-80 transition-all duration-2 cursor-pointer">
                  <div class="flex justify-between">
                    <p class="text-sm font-medium leading-snug text-gray-900">{{task.description}}</p>
                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
@@ -130,7 +129,7 @@
       <div class="flex-1 min-h-0 overflow-y-auto">
          <ul class="pt-1 pb-3 px-3">
            <li class="mt-3" *ngFor="let task of toReviewTasks">
-              <a  class="block p-5 bg-white rounded-md shadow ">
+              <a (click)="openModalPendingTask(task._id, task.description)" class="block p-5 bg-white rounded-md shadow cursor-pointer">
                 <div class="flex justify-between">
                   <p class="text-sm font-medium leading-snug text-gray-900">{{task.description}}</p>
                   <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144&amp;q=80" alt="avatar" class="h-5 w-5 rounded-full">
@@ -149,9 +148,9 @@
                   </div>
                 </div>
                 <div class="mt-4 flex space-x-3">
-                <button class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-1/2 rounded-lg h-8">Accept</button>
-                <button class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-1/2 rounded-lg h-8">Refuse</button>
-               </div>
+                  <button (click)="acceptTask(task._id, $event)" class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-1/2 rounded-lg h-8">Accept</button>
+                  <button (click)="refuseTask(task._id, $event)" class="bg-primary-50 hover:bg-opacity-80 text-secondary-100 w-1/2 rounded-lg h-8">Refuse</button>
+                </div>
               </a>
 
             </li>

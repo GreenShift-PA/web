@@ -53,6 +53,7 @@ export class KanbanComponent {
     creationDate:"",
     image:"",
     userId:"",
+    image_proof:""
   }
 
 
@@ -109,7 +110,8 @@ export class KanbanComponent {
         this.post.like = response.like;
         this.post.creationDate = response.creationDate;
         this.post.userId = response.userId;
-  
+
+        this.post.image_proof= response.image_proof;
         return this.user.getUser(this.post.userId);
       })
     ).subscribe(
@@ -150,9 +152,37 @@ this.post=  {
     this.modalOpenDetailTask = false;
   }
 
+  acceptTask(taskId: string, event: Event): void {
+    event.stopPropagation();
+
+    this.task.acceptTask(taskId).subscribe(
+      (response) => {
+        console.log(response);
+        location.reload()
+
+      },(error)=>{
+        console.error(error);
+      }
+    )
+  }
+
+  refuseTask(taskId: string, event: Event): void {
+    event.stopPropagation();
+
+    this.task.refuseTask(taskId).subscribe(
+      (response) => {
+        console.log(response);
+        location.reload()
+
+      },(error)=>{
+        console.error(error);
+      }
+    )
+  }
+
   ngOnInit() {
 
-    this.task.getAllReviewTAsks().subscribe(
+    this.task.getAllReviewTasks().subscribe(
       (response) => {
         this.toReviewTasks = response
 

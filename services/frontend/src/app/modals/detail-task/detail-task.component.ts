@@ -92,7 +92,7 @@ export class DetailTaskComponent {
     // Check if the comment text is not empty
 
       // Send the request to the service
-      this.postService.sendPost(this.commentText, this.commentLink).subscribe(
+      this.postService.sendPost(this.id ,this.commentText).subscribe(
         (response) => {
           // Handle the response if needed
           console.log('Comment posted successfully');
@@ -132,7 +132,7 @@ export class DetailTaskComponent {
       (error) => {
         // Handle the error if needed
         console.error('Error updating task:', error);
-        this.toastr.error('Error updating task:');
+        this.toastr.error('Error updating detail1 task:');
   
       }
     );
@@ -176,7 +176,7 @@ export class DetailTaskComponent {
       (error) => {
         // Handle the error if needed
         console.error('Error updating task:', error);
-        this.toastr.error('Error updating task:');
+        this.toastr.error('Error updatig detail2  task:');
 
       }
     );

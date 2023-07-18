@@ -32,6 +32,8 @@ export class PostService {
 //     }
 //   }
 
+
+
 getAllPosts(): Observable<PostResponse> {
   const token = this.token.getItemWithExpiry("token");
   if (token) {
@@ -64,6 +66,7 @@ createPostInTask(taskId:string,description:string): Observable<PostResponse> {
     todo_id: taskId,
       title:"test",
       description:description,
+        image_proof: "https://upload.wikimedia.org/wikipedia/commons/5/56/Chain_link_icon_slanted.png"
   }
   console.log(body)
   if (token) {
