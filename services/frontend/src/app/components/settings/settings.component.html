@@ -1,0 +1,140 @@
+<div class="grid ml-28 grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-6">
+    <div class="col-span-full xl:col-auto">
+       <div class="bg-primary-50 shadow-xl rounded-lg p-8 mb-6">
+         <h1 class="text-lg lg:text-3xl mb-5 font-bold text-secondary-100 text-start">Settings</h1>
+
+          <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-10">
+             <img class="mb-4 ml-5 w-28 h-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0" src="{{image}}" alt="Jese picture">
+             <div class="">
+                <h3 class="flex mb-1 text-2xl font-bold text-secondary-100">
+                   {{firstname}} {{lastname}}
+                </h3>
+                <div class="mb-4 text-base font-normal text-white flex justify-start">
+                   {{job}}
+                </div>
+                <div class="mb-4 text-base font-normal text-white flex justify-start">
+                  {{email}}
+                </div>
+                <!-- <a href="#" class="change-picture-button flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center">
+                   <svg class="mr-2 -ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
+                      <path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path>
+                   </svg>
+                   Change picture
+                </a> -->
+             </div>
+          </div>
+       </div>
+
+       <div class="bg-primary-50 shadow-xl  rounded-lg p-8 mb-4 xl:mb-0">
+        <div class="flow-root">
+           <h3 class=" flex justify-start  text-xl text-secondary-100 font-bold">Sessions</h3>
+           <ul class="divide-y divide-secondary-100  " >
+              <li class="py-4" *ngFor="let sess of sessions">
+                 <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                       <svg class="w-6 h-6" fill="none" stroke="#F1EBCE" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                       </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                       <p class="text-base font-semibold text-secondary-100 truncate">
+                          {{sess[0]}}
+                       </p>
+                       <p class="text-sm font-normal text-white truncate">
+                          {{sess[1]}}
+                       </p>
+                    </div>
+                    <div class="inline-flex items-center cursor-pointer">
+                       <a (click)="deleteSession(sess[2])" class="w-full inline-flex items-center justify-center py-2.5 px-5 mr-2 mb-2 text-sm font-bold text-secondary-100 focus:outline-none  rounded-lg border border-secondary-100 hover:bg-secondary-100 hover:text-primary-50 focus:z-10 focus:ring-4 focus:ring-gray-200 bg-primary-50">Revoke</a>
+                    </div>
+                 </div>
+              </li>
+              
+           </ul>
+            <!-- <div>
+               <button class=" flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center">
+               See more
+               </button>
+            </div> -->
+        </div>
+     </div>
+     
+       
+    </div>
+    <div class="col-span-2">
+       <div class="bg-primary-50 shadow-xl  rounded-lg p-8 mb-6">
+          <h3 class="flex text-secondary-100 mb-4 text-xl font-bold">General information</h3>
+          <form outline-none action="#" #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
+            <div class="grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-3">
+                <label for="firstname" class="text-secondary-50 flex mb-2 text-sm font-bold">First Name</label>
+                <input [ngModel]="firstname"  [(ngModel)]="user.firstname" type="text" name="firstname" id="firstname" class="outline-none bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg  w-full p-2.5" placeholder="Bonnie" outline-none required>
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+               <!--[(ngModel)]="lastName"
+                  [(ngModel)]="country"
+                  [(ngModel)]="city"!-->
+                <label for="lastname" class="text-secondary-50 flex mb-2 text-sm font-bold">Last Name</label>
+                <input [ngModel]="lastname"  [(ngModel)]="user.lastname" type="text" name="lastname" id="lastname"  class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="Green" required>
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="country" class="text-secondary-50 flex mb-2 text-sm font-bold">Country</label>
+                <input [ngModel]="country"  [(ngModel)]="user.country" type="text" name="country" id="country"  class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="United States" required>
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="city" class="text-secondary-50 flex mb-2 text-sm font-bold">City</label>
+                <input [ngModel]="city"  [(ngModel)]="user.city" type="text" name="city" id="city"  class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="e.g. San Francisco" required>
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="address" class="text-secondary-50 flex mb-2 text-sm font-bold">Address</label>
+                <input [ngModel]="address"  [(ngModel)]="user.address" type="text" name="address" id="address" class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="e.g. California" required>
+              </div>
+           
+              <div class="col-span-6 sm:col-span-3">
+                <label for="role" class="text-secondary-50 flex mb-2 text-sm font-bold">Job</label>
+                <input [ngModel]="job" type="text" name="job" id="job" [(ngModel)]="user.job" class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="React Developer" required>
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="aboutMe" class="text-secondary-50 flex mb-2 text-sm font-bold">About me</label>
+                <textarea [ngModel]="aboutMe" name="aboutMe" id="aboutMe" cols="40" rows="5" [(ngModel)]="user.aboutMe" class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" required></textarea>
+              </div>
+              <div class="col-span-6 sm:col-full">
+                <button class="flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </form>
+          
+       </div>
+       <div class="bg-primary-50 shadow-xl  rounded-lg p-8 mb-6">
+          <h3 class="text-secondary-100 mb-4 text-xl font-bold">Password information</h3>
+          <form action="#" #passwordForm="ngForm" (ngSubmit)="onSubmitPassword(passwordForm.value)" autocomplete="off" suggestion="off">
+             <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-6 sm:col-span-3">
+                   <label for="currentPassword" class="text-secondary-50 flex mb-2 text-sm font-bold ">Current password</label>
+                   <input [ngModel]="currentPassword" type="password" name="currentPassword" id="currentPassword" class="bg-secondary-100 shadow-lg-sm border border-gray-300 font-semibold  sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="••••••••"   required="">
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                   <label for="newPassword" class="text-secondary-50 flex mb-2 text-sm font-bold ">New password</label>
+                   <input [ngModel]="newPassword" [(ngModel)]="user.password" type="password" name="password" id="password" class="bg-secondary-100 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="••••••••" required="">
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                   <label for="confirmPassword" class="text-secondary-50 flex mb-2 text-sm font-bold ">Confirm password</label>
+                   <input [ngModel]="confirmPassword" type="password" name="confirmPassword" id="confirmPassword" class="bg-secondary-100 shadow-lg-sm border border-gray-300  font-semibold sm:text-sm rounded-lg outline-none block w-full p-2.5" placeholder="••••••••" required="">
+                </div>
+                
+                <div class="col-span-6 sm:col-full">
+                   <button class=" flex justify-start text-secondary-100 bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-bold rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                   Save all
+                   </button>
+                   
+
+                </div>
+             </div>
+          </form>
+       </div>
+     
+    </div>
+ </div>

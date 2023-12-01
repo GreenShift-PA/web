@@ -1,0 +1,12 @@
+.webgl
+{
+    position: fixed;
+    /* top: 0;
+    left: 0; */
+    outline: none;
+}
+
+.no_visible
+{
+    opacity: 0;
+}

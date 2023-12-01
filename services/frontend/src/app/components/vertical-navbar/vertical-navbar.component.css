@@ -1,0 +1,31 @@
+
+/* 
+*{
+    border: 1px solid red;
+} */
+
+i{
+    color: var(--color-secondary);
+    width: 23px !important;
+}
+
+.top-span{
+    padding-top: 1.6rem; /* 28px */
+    padding-bottom: 1.6rem; /* 28px */
+    
+}
+
+.bot-span{
+    padding-top: 1.6rem; /* 28px */
+    padding-bottom: 1.6rem; /* 28px */
+}
+
+span:hover {
+    background-color: var(--color-primary-hover); /* change the background color on hover */
+  }
+
+
+.vertical-container-navbar{
+    
+    z-index: 99;
+}

@@ -1,0 +1,14 @@
+
+.footer-copyright {
+
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+
+}
+
+.footer-copyright p {
+    font-size: 12px;
+    font-family: var(--font-family);
+    color: #fff;
+}

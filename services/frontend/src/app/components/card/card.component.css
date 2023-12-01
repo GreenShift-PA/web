@@ -1,0 +1,14 @@
+
+div{
+    background: rgb(52, 83, 78);
+    border-radius: 3%;
+    box-shadow: #303833 0px 6px 14px;
+}
+
+p{
+    font-family: var(--font-family-small);
+}
+
+h1{
+    font-family: var(--font-family-big);
+}

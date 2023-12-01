@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import 'ngx-toastr/toastr';
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+  @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&display=swap');
+
+
+:root {
+  --font-family: 'Manrope', sans-serif;
+  --font-family-big: 'Merriweather', sans-serif;
+  --font-family-small: 'Inter', sans-serif;
+  --font-family-todolist:'Rubik',sans-serif;
+  
+  --color-bg: #040C18;
+
+  --color-primary: #11342E;
+  --color-primary-hover: #213b37;
+  --color-secondary: #ECE5CB;
+  --color-secondary-hover: #ECE5CB;
+
+}
+
+.gradient__bg {
+    /* background:-moz-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+  
+    background:-webkit-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+  
+    background:-o-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+  
+    background:-ms-radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%);
+  
+    background:radial-gradient(circle at 45% 50%, rgb(0, 83, 48) 0%, rgba(4, 12, 24, 1) 150%); */
+
+    background-color: var(--color-primary);
+  }
+
+  *{
+    font-family: var(--font-family);
+  }
+
+
+  body{
+    background-color: white;
+/* 100: "#213b37",
+200: "#195148", */
+  }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

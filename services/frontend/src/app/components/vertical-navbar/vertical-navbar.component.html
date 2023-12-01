@@ -1,0 +1,80 @@
+
+<div class="h-screen bg-primary-50 flex flex-col w-28 border-r border-[#255232] text-white vertical-container-navbar fixed top-0">
+        <div class="mt-2">
+                <a routerLink="/">
+                <span><img class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-150" src="../assets/logo.png" alt="logo.png"></span>
+                </a>
+        </div>
+        <div class="flex-1 flex flex-col space-y-12 mt-10 ">
+                <a  routerLink="/" *ngIf="!isAuthenticated()">
+        <span class="px-11 top-span  " >
+                
+                        <i class="fa-solid fa-house fa-lg "></i>
+                
+        </span>
+</a>
+
+<a routerLink="/blog"  *ngIf="isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-message fa-lg "></i>
+                
+        </span>
+</a>
+<a routerLink="/profile" *ngIf="isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-user fa-lg"></i>
+                
+        </span>
+</a>
+<a routerLink="/virtualforest/follow"  *ngIf="isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-tree fa-lg "></i>
+                
+        </span>
+</a>
+<a routerLink="/todolist"  *ngIf="isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-list fa-lg "></i>
+              
+        </span>
+</a>
+<!-- <a routerLink="/calculator"  *ngIf="isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-calculator fa-lg "></i>
+             
+        </span>
+</a> -->
+<a routerLink="/login"  *ngIf="!isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-right-to-bracket"></i>
+             
+        </span>
+</a>
+<a routerLink="/signup"  *ngIf="!isAuthenticated()">
+        <span class="px-11 top-span">
+                
+                        <i class="fa-solid fa-user-plus"></i>
+             
+        </span>
+</a>
+
+    </div>  
+    <div class="flex-1 flex flex-col justify-end border-t border-[#255232] grow-0 mb-6 pt-6" *ngIf="isAuthenticated()">
+        <a class="mb-12"  routerLink="/settings" *ngIf="isAuthenticated()">
+            <span class="px-11  bot-span">
+                <i class="fa-solid fa-gear fa-lg "></i>
+            </span>
+        </a>
+        <a (click)="logout()" routerLink="/login" *ngIf="isAuthenticated()">
+            <span class="px-11 bot-span">
+                <i class="fa-solid fa-arrow-right-from-bracket fa-lg "></i>
+            </span>
+        </a>
+    </div>
+</div>

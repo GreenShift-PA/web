@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:latest
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm i
 
 COPY . ./
 
-ENV POST 3000
+ENV PORT 3000
 
 EXPOSE $PORT
 
