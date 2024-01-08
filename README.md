@@ -1,6 +1,8 @@
 # GreenShift web
 
 ![chrome-capture-2024-1-8](https://github.com/GreenShift-PA/web/assets/92926579/8b3b6fae-1b80-4fb8-96f6-fba92ac6329b)
+![chrome-capture-2024-1-8 (1)](https://github.com/GreenShift-PA/web/assets/92926579/504a6675-cdbe-419c-9457-1d9abd62b30a)
+
 ## Sommaire
 - Presentation of the project
 - Instructions for the installation of the project
